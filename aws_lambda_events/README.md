@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/LegNeato/aws_lambda_events.svg?branch=master)](https://travis-ci.org/LegNeato/aws_lambda_events)
 
-This crate provides strongly-typed [AWS Lambda event structs](https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html) event structs in Rust.
+This crate provides strongly-typed [AWS Lambda event structs](https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html) in Rust.
 
 ## Usage
 
