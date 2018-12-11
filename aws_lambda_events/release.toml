@@ -4,5 +4,7 @@ pro-release-commit-message = "Bump version to {{version}}"
 tag-prefix = "v"
 tag-message = "Release {{prefix}}{{version}}"
 upload-doc = false
-pre-release-replacements = [ {file="README.md", search="0.1.1", replace="{{version}}"} ]
-pro-release-replacements = [ {file="release.toml", search="0.1.1", replace="{{version}}"} ]
+pre-release-replacements = [
+  {file="README.md", search="0.1.1", replace="{{version}}"},
+  {file="release.toml", search="0.1.1", replace="{{version}}"},
+]
