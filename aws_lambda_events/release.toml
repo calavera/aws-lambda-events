@@ -1,6 +1,7 @@
 dev-version-ext = "pre"
 pre-release-commit-message = "Release {{version}}"
 pro-release-commit-message = "Bump version to {{version}}"
-tag-prefix = "aws_lambda_events-v"
+tag-prefix = "v"
 tag-message = "Release {{prefix}}{{version}}"
 upload-doc = false
+pre-release-replacements = [ {file="README.md", search="{{prev_version}}", replace="{{version}}"} ]
