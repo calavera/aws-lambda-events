@@ -7,8 +7,8 @@ authors = [
   "Sam Rijs <srijs@airpost.net>"
 ]
 license = "MIT"
-homepage = "https://github.com/srijs/rust-aws-lambda/tree/master/aws_lambda_events"
-repository = "https://github.com/srijs/rust-aws-lambda"
+homepage = "https://github.com/LegNeato/aws_lambda_events"
+repository = "https://github.com/LegNeato/aws_lambda_events"
 readme = "README.md"
 keywords = ["lambda", "aws", "amazon", "events", "S3"]
 categories = ["api-bindings", "encoding", "web-programming"]
