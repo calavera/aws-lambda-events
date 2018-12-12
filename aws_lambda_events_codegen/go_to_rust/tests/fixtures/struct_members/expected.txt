@@ -1,19 +1,27 @@
 use chrono::{DateTime, Utc};
 use custom_serde::*;
+use serde::de::DeserializeOwned;
+use serde::ser::Serialize;
 use serde_json::Value;
 use std::collections::HashMap;
 use super::super::encodings::{Base64Data, MillisecondTimestamp, SecondTimestamp};
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct SimpleEmailMessage {
+pub struct SimpleEmailMessage<T1=Value, T2=Value>
+where T1: DeserializeOwned,
+      T1: Serialize,
+      T2: DeserializeOwned,
+      T2: Serialize,
+{
     #[serde(rename = "commonHeaders")]
     pub common_headers: SimpleEmailCommonHeaders,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source: Option<String>,
     pub timestamp: DateTime<Utc>,
+    #[serde(bound="")]
     #[serde(rename = "rawJson")]
-    pub raw: Value,
+    pub raw: T1,
     pub destination: Vec<String>,
     pub headers: Vec<SimpleEmailHeader>,
     #[serde(rename = "headersTruncated")]
@@ -30,6 +38,7 @@ pub struct SimpleEmailMessage {
     pub millisecs: MillisecondTimestamp,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    pub detail: HashMap<String, Value>,
+    #[serde(bound="")]
+    pub detail: HashMap<String, T2>,
     pub data: Base64Data,
 }
