@@ -6,7 +6,7 @@ use chrono::{DateTime, Utc};
 pub struct Base64Data(
     #[serde(deserialize_with = "deserialize_base64")]
     #[serde(serialize_with = "serialize_base64")]
-    Vec<u8>,
+    pub Vec<u8>,
 );
 
 /// Timestamp with millisecond precision.
@@ -14,7 +14,7 @@ pub struct Base64Data(
 pub struct MillisecondTimestamp(
     #[serde(deserialize_with = "deserialize_milliseconds")]
     #[serde(serialize_with = "serialize_milliseconds")]
-    DateTime<Utc>,
+    pub DateTime<Utc>,
 );
 
 /// Timestamp with second precision.
@@ -22,5 +22,5 @@ pub struct MillisecondTimestamp(
 pub struct SecondTimestamp(
     #[serde(deserialize_with = "deserialize_seconds")]
     #[serde(serialize_with = "serialize_seconds")]
-    DateTime<Utc>,
+    pub DateTime<Utc>,
 );
