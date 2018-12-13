@@ -726,9 +726,9 @@ fn translate_go_type_to_rust_type(go_type: GoType, generic_counter: Option<&mut 
             libraries.insert("std::collections::HashMap".to_string());
 
             RustType {
-                annotations: annotations,
                 value: format!("HashMap<{}, {}>", key_data.value, value_data.value),
-                generics: generics,
+                annotations,
+                generics,
                 libraries,
             }
         }
