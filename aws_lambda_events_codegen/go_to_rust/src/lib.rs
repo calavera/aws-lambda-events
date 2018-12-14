@@ -868,10 +868,12 @@ mod tests {
                         ]),
                         struct_fields(20, 31, [
                             struct_field(20, 31, [
-                                ident(20, 23),
-                                struct_field_type(24, 30, [
-                                    primitive(24, 30, [
-                                        string(24, 30)
+                                struct_field_decl(20, 30, [
+                                    ident(20, 23),
+                                    struct_field_type(24, 30, [
+                                        primitive(24, 30, [
+                                            string(24, 30)
+                                        ]),
                                     ]),
                                 ]),
                             ]),
@@ -896,18 +898,22 @@ mod tests {
                         ]),
                         struct_fields(38, 74, [
                             struct_field(38, 48, [
-                                ident(38, 41),
-                                struct_field_type(42, 48, [
-                                    primitive(42, 48, [
-                                        string(42, 48)
+                                struct_field_decl(38, 48, [
+                                    ident(38, 41),
+                                    struct_field_type(42, 48, [
+                                        primitive(42, 48, [
+                                            string(42, 48)
+                                        ]),
                                     ]),
                                 ]),
                             ]),
                             struct_field(67, 74, [
-                                ident(67, 70),
-                                struct_field_type(71, 74, [
-                                    primitive(71, 74, [
-                                        int(71, 74)
+                                struct_field_decl(67, 74, [
+                                    ident(67, 70),
+                                    struct_field_type(71, 74, [
+                                        primitive(71, 74, [
+                                            int(71, 74)
+                                        ]),
                                     ]),
                                 ]),
                             ]),
@@ -925,10 +931,12 @@ mod tests {
                 rule: Rule::struct_field,
                 tokens: [
                     struct_field(0, 19, [
-                        ident(0, 12),
-                        struct_field_type(13, 19, [
-                            primitive(13, 19, [
-                                string(13, 19),
+                        struct_field_decl(0, 19, [
+                            ident(0, 12),
+                            struct_field_type(13, 19, [
+                                primitive(13, 19, [
+                                    string(13, 19),
+                                ]),
                             ]),
                         ]),
                     ]),
@@ -941,10 +949,12 @@ mod tests {
                 rule: Rule::struct_field,
                 tokens: [
                     struct_field(0, 17, [
-                        ident(0, 12),
-                        struct_field_type(13, 17, [
-                            primitive(13, 17, [
-                                boolean(13, 17),
+                        struct_field_decl(0, 17, [
+                            ident(0, 12),
+                            struct_field_type(13, 17, [
+                                primitive(13, 17, [
+                                    boolean(13, 17),
+                                ]),
                             ]),
                         ]),
                     ]),
@@ -957,11 +967,13 @@ mod tests {
                 rule: Rule::struct_field,
                 tokens: [
                     struct_field(0, 18, [
-                        ident(0, 12),
-                        pointer(13, 14),
-                        struct_field_type(14, 18, [
-                            primitive(14, 18, [
-                                boolean(14, 18),
+                        struct_field_decl(0, 18, [
+                            ident(0, 12),
+                            pointer(13, 14),
+                            struct_field_type(14, 18, [
+                                primitive(14, 18, [
+                                    boolean(14, 18),
+                                ]),
                             ]),
                         ]),
                     ]),
@@ -974,9 +986,11 @@ mod tests {
                 rule: Rule::struct_field,
                 tokens: [
                     struct_field(0, 19, [
-                        ident(0, 12),
-                        struct_field_type(13, 19, [
-                            ident(13, 19),
+                        struct_field_decl(0, 19, [
+                            ident(0, 12),
+                            struct_field_type(13, 19, [
+                                ident(13, 19),
+                            ]),
                         ]),
                     ]),
                 ]
