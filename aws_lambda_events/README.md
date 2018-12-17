@@ -1,7 +1,7 @@
 # [aws_lambda_events](https://github.com/LegNeato/aws-lambda-events)
 
 [![Build Status](https://travis-ci.org/LegNeato/aws-lambda-events.svg?branch=master)](https://travis-ci.org/LegNeato/aws-lambda-events)
-[![Documentation](https://docs.rs/aws_lambda_events/badge.svg?version=0.1.3)](https://docs.rs/aws_lambda_events/0.1.3)
+[![Documentation](https://docs.rs/aws_lambda_events/badge.svg?version=0.1.4)](https://docs.rs/aws_lambda_events/0.1.4)
 
 This crate provides strongly-typed [AWS Lambda event structs](https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html) in Rust.
 
@@ -11,7 +11,7 @@ Include the crate in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-aws_lambda_events = "^0.1.3"
+aws_lambda_events = "^0.1.4"
 ```
 
 Before listing this crate as a direct dependency, check to make sure your Lambda handler / runtime crate doesn't already include and export it. For example, [`rust-aws-lambda`](https://github.com/srijs/rust-aws-lambda) includes this as a subcrate and the types can be accessed from `aws_lambda::event`. There is no need to use this crate directly if you are using such a runtime, though there is nothing preventing you from doing so.
@@ -25,7 +25,7 @@ The types
 defined in this crate are usually used with handlers / runtimes provided by the [official Rust runtime](https://github.com/awslabs/aws-lambda-rust-runtime) or community projects such as [`rust-aws-lambda`](https://github.com/srijs/rust-aws-lambda),
 [`rust-crowbar`](https://github.com/ilianaw/rust-crowbar), and [`serverless_rust`](https://github.com/softprops/serverless-rust).
 
-For a list of supported AWS Lambda events and services, see [the crate reference documentation](https://docs.rs/aws_lambda_events/0.1.3).
+For a list of supported AWS Lambda events and services, see [the crate reference documentation](https://docs.rs/aws_lambda_events/0.1.4).
 
 ## How it works
 
