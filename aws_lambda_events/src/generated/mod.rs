@@ -1,3 +1,5 @@
+/// AWS Lambda event definitions for alb.
+pub mod alb;
 /// AWS Lambda event definitions for apigw.
 pub mod apigw;
 /// AWS Lambda event definitions for appsync.
