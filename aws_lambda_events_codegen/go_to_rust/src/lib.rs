@@ -884,6 +884,55 @@ mod tests {
 
             parses_to! {
                 parser: AwsGoEventsParser,
+                input: "type MyFoo struct { T1 }",
+                rule: Rule::struct_def,
+                tokens: [
+                    struct_def(0, 24, [
+                        struct_preamble(0, 17, [
+                            struct_name(5, 10, [
+                                ident(5, 10),
+                            ]),
+                        ]),
+                        struct_fields(20, 23, [
+                            struct_field(20, 23, [
+                                struct_field_decl(20, 22, [
+                                    struct_embedded_field(20, 22, [
+                                        ident(20, 22),
+                                    ]),
+                                ]),
+                            ]),
+                        ]),
+                    ]),
+                ]
+            };
+
+            parses_to! {
+                parser: AwsGoEventsParser,
+                input: "type MyFoo struct { *T1 }",
+                rule: Rule::struct_def,
+                tokens: [
+                    struct_def(0, 25, [
+                        struct_preamble(0, 17, [
+                            struct_name(5, 10, [
+                                ident(5, 10),
+                            ]),
+                        ]),
+                        struct_fields(20, 24, [
+                            struct_field(20, 24, [
+                                struct_field_decl(20, 23, [
+                                    pointer(20, 21),
+                                    struct_embedded_field(21, 23, [
+                                        ident(21, 23),
+                                    ]),
+                                ]),
+                            ]),
+                        ]),
+                    ]),
+                ]
+            };
+
+            parses_to! {
+                parser: AwsGoEventsParser,
                 input: r#"type MyFoo struct {
                   foo string
                   bar int
@@ -974,6 +1023,40 @@ mod tests {
                                 primitive(14, 18, [
                                     boolean(14, 18),
                                 ]),
+                            ]),
+                        ]),
+                    ]),
+                ]
+            };
+        }
+
+        #[test]
+        fn test_parses_struct_embedded_field() {
+            parses_to! {
+                parser: AwsGoEventsParser,
+                input: "EventVersion",
+                rule: Rule::struct_field,
+                tokens: [
+                    struct_field(0, 12, [
+                        struct_field_decl(0, 12, [
+                            struct_embedded_field(0, 12, [
+                                ident(0, 12),
+                            ]),
+                        ]),
+                    ]),
+                ]
+            };
+
+            parses_to! {
+                parser: AwsGoEventsParser,
+                input: "*EventVersion",
+                rule: Rule::struct_field,
+                tokens: [
+                    struct_field(0, 13, [
+                        struct_field_decl(0, 13, [
+                            pointer(0, 1),
+                            struct_embedded_field(1, 13, [
+                                ident(1, 13),
                             ]),
                         ]),
                     ]),
