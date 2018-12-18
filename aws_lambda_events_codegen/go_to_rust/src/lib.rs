@@ -154,6 +154,7 @@ struct FieldDef {
     comments: Vec<String>,
     omit_empty: bool,
     go_type: GoType,
+    embedded: bool,
 }
 
 fn parse_comment(c: &str) -> String {
@@ -317,6 +318,12 @@ fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>)
             }
         }
 
+        if f.embedded {
+            rust_data
+                .annotations
+                .push("#[serde(flatten)]".to_string());
+        }
+
         let mut field_defs = vec![];
 
         // Behavior overrides for specific types.
@@ -406,16 +413,34 @@ fn parse_struct_field(pairs: Pairs<Rule>) -> Result<FieldDef, Error> {
     let mut go_type: Option<GoType> = None;
     let mut comments: Vec<String> = vec![];
     let mut is_pointer = false;
+    let mut embedded = false;
 
     for pair in pairs {
         debug!("{:?}", pair);
         let span = pair.clone().into_span();
         match pair.as_rule() {
-            Rule::ident => name = Some(mangle(span.as_str())),
             Rule::json_mapping => json = Some(parse_json_mapping(pair.into_inner())?),
-            Rule::pointer => is_pointer = true,
-            Rule::struct_field_type => go_type = Some(parse_go_type(pair.into_inner())?),
             Rule::doc_comment => comments.push(parse_comment(span.as_str())),
+            Rule::struct_field_decl => {
+                for pair in pair.into_inner() {
+                    let span = pair.clone().into_span();
+                    match pair.as_rule() {
+                        Rule::ident => name = Some(mangle(span.as_str())),
+                        Rule::pointer => is_pointer = true,
+                        Rule::struct_field_type => {
+                            go_type = Some(parse_go_type(pair.into_inner())?)
+                        }
+                        Rule::struct_embedded_field => {
+                            info!("struct_embedded_field found: {:?}", pair);
+                            let value = pair.clone().into_span().as_str();
+                            name = Some(mangle(value));
+                            go_type = Some(parse_go_type(pair.into_inner())?);
+                            embedded = true;
+                        },
+                        rule @ _ => panic!("invalid Rule found in struct_field_decl: {:?}", rule),
+                    }
+                }
+            }
             _ => unimplemented!(),
         }
     }
@@ -456,6 +481,7 @@ fn parse_struct_field(pairs: Pairs<Rule>) -> Result<FieldDef, Error> {
         comments,
         omit_empty,
         go_type: go_type.expect("fields have types"),
+        embedded,
     })
 }
 
@@ -913,10 +939,61 @@ mod tests {
                         ]),
                         struct_fields(20, 31, [
                             struct_field(20, 31, [
-                                ident(20, 23),
-                                struct_field_type(24, 30, [
-                                    primitive(24, 30, [
-                                        string(24, 30)
+                                struct_field_decl(20, 30, [
+                                    ident(20, 23),
+                                    struct_field_type(24, 30, [
+                                        primitive(24, 30, [
+                                            string(24, 30)
+                                        ]),
+                                    ]),
+                                ]),
+                            ]),
+                        ]),
+                    ]),
+                ]
+            };
+
+            parses_to! {
+                parser: AwsGoEventsParser,
+                input: "type MyFoo struct { T1 }",
+                rule: Rule::struct_def,
+                tokens: [
+                    struct_def(0, 24, [
+                        struct_preamble(0, 17, [
+                            struct_name(5, 10, [
+                                ident(5, 10),
+                            ]),
+                        ]),
+                        struct_fields(20, 23, [
+                            struct_field(20, 23, [
+                                struct_field_decl(20, 22, [
+                                    struct_embedded_field(20, 22, [
+                                        ident(20, 22),
+                                    ]),
+                                ]),
+                            ]),
+                        ]),
+                    ]),
+                ]
+            };
+
+            parses_to! {
+                parser: AwsGoEventsParser,
+                input: "type MyFoo struct { *T1 }",
+                rule: Rule::struct_def,
+                tokens: [
+                    struct_def(0, 25, [
+                        struct_preamble(0, 17, [
+                            struct_name(5, 10, [
+                                ident(5, 10),
+                            ]),
+                        ]),
+                        struct_fields(20, 24, [
+                            struct_field(20, 24, [
+                                struct_field_decl(20, 23, [
+                                    pointer(20, 21),
+                                    struct_embedded_field(21, 23, [
+                                        ident(21, 23),
                                     ]),
                                 ]),
                             ]),
@@ -941,18 +1018,22 @@ mod tests {
                         ]),
                         struct_fields(38, 74, [
                             struct_field(38, 48, [
-                                ident(38, 41),
-                                struct_field_type(42, 48, [
-                                    primitive(42, 48, [
-                                        string(42, 48)
+                                struct_field_decl(38, 48, [
+                                    ident(38, 41),
+                                    struct_field_type(42, 48, [
+                                        primitive(42, 48, [
+                                            string(42, 48)
+                                        ]),
                                     ]),
                                 ]),
                             ]),
                             struct_field(67, 74, [
-                                ident(67, 70),
-                                struct_field_type(71, 74, [
-                                    primitive(71, 74, [
-                                        int(71, 74)
+                                struct_field_decl(67, 74, [
+                                    ident(67, 70),
+                                    struct_field_type(71, 74, [
+                                        primitive(71, 74, [
+                                            int(71, 74)
+                                        ]),
                                     ]),
                                 ]),
                             ]),
@@ -970,10 +1051,12 @@ mod tests {
                 rule: Rule::struct_field,
                 tokens: [
                     struct_field(0, 19, [
-                        ident(0, 12),
-                        struct_field_type(13, 19, [
-                            primitive(13, 19, [
-                                string(13, 19),
+                        struct_field_decl(0, 19, [
+                            ident(0, 12),
+                            struct_field_type(13, 19, [
+                                primitive(13, 19, [
+                                    string(13, 19),
+                                ]),
                             ]),
                         ]),
                     ]),
@@ -986,10 +1069,12 @@ mod tests {
                 rule: Rule::struct_field,
                 tokens: [
                     struct_field(0, 17, [
-                        ident(0, 12),
-                        struct_field_type(13, 17, [
-                            primitive(13, 17, [
-                                boolean(13, 17),
+                        struct_field_decl(0, 17, [
+                            ident(0, 12),
+                            struct_field_type(13, 17, [
+                                primitive(13, 17, [
+                                    boolean(13, 17),
+                                ]),
                             ]),
                         ]),
                     ]),
@@ -1002,11 +1087,47 @@ mod tests {
                 rule: Rule::struct_field,
                 tokens: [
                     struct_field(0, 18, [
-                        ident(0, 12),
-                        pointer(13, 14),
-                        struct_field_type(14, 18, [
-                            primitive(14, 18, [
-                                boolean(14, 18),
+                        struct_field_decl(0, 18, [
+                            ident(0, 12),
+                            pointer(13, 14),
+                            struct_field_type(14, 18, [
+                                primitive(14, 18, [
+                                    boolean(14, 18),
+                                ]),
+                            ]),
+                        ]),
+                    ]),
+                ]
+            };
+        }
+
+        #[test]
+        fn test_parses_struct_embedded_field() {
+            parses_to! {
+                parser: AwsGoEventsParser,
+                input: "EventVersion",
+                rule: Rule::struct_field,
+                tokens: [
+                    struct_field(0, 12, [
+                        struct_field_decl(0, 12, [
+                            struct_embedded_field(0, 12, [
+                                ident(0, 12),
+                            ]),
+                        ]),
+                    ]),
+                ]
+            };
+
+            parses_to! {
+                parser: AwsGoEventsParser,
+                input: "*EventVersion",
+                rule: Rule::struct_field,
+                tokens: [
+                    struct_field(0, 13, [
+                        struct_field_decl(0, 13, [
+                            pointer(0, 1),
+                            struct_embedded_field(1, 13, [
+                                ident(1, 13),
                             ]),
                         ]),
                     ]),
@@ -1019,9 +1140,11 @@ mod tests {
                 rule: Rule::struct_field,
                 tokens: [
                     struct_field(0, 19, [
-                        ident(0, 12),
-                        struct_field_type(13, 19, [
-                            ident(13, 19),
+                        struct_field_decl(0, 19, [
+                            ident(0, 12),
+                            struct_field_type(13, 19, [
+                                ident(13, 19),
+                            ]),
                         ]),
                     ]),
                 ]
