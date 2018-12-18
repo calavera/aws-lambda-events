@@ -14,8 +14,6 @@ Include the crate in your `Cargo.toml`:
 aws_lambda_events = "^0.2.0"
 ```
 
-Before listing this crate as a direct dependency, check to make sure your Lambda handler / runtime crate doesn't already include and export it. For example, [`rust-aws-lambda`](https://github.com/srijs/rust-aws-lambda) includes this as a subcrate and the types can be accessed from `aws_lambda::event`. There is no need to use this crate directly if you are using such a runtime, though there is nothing preventing you from doing so.
-
 ## Usage
 
 The crate itself has no AWS Lambda handler logic and instead exists to serialize
