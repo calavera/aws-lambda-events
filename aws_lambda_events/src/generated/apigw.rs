@@ -59,6 +59,10 @@ pub struct ApiGatewayProxyResponse {
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub headers: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "multiValueHeaders")]
+    pub multi_value_headers: HashMap<String, Vec<String>>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,

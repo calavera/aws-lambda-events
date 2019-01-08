@@ -1,6 +1,6 @@
 ## master
 
-- No changes yet
+- Add `multi_value_headers` field for `ApiGatewayProxyResponse`.
 
 ## [[0.2.0] - 2018-12-18](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.0)
 
