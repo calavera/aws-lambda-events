@@ -50,6 +50,7 @@ pub struct CognitoDatasetRecord {
 /// (sign up), allowing a Lambda to perform custom validation to accept or deny the registration request
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsPreSignup {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
     #[serde(flatten)]
     pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
     pub request: CognitoEventUserPoolsPreSignupRequest,
@@ -60,6 +61,7 @@ pub struct CognitoEventUserPoolsPreSignup {
 /// allowing the Lambda to send custom messages or add custom logic.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsPostConfirmation {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
     #[serde(flatten)]
     pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
     pub request: CognitoEventUserPoolsPostConfirmationRequest,
@@ -70,6 +72,7 @@ pub struct CognitoEventUserPoolsPostConfirmation {
 /// credentials, allowing a Lambda to perform insert, supress or override claims
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsPreTokenGen {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
     #[serde(flatten)]
     pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
     pub request: CognitoEventUserPoolsPreTokenGenRequest,
