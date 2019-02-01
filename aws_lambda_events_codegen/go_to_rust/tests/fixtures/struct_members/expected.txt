@@ -41,4 +41,8 @@ where T1: DeserializeOwned,
     #[serde(bound="")]
     pub detail: HashMap<String, T2>,
     pub data: Base64Data,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "Uppercase")]
+    pub uppercase: Option<String>,
 }

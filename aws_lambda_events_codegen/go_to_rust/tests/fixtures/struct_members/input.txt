@@ -15,4 +15,5 @@ type SimpleEmailMessage struct {
 	millisecs        MilliSecondsEpochTime
 	Detail           map[string]interface{}   `json:"detail"`
 	Data             []byte                   `json:"data"`
+	Uppercase        string
 }
