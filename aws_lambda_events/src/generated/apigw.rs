@@ -316,15 +316,20 @@ where T1: DeserializeOwned,
 pub struct ApiGatewayCustomAuthorizerPolicy {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
+    #[serde(rename = "Version")]
     pub version: Option<String>,
+    #[serde(rename = "Statement")]
     pub statement: Vec<IamPolicyStatement>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct IamPolicyStatement {
+    #[serde(rename = "Action")]
     pub action: Vec<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
+    #[serde(rename = "Effect")]
     pub effect: Option<String>,
+    #[serde(rename = "Resource")]
     pub resource: Vec<String>,
 }

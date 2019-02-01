@@ -57,6 +57,8 @@ pub struct CodeCommitRecord {
     pub aws_region: Option<String>,
     #[serde(rename = "eventTotalParts")]
     pub event_total_parts: u64,
+    #[serde(rename = "customData")]
+    pub custom_data: Option<String>,
 }
 
 /// `CodeCommitCodeCommit` represents a CodeCommit object in a record

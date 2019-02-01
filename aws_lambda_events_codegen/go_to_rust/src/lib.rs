@@ -278,6 +278,7 @@ fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>)
     for f in fields {
         // Translate the name.
         let member_name = mangle(&f.name.to_snake_case());
+        let go_member_name = mangle(&f.name);
 
         let mut rust_data = translate_go_type_to_rust_type(f.go_type, Some(&mut generics))?;
         let mut rust_type = rust_data.value;
@@ -315,6 +316,12 @@ fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>)
                 rust_data
                     .annotations
                     .push(format!("#[serde(rename = \"{}\")]", rename));
+            }
+        } else {
+            if member_name != go_member_name {
+                rust_data
+                    .annotations
+                    .push(format!("#[serde(rename = \"{}\")]", go_member_name));
             }
         }
 
