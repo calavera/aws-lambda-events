@@ -1,5 +1,9 @@
 ## master
 
+- No changes yet
+
+## [[0.2.2] - 2019-02-01](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.2)
+
 - Fix struct deserialization when the json key is not specified for a Go field
   and the field name does not match the generated Rust field name. [[#6](https://github.com/LegNeato/aws-lambda-events/pull/6)]
 
