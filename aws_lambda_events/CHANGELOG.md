@@ -1,6 +1,8 @@
 ## master
 
-- No changes yet
+- Add `ApiGatewayWebsocketProxyRequest` and `ApiGatewayWebsocketProxyRequestContext` in `apigw`.
+- Add `customData` field for `CodeCommitRecord` in `code_commit`.
+- Add `S3TestEvent` in `s3`.
 
 ## [[0.2.2] - 2019-02-01](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.2)
 

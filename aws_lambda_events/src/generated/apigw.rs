@@ -163,6 +163,141 @@ pub struct ApiGatewayRequestIdentity {
     pub user: Option<String>,
 }
 
+/// `ApiGatewayWebsocketProxyRequest` contains data coming from the API Gateway proxy
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayWebsocketProxyRequest {
+    /// The resource path defined in API Gateway
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub resource: Option<String>,
+    /// The url path for the caller
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub path: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "httpMethod")]
+    pub http_method: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub headers: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "multiValueHeaders")]
+    pub multi_value_headers: HashMap<String, Vec<String>>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "queryStringParameters")]
+    pub query_string_parameters: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "multiValueQueryStringParameters")]
+    pub multi_value_query_string_parameters: HashMap<String, Vec<String>>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "pathParameters")]
+    pub path_parameters: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "stageVariables")]
+    pub stage_variables: HashMap<String, String>,
+    #[serde(rename = "requestContext")]
+    pub request_context: ApiGatewayWebsocketProxyRequestContext,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub body: Option<String>,
+    #[serde(rename = "isBase64Encoded")]
+    pub is_base64_encoded: Option<bool>,
+}
+
+/// `ApiGatewayWebsocketProxyRequestContext` contains the information to identify
+/// the AWS account and resources invoking the Lambda function. It also includes
+/// Cognito identity information for the caller.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayWebsocketProxyRequestContext<T1=Value, T2=Value>
+where T1: DeserializeOwned,
+      T1: Serialize,
+      T2: DeserializeOwned,
+      T2: Serialize,
+{
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "accountId")]
+    pub account_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "resourceId")]
+    pub resource_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub stage: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "requestId")]
+    pub request_id: Option<String>,
+    pub identity: ApiGatewayRequestIdentity,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "resourcePath")]
+    pub resource_path: Option<String>,
+    #[serde(bound="")]
+    pub authorizer: T1,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "httpMethod")]
+    pub http_method: Option<String>,
+    /// The API Gateway rest API Id
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "apiId")]
+    pub apiid: Option<String>,
+    #[serde(rename = "connectedAt")]
+    pub connected_at: i64,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "connectionId")]
+    pub connection_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "domainName")]
+    pub domain_name: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub error: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "eventType")]
+    pub event_type: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "extendedRequestId")]
+    pub extended_request_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "integrationLatency")]
+    pub integration_latency: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "messageDirection")]
+    pub message_direction: Option<String>,
+    #[serde(bound="")]
+    #[serde(rename = "messageId")]
+    pub message_id: T2,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "requestTime")]
+    pub request_time: Option<String>,
+    #[serde(rename = "requestTimeEpoch")]
+    pub request_time_epoch: i64,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "routeKey")]
+    pub route_key: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub status: Option<String>,
+}
+
 /// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentity` contains identity information for the request caller.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {

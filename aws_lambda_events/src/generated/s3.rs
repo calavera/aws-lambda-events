@@ -104,6 +104,32 @@ pub struct S3Object {
     pub sequencer: Option<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct S3TestEvent {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "Service")]
+    pub service: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "Bucket")]
+    pub bucket: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "Event")]
+    pub event: Option<String>,
+    #[serde(rename = "Time")]
+    pub time: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "RequestId")]
+    pub request_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "HostId")]
+    pub host_id: Option<String>,
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
