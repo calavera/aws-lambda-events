@@ -1,6 +1,6 @@
 [package]
 name = "aws_lambda_events"
-version = "0.2.4-pre"
+version = "0.2.4"
 description = "AWS Lambda event definitions"
 authors = [
   "Christian Legnitto <christian@legnitto.com>",

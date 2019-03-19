@@ -1,5 +1,9 @@
 ## master
 
+- No changes yet
+
+## [[0.2.4] - 2019-03-18](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.4)
+
 - Add `kinesis_analytics` events
 - Add `AppSyncIamIdentity` and `AppSyncCognitoIdentity` in `appsync`
 - Fix `dmarcPolicy` field for `SimpleEmailReceipt` in `ses`
