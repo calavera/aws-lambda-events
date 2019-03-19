@@ -26,6 +26,8 @@ pub mod firehose;
 pub mod iot_button;
 /// AWS Lambda event definitions for kinesis.
 pub mod kinesis;
+/// AWS Lambda event definitions for kinesis_analytics.
+pub mod kinesis_analytics;
 /// AWS Lambda event definitions for lex.
 pub mod lex;
 /// AWS Lambda event definitions for s3.
