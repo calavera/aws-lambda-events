@@ -1,5 +1,6 @@
 use super::custom_serde::*;
 use chrono::{DateTime, Utc};
+use std::ops::{Deref, DerefMut};
 
 /// Binary data encoded in base64.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -9,6 +10,20 @@ pub struct Base64Data(
     pub Vec<u8>,
 );
 
+impl Deref for Base64Data {
+    type Target = Vec<u8>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for Base64Data {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
 /// Timestamp with millisecond precision.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct MillisecondTimestamp(
@@ -17,6 +32,20 @@ pub struct MillisecondTimestamp(
     pub DateTime<Utc>,
 );
 
+impl Deref for MillisecondTimestamp {
+    type Target = DateTime<Utc>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for MillisecondTimestamp {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
 /// Timestamp with second precision.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct SecondTimestamp(
@@ -24,3 +53,17 @@ pub struct SecondTimestamp(
     #[serde(serialize_with = "serialize_seconds")]
     pub DateTime<Utc>,
 );
+
+impl Deref for SecondTimestamp {
+    type Target = DateTime<Utc>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for SecondTimestamp {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
