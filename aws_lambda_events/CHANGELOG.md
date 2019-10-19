@@ -1,5 +1,9 @@
 ## master
 
+- No changes yet
+
+## [[0.2.5] - 2019-10-19](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.5)
+
 - `Deref` and `DerefMut` are now implemented for encoding tuple types. [#9](https://github.com/LegNeato/aws-lambda-events/pull/9)
 
 ## [[0.2.4] - 2019-03-18](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.4)
