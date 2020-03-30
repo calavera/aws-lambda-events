@@ -10,7 +10,7 @@ pub struct CodeCommitEvent {
 
 pub type CodeCommitEventTime = DateTime<Utc>;
 
-/// represents a CodeCommit record
+/// `CodeCommitRecord` represents a CodeCommit record
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CodeCommitRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]

@@ -6,12 +6,18 @@ pub mod apigw;
 pub mod appsync;
 /// AWS Lambda event definitions for autoscaling.
 pub mod autoscaling;
+/// AWS Lambda event definitions for chime_bot.
+pub mod chime_bot;
 /// AWS Lambda event definitions for cloudwatch_events.
 pub mod cloudwatch_events;
 /// AWS Lambda event definitions for cloudwatch_logs.
 pub mod cloudwatch_logs;
 /// AWS Lambda event definitions for code_commit.
 pub mod code_commit;
+/// AWS Lambda event definitions for codebuild.
+pub mod codebuild;
+/// AWS Lambda event definitions for codedeploy.
+pub mod codedeploy;
 /// AWS Lambda event definitions for codepipeline_job.
 pub mod codepipeline_job;
 /// AWS Lambda event definitions for cognito.
@@ -32,6 +38,8 @@ pub mod kinesis_analytics;
 pub mod lex;
 /// AWS Lambda event definitions for s3.
 pub mod s3;
+/// AWS Lambda event definitions for s3_batch_job.
+pub mod s3_batch_job;
 /// AWS Lambda event definitions for ses.
 pub mod ses;
 /// AWS Lambda event definitions for sns.

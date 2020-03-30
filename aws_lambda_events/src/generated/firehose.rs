@@ -14,6 +14,10 @@ pub struct KinesisFirehoseEvent {
     pub delivery_stream_arn: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
+    #[serde(rename = "sourceKinesisStreamArn")]
+    pub source_kinesis_stream_arn: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     pub region: Option<String>,
     pub records: Vec<KinesisFirehoseEventRecord>,
 }
@@ -27,6 +31,8 @@ pub struct KinesisFirehoseEventRecord {
     #[serde(rename = "approximateArrivalTimestamp")]
     pub approximate_arrival_timestamp: MillisecondTimestamp,
     pub data: Base64Data,
+    #[serde(rename = "kinesisRecordMetadata")]
+    pub kinesis_firehose_record_metadata: KinesisFirehoseRecordMetadata,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -45,6 +51,26 @@ pub struct KinesisFirehoseResponseRecord {
     #[serde(default)]
     pub result: Option<String>,
     pub data: Base64Data,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct KinesisFirehoseRecordMetadata {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "shardId")]
+    pub shard_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "partitionKey")]
+    pub partition_key: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "sequenceNumber")]
+    pub sequence_number: Option<String>,
+    #[serde(rename = "subsequenceNumber")]
+    pub subsequence_number: i64,
+    #[serde(rename = "approximateArrivalTimestamp")]
+    pub approximate_arrival_timestamp: MillisecondTimestamp,
 }
 
 #[cfg(test)]
