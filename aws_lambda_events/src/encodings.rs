@@ -1,5 +1,5 @@
 use super::custom_serde::*;
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, Duration, Utc};
 use std::ops::{Deref, DerefMut};
 
 /// Binary data encoded in base64.
@@ -63,6 +63,50 @@ impl Deref for SecondTimestamp {
 }
 
 impl DerefMut for SecondTimestamp {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+/// Duration with second precision.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct SecondDuration(
+    #[serde(deserialize_with = "deserialize_duration_seconds")]
+    #[serde(serialize_with = "serialize_duration_seconds")]
+    pub Duration,
+);
+
+impl Deref for SecondDuration {
+    type Target = Duration;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for SecondDuration {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+/// Duration with minute precision.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct MinuteDuration(
+    #[serde(deserialize_with = "deserialize_duration_minutes")]
+    #[serde(serialize_with = "serialize_duration_minutes")]
+    pub Duration,
+);
+
+impl Deref for MinuteDuration {
+    type Target = Duration;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for MinuteDuration {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }

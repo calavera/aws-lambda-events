@@ -1,5 +1,5 @@
 use base64::{decode, encode};
-use chrono::{DateTime, TimeZone, Utc};
+use chrono::{DateTime, Duration, TimeZone, Utc};
 use serde;
 use serde::de::{Deserialize, Deserializer, Error as DeError};
 use serde::ser::Serializer;
@@ -136,6 +136,46 @@ where
     // https://github.com/serde-rs/serde/issues/1098
     let opt = Option::deserialize(deserializer)?;
     Ok(opt.unwrap_or(HashMap::default()))
+}
+
+pub(crate) fn serialize_duration_seconds<S>(
+    duration: &Duration,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    let seconds = duration.num_seconds();
+
+    serializer.serialize_str(&seconds.to_string())
+}
+
+pub(crate) fn deserialize_duration_seconds<'de, D>(deserializer: D) -> Result<Duration, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let seconds = f64::deserialize(deserializer)?;
+    Ok(Duration::seconds(seconds as i64))
+}
+
+pub(crate) fn serialize_duration_minutes<S>(
+    duration: &Duration,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    let minutes = duration.num_minutes();
+
+    serializer.serialize_str(&minutes.to_string())
+}
+
+pub(crate) fn deserialize_duration_minutes<'de, D>(deserializer: D) -> Result<Duration, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let minutes = f64::deserialize(deserializer)?;
+    Ok(Duration::minutes(minutes as i64))
 }
 
 #[cfg(test)]
