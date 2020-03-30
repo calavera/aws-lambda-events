@@ -540,7 +540,6 @@ enum GoType {
     TimestampMillisecondsType,
     TimestampSecondsType,
     JsonRawType,
-    DurationType,
     DurationSecondsType,
     DurationMinutesType,
 }
@@ -675,7 +674,6 @@ fn parse_go_package_ident(t: &str) -> Result<GoType, Error> {
     match t {
         "time.Time" => Ok(GoType::TimeType),
         "json.RawMessage" => Ok(GoType::JsonRawType),
-        "time.Duration" => Ok(GoType::DurationType),
         _ => unimplemented!("missing go package ident mapping: {}", t),
     }
 }
@@ -843,16 +841,6 @@ fn translate_go_type_to_rust_type(go_type: GoType, generic_counter: Option<&mut 
             RustType {
                 annotations: vec![],
                 value: "DateTime<Utc>".to_string(),
-                generics: vec![],
-                libraries,
-            }
-        }
-        GoType::DurationType => {
-            let mut libraries = HashSet::new();
-            libraries.insert("super::super::encodings::Duration".to_string());
-            RustType {
-                annotations: vec![],
-                value: "Duration".to_string(),
                 generics: vec![],
                 libraries,
             }
