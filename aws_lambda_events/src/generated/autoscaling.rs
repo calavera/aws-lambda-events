@@ -7,9 +7,10 @@ use std::collections::HashMap;
 
 /// `AutoScalingEvent` struct is used to parse the json for auto scaling event types //
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct AutoScalingEvent<T1=Value>
-where T1: DeserializeOwned,
-      T1: Serialize,
+pub struct AutoScalingEvent<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
 {
     /// The version of event data
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -43,6 +44,6 @@ where T1: DeserializeOwned,
     pub resources: Vec<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    #[serde(bound="")]
+    #[serde(bound = "")]
     pub detail: HashMap<String, T1>,
 }

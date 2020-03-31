@@ -5,5 +5,5 @@ Provides a CLI tool that can be used to generate Rust event type definitions fro
 ## Usage
 
 ```bash
-$ cargo run -- --input $GOPATH/src/github.com/aws/aws-lambda-go --output ../aws_lambda_events/src/generated --overwrite
+$ cargo run -- --input $GOPATH/src/github.com/aws/aws-lambda-go --output ../aws_lambda_events/src/generated --overwrite && cargo fmt --all
 ```
