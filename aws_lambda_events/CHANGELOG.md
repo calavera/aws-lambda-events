@@ -4,7 +4,8 @@
 
 ## [[0.2.6] - 2020-03-30](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.6)
 
-- No changes yet
+- Generate events from `aws-lambda-go` v1.15.
+  Thanks @ewbankkit! [#14](https://github.com/LegNeato/aws-lambda-events/pull/14)
 
 ## [[0.2.5] - 2019-10-19](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.5)
 
