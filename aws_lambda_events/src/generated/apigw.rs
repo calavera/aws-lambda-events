@@ -85,6 +85,8 @@ where T1: DeserializeOwned,
     #[serde(default)]
     #[serde(rename = "resourceId")]
     pub resource_id: Option<String>,
+    #[serde(rename = "operationName")]
+    pub operation_name: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub stage: Option<String>,
@@ -134,6 +136,10 @@ pub struct ApiGatewayRequestIdentity {
     #[serde(default)]
     #[serde(rename = "apiKey")]
     pub api_key: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "apiKeyId")]
+    pub api_key_id: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "accessKey")]
@@ -457,6 +463,7 @@ pub struct ApiGatewayCustomAuthorizerPolicy {
     pub statement: Vec<IamPolicyStatement>,
 }
 
+/// `IamPolicyStatement` represents one statement from IAM policy with action, effect and resource
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct IamPolicyStatement {
     #[serde(rename = "Action")]

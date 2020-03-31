@@ -11,10 +11,8 @@ pub struct LexEvent {
     pub user_id: Option<String>,
     #[serde(rename = "inputTranscript")]
     pub input_transcript: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
     #[serde(rename = "sessionAttributes")]
-    pub session_attributes: HashMap<String, String>,
+    pub session_attributes: Option<SessionAttributes>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     #[serde(rename = "requestAttributes")]
@@ -72,7 +70,17 @@ pub struct LexDialogAction {
     pub response_card: Option<LexResponseCard>,
 }
 
+pub type SessionAttributes = HashMap<String, String>;
+
 pub type Slots = HashMap<String, Option<String>>;
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct LexResponse {
+    #[serde(rename = "sessionAttributes")]
+    pub session_attributes: SessionAttributes,
+    #[serde(rename = "dialogAction")]
+    pub dialog_action: Option<LexDialogAction>,
+}
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct LexResponseCard {

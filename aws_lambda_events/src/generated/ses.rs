@@ -98,20 +98,34 @@ pub struct SimpleEmailCommonHeaders {
     pub subject: Option<String>,
 }
 
+/// `SimpleEmailReceiptAction` is a logical union of fields present in all action
+/// Types. For example, the FunctionARN and InvocationType fields are only
+/// present for the Lambda Type, and the BucketName and ObjectKey fields are only
+/// present for the S3 Type.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct SimpleEmailReceiptAction {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "type")]
     pub type_: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
+    #[serde(rename = "topicArn")]
+    pub topic_arn: Option<String>,
+    #[serde(rename = "bucketName")]
+    pub bucket_name: Option<String>,
+    #[serde(rename = "objectKey")]
+    pub object_key: Option<String>,
+    #[serde(rename = "smtpReplyCode")]
+    pub smtp_reply_code: Option<String>,
+    #[serde(rename = "statusCode")]
+    pub status_code: Option<String>,
+    pub message: Option<String>,
+    pub sender: Option<String>,
     #[serde(rename = "invocationType")]
     pub invocation_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
     #[serde(rename = "functionArn")]
     pub function_arn: Option<String>,
+    #[serde(rename = "organizationArn")]
+    pub organization_arn: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -127,20 +141,4 @@ pub type SimpleEmailDispositionValue = String;
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct SimpleEmailDisposition {
     pub disposition: SimpleEmailDispositionValue,
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    extern crate serde_json;
-
-    #[test]
-    fn example_event() {
-        let data = include_bytes!("fixtures/example-ses-event.json");
-        let parsed: SimpleEmailEvent = serde_json::from_slice(data).unwrap();
-        let output: String = serde_json::to_string(&parsed).unwrap();
-        let reparsed: SimpleEmailEvent = serde_json::from_slice(output.as_bytes()).unwrap();
-        assert_eq!(parsed, reparsed);
-    }
 }

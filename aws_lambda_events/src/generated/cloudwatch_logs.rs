@@ -40,7 +40,7 @@ pub struct CloudwatchLogsData {
     pub log_events: Vec<CloudwatchLogsLogEvent>,
 }
 
-/// LogEvent represents a log entry from cloudwatch logs
+/// `CloudwatchLogsLogEvent` represents a log entry from cloudwatch logs
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CloudwatchLogsLogEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]

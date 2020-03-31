@@ -1,5 +1,5 @@
 use base64::{decode, encode};
-use chrono::{DateTime, TimeZone, Utc};
+use chrono::{DateTime, Duration, TimeZone, Utc};
 use serde;
 use serde::de::{Deserialize, Deserializer, Error as DeError};
 use serde::ser::Serializer;
@@ -136,6 +136,46 @@ where
     // https://github.com/serde-rs/serde/issues/1098
     let opt = Option::deserialize(deserializer)?;
     Ok(opt.unwrap_or(HashMap::default()))
+}
+
+pub(crate) fn serialize_duration_seconds<S>(
+    duration: &Duration,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    let seconds = duration.num_seconds();
+
+    serializer.serialize_i64(seconds)
+}
+
+pub(crate) fn deserialize_duration_seconds<'de, D>(deserializer: D) -> Result<Duration, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let seconds = f64::deserialize(deserializer)?;
+    Ok(Duration::seconds(seconds as i64))
+}
+
+pub(crate) fn serialize_duration_minutes<S>(
+    duration: &Duration,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    let minutes = duration.num_minutes();
+
+    serializer.serialize_i64(minutes)
+}
+
+pub(crate) fn deserialize_duration_minutes<'de, D>(deserializer: D) -> Result<Duration, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let minutes = f64::deserialize(deserializer)?;
+    Ok(Duration::minutes(minutes as i64))
 }
 
 #[cfg(test)]
@@ -309,5 +349,79 @@ mod test {
         });
         let decoded: Test = serde_json::from_value(input).unwrap();
         assert_eq!(HashMap::new(), decoded.v);
+    }
+
+    #[test]
+    fn test_deserialize_duration_seconds() {
+        #[derive(Deserialize)]
+        struct Test {
+            #[serde(deserialize_with = "deserialize_duration_seconds")]
+            v: Duration,
+        }
+
+        let expected = Duration::seconds(36);
+
+        let data = json!({
+                "v": 36,
+            });
+        let decoded: Test = serde_json::from_value(data).unwrap();
+        assert_eq!(expected, decoded.v,);
+
+        let data = json!({
+            "v": 36.1,
+        });
+        let decoded: Test = serde_json::from_value(data).unwrap();
+        assert_eq!(expected, decoded.v,);
+    }
+
+    #[test]
+    fn test_serialize_duration_seconds() {
+        #[derive(Serialize)]
+        struct Test {
+            #[serde(serialize_with = "serialize_duration_seconds")]
+            v: Duration,
+        }
+        let instance = Test {
+            v: Duration::seconds(36),
+        };
+        let encoded = serde_json::to_string(&instance).unwrap();
+        assert_eq!(encoded, String::from(r#"{"v":36}"#));
+    }
+
+    #[test]
+    fn test_deserialize_duration_minutes() {
+        #[derive(Deserialize)]
+        struct Test {
+            #[serde(deserialize_with = "deserialize_duration_minutes")]
+            v: Duration,
+        }
+
+        let expected = Duration::minutes(36);
+
+        let data = json!({
+                "v": 36,
+            });
+        let decoded: Test = serde_json::from_value(data).unwrap();
+        assert_eq!(expected, decoded.v,);
+
+        let data = json!({
+            "v": 36.1,
+        });
+        let decoded: Test = serde_json::from_value(data).unwrap();
+        assert_eq!(expected, decoded.v,);
+    }
+
+    #[test]
+    fn test_serialize_duration_minutes() {
+        #[derive(Serialize)]
+        struct Test {
+            #[serde(serialize_with = "serialize_duration_minutes")]
+            v: Duration,
+        }
+        let instance = Test {
+            v: Duration::minutes(36),
+        };
+        let encoded = serde_json::to_string(&instance).unwrap();
+        assert_eq!(encoded, String::from(r#"{"v":36}"#));
     }
 }

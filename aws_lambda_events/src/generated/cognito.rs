@@ -57,6 +57,17 @@ pub struct CognitoEventUserPoolsPreSignup {
     pub response: CognitoEventUserPoolsPreSignupResponse,
 }
 
+/// `CognitoEventUserPoolsPreAuthentication` is sent by AWS Cognito User Pools when a user submits their information
+/// to be authenticated, allowing you to perform custom validations to accept or deny the sign in request.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPreAuthentication {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
+    pub request: CognitoEventUserPoolsPreAuthenticationRequest,
+    pub response: CognitoEventUserPoolsPreAuthenticationResponse,
+}
+
 /// `CognitoEventUserPoolsPostConfirmation` is sent by AWS Cognito User Pools after a user is confirmed,
 /// allowing the Lambda to send custom messages or add custom logic.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -69,7 +80,7 @@ pub struct CognitoEventUserPoolsPostConfirmation {
 }
 
 /// `CognitoEventUserPoolsPreTokenGen` is sent by AWS Cognito User Pools when a user attempts to retrieve
-/// credentials, allowing a Lambda to perform insert, supress or override claims
+/// credentials, allowing a Lambda to perform insert, suppress or override claims
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsPreTokenGen {
     #[serde(rename = "CognitoEventUserPoolsHeader")]
@@ -77,6 +88,32 @@ pub struct CognitoEventUserPoolsPreTokenGen {
     pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
     pub request: CognitoEventUserPoolsPreTokenGenRequest,
     pub response: CognitoEventUserPoolsPreTokenGenResponse,
+}
+
+/// `CognitoEventUserPoolsPostAuthentication` is sent by AWS Cognito User Pools after a user is authenticated,
+/// allowing the Lambda to add custom logic.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPostAuthentication {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
+    pub request: CognitoEventUserPoolsPostAuthenticationRequest,
+    pub response: CognitoEventUserPoolsPostAuthenticationResponse,
+}
+
+/// `CognitoEventUserPoolsMigrateUser` is sent by AWS Cognito User Pools when a user does not exist in the
+/// user pool at the time of sign-in with a password, or in the forgot-password flow.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsMigrateUser {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
+    #[serde(rename = "request")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_migrate_user_request: CognitoEventUserPoolsMigrateUserRequest,
+    #[serde(rename = "response")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_migrate_user_response: CognitoEventUserPoolsMigrateUserResponse,
 }
 
 /// `CognitoEventUserPoolsCallerContext` contains information about the caller
@@ -128,6 +165,10 @@ pub struct CognitoEventUserPoolsPreSignupRequest {
     #[serde(default)]
     #[serde(rename = "validationData")]
     pub validation_data: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
 }
 
 /// `CognitoEventUserPoolsPreSignupResponse` contains the response portion of a PreSignup event
@@ -141,6 +182,23 @@ pub struct CognitoEventUserPoolsPreSignupResponse {
     pub auto_verify_phone: bool,
 }
 
+/// `CognitoEventUserPoolsPreAuthenticationRequest` contains the request portion of a PreAuthentication event
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPreAuthenticationRequest {
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "userAttributes")]
+    pub user_attributes: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "validationData")]
+    pub validation_data: HashMap<String, String>,
+}
+
+/// `CognitoEventUserPoolsPreAuthenticationResponse` contains the response portion of a PreAuthentication event
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPreAuthenticationResponse;
+
 /// `CognitoEventUserPoolsPostConfirmationRequest` contains the request portion of a PostConfirmation event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsPostConfirmationRequest {
@@ -148,6 +206,10 @@ pub struct CognitoEventUserPoolsPostConfirmationRequest {
     #[serde(default)]
     #[serde(rename = "userAttributes")]
     pub user_attributes: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
 }
 
 /// `CognitoEventUserPoolsPostConfirmationResponse` contains the response portion of a PostConfirmation event
@@ -163,6 +225,10 @@ pub struct CognitoEventUserPoolsPreTokenGenRequest {
     pub user_attributes: HashMap<String, String>,
     #[serde(rename = "groupConfiguration")]
     pub group_configuration: GroupConfiguration,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
 }
 
 /// `CognitoEventUserPoolsPreTokenGenResponse` containst the response portion of  a PreTokenGen event
@@ -172,7 +238,59 @@ pub struct CognitoEventUserPoolsPreTokenGenResponse {
     pub claims_override_details: ClaimsOverrideDetails,
 }
 
-/// `ClaimsOverrideDetails` allows lambda to add, supress or override claims in the token
+/// `CognitoEventUserPoolsPostAuthenticationRequest` contains the request portion of a PostAuthentication event
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPostAuthenticationRequest {
+    #[serde(rename = "newDeviceUsed")]
+    pub new_device_used: bool,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "userAttributes")]
+    pub user_attributes: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
+}
+
+/// `CognitoEventUserPoolsPostAuthenticationResponse` contains the response portion of a PostAuthentication event
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPostAuthenticationResponse;
+
+/// `CognitoEventUserPoolsMigrateUserRequest` contains the request portion of a MigrateUser event
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsMigrateUserRequest {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub password: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
+}
+
+/// `CognitoEventUserPoolsMigrateUserResponse` contains the response portion of a MigrateUser event
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsMigrateUserResponse {
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "userAttributes")]
+    pub user_attributes: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "finalUserStatus")]
+    pub final_user_status: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "messageAction")]
+    pub message_action: Option<String>,
+    #[serde(rename = "desiredDeliveryMediums")]
+    pub desired_delivery_mediums: Vec<String>,
+    #[serde(rename = "forceAliasCreation")]
+    pub force_alias_creation: bool,
+}
+
+/// `ClaimsOverrideDetails` allows lambda to add, suppress or override claims in the token
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ClaimsOverrideDetails {
     #[serde(rename = "groupOverrideDetails")]
@@ -194,6 +312,22 @@ pub struct GroupConfiguration {
     pub iam_roles_to_override: Vec<String>,
     #[serde(rename = "preferredRole")]
     pub preferred_role: Option<String>,
+}
+
+/// `CognitoEventUserPoolsChallengeResult` represents a challenge that is presented to the user in the authentication
+/// process that is underway, along with the corresponding result.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsChallengeResult {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "challengeName")]
+    pub challenge_name: Option<String>,
+    #[serde(rename = "challengeResult")]
+    pub challenge_result: bool,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "challengeMetadata")]
+    pub challenge_metadata: Option<String>,
 }
 
 #[cfg(test)]

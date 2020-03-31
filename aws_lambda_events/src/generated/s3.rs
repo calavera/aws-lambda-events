@@ -2,12 +2,14 @@ use chrono::{DateTime, Utc};
 use custom_serde::*;
 use std::collections::HashMap;
 
+/// `S3Event` which wrap an array of `S3Event`Record
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3Event {
     #[serde(rename = "Records")]
     pub records: Vec<S3EventRecord>,
 }
 
+/// `S3EventRecord` which wrap record data
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3EventRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]

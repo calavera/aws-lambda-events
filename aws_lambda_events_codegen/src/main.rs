@@ -51,6 +51,8 @@ fn get_blacklist() -> HashSet<String> {
     let mut blacklist = HashSet::new();
     // https://github.com/aws/aws-lambda-go/blob/master/events/attributevalue.go
     blacklist.insert("attributevalue".to_string());
+    // https://github.com/aws/aws-lambda-go/blob/master/events/duration.go
+    blacklist.insert("duration".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/dynamodb.go
     blacklist.insert("dynamodb".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/epoch_time.go

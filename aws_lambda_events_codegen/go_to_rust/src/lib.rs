@@ -540,6 +540,8 @@ enum GoType {
     TimestampMillisecondsType,
     TimestampSecondsType,
     JsonRawType,
+    DurationSecondsType,
+    DurationMinutesType,
 }
 
 struct RustType {
@@ -596,7 +598,10 @@ fn parse_go_type_array(pairs: Pairs<Rule>) -> Result<GoType, Error> {
             Rule::array => Some(GoType::ArrayType(Box::new(parse_go_type_array(
                 pair.into_inner(),
             )?))),
-            _ => unimplemented!(),
+            Rule::interface => Some(GoType::ArrayType(Box::new(parse_go_type_interface(
+                value,
+            )?))),
+            _ => unimplemented!("{}\n{}", value, pair),
         };
     }
 
@@ -614,7 +619,7 @@ fn parse_go_type_map(pairs: Pairs<Rule>) -> Result<GoType, Error> {
         match pair.as_rule() {
             Rule::key_type => key_type = Some(parse_go_type_primitive(value)?),
             Rule::value_type => value_type = Some(parse_go_type(pair.into_inner())?),
-            _ => unimplemented!(),
+            _ => unimplemented!("{}\n{}", value, pair),
         };
     }
 
@@ -637,7 +642,7 @@ fn parse_go_type_pointer(pairs: Pairs<Rule>) -> Result<GoType, Error> {
         match pair.as_rule() {
             Rule::pointer => (),
             Rule::value_type => pointed_at = Some(parse_go_type(pair.into_inner())?),
-            _ => unimplemented!(),
+            _ => unimplemented!("{}", pair),
         };
     }
     Ok(GoType::PointerType(Box::new(pointed_at.expect("something pointed at"))))
@@ -651,7 +656,7 @@ fn parse_go_type_primitive(t: &str) -> Result<GoType, Error> {
         "float" | "float32" | "float64" => Ok(GoType::FloatType),
         "bool" => Ok(GoType::BoolType),
         "byte" => Ok(GoType::ByteType),
-        _ => unimplemented!("missing go type primitive"),
+        _ => unimplemented!("missing go type primitive: {}", t),
     }
 }
 
@@ -659,6 +664,8 @@ fn parse_go_ident(t: &str) -> Result<GoType, Error> {
     match t {
         "MilliSecondsEpochTime" => Ok(GoType::TimestampMillisecondsType),
         "SecondsEpochTime" => Ok(GoType::TimestampSecondsType),
+        "DurationSeconds" => Ok(GoType::DurationSecondsType),
+        "DurationMinutes" => Ok(GoType::DurationMinutesType),
         _ => Ok(GoType::UserDefined(t.to_string())),
     }
 }
@@ -667,7 +674,7 @@ fn parse_go_package_ident(t: &str) -> Result<GoType, Error> {
     match t {
         "time.Time" => Ok(GoType::TimeType),
         "json.RawMessage" => Ok(GoType::JsonRawType),
-        _ => unimplemented!("missing go package ident mapping"),
+        _ => unimplemented!("missing go package ident mapping: {}", t),
     }
 }
 
@@ -700,7 +707,7 @@ fn translate_go_type_to_rust_type(go_type: GoType, generic_counter: Option<&mut 
         GoType::UserDefined(x) => make_rust_type_with_no_libraries(&x.to_camel_case()),
         GoType::ArrayType(x) => {
             let mut i = translate_go_type_to_rust_type(*x.clone(), generic_counter)?;
-            
+
             if i.value == "u8" {
                 let mut libraries = i.libraries.clone();
                 libraries.insert("super::super::encodings::Base64Data".to_string());
@@ -834,6 +841,26 @@ fn translate_go_type_to_rust_type(go_type: GoType, generic_counter: Option<&mut 
             RustType {
                 annotations: vec![],
                 value: "DateTime<Utc>".to_string(),
+                generics: vec![],
+                libraries,
+            }
+        }
+        GoType::DurationSecondsType => {
+            let mut libraries = HashSet::new();
+            libraries.insert("super::super::encodings::SecondDuration".to_string());
+            RustType {
+                annotations: vec![],
+                value: "SecondDuration".to_string(),
+                generics: vec![],
+                libraries,
+            }
+        }
+        GoType::DurationMinutesType => {
+            let mut libraries = HashSet::new();
+            libraries.insert("super::super::encodings::MinuteDuration".to_string());
+            RustType {
+                annotations: vec![],
+                value: "MinuteDuration".to_string(),
                 generics: vec![],
                 libraries,
             }
