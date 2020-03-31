@@ -1,6 +1,6 @@
+use super::super::encodings::{MinuteDuration, SecondDuration};
 use chrono::{DateTime, Utc};
 use custom_serde::*;
-use super::super::encodings::{SecondDuration, MinuteDuration};
 use serde::de::DeserializeOwned;
 use serde::ser::Serialize;
 use serde_json::Value;
@@ -194,11 +194,12 @@ pub struct CodeBuildLogs {
 
 /// `CodeBuildPhase` represents the phase of a build and its details
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct CodeBuildPhase<T1=Value>
-where T1: DeserializeOwned,
-      T1: Serialize,
+pub struct CodeBuildPhase<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
 {
-    #[serde(bound="")]
+    #[serde(bound = "")]
     #[serde(rename = "phase-context")]
     pub phase_context: Vec<T1>,
     #[serde(rename = "start-time")]

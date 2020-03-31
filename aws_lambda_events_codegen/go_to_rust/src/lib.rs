@@ -138,12 +138,6 @@ pub fn parse_go_string(go_source: String) -> Result<(GoCode, RustCode), Error> {
 
     debug!("{}", &scope.to_string());
 
-    /*
-    let formatted_code =
-        rustfmt_nightly::format_code_block(&scope.to_string(), &rustfmt_nightly::Config::default())
-            .expect("formatted code");
-    */
-
     Ok((GoCode(go_source), RustCode(scope)))
 }
 
@@ -326,9 +320,7 @@ fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>)
         }
 
         if f.embedded {
-            rust_data
-                .annotations
-                .push("#[serde(flatten)]".to_string());
+            rust_data.annotations.push("#[serde(flatten)]".to_string());
         }
 
         let mut field_defs = vec![];
@@ -443,7 +435,7 @@ fn parse_struct_field(pairs: Pairs<Rule>) -> Result<FieldDef, Error> {
                             name = Some(mangle(value));
                             go_type = Some(parse_go_type(pair.into_inner())?);
                             embedded = true;
-                        },
+                        }
                         rule @ _ => panic!("invalid Rule found in struct_field_decl: {:?}", rule),
                     }
                 }
@@ -598,9 +590,7 @@ fn parse_go_type_array(pairs: Pairs<Rule>) -> Result<GoType, Error> {
             Rule::array => Some(GoType::ArrayType(Box::new(parse_go_type_array(
                 pair.into_inner(),
             )?))),
-            Rule::interface => Some(GoType::ArrayType(Box::new(parse_go_type_interface(
-                value,
-            )?))),
+            Rule::interface => Some(GoType::ArrayType(Box::new(parse_go_type_interface(value)?))),
             _ => unimplemented!("{}\n{}", value, pair),
         };
     }
@@ -645,7 +635,9 @@ fn parse_go_type_pointer(pairs: Pairs<Rule>) -> Result<GoType, Error> {
             _ => unimplemented!("{}", pair),
         };
     }
-    Ok(GoType::PointerType(Box::new(pointed_at.expect("something pointed at"))))
+    Ok(GoType::PointerType(Box::new(
+        pointed_at.expect("something pointed at"),
+    )))
 }
 
 fn parse_go_type_primitive(t: &str) -> Result<GoType, Error> {
@@ -696,7 +688,10 @@ fn make_rust_type_with_no_libraries(value: &str) -> RustType {
     }
 }
 
-fn translate_go_type_to_rust_type(go_type: GoType, generic_counter: Option<&mut usize>) -> Result<RustType, Error> {
+fn translate_go_type_to_rust_type(
+    go_type: GoType,
+    generic_counter: Option<&mut usize>,
+) -> Result<RustType, Error> {
     let rust_type = match &go_type {
         GoType::StringType => make_rust_type_with_no_libraries("String"),
         GoType::BoolType => make_rust_type_with_no_libraries("bool"),
@@ -726,7 +721,7 @@ fn translate_go_type_to_rust_type(go_type: GoType, generic_counter: Option<&mut 
                     libraries: i.libraries,
                 }
             }
-        },
+        }
         GoType::PointerType(v) => {
             let data = translate_go_type_to_rust_type(*v.clone(), generic_counter)?;
             let libraries: HashSet<String> = data.libraries.iter().cloned().collect();
@@ -736,7 +731,7 @@ fn translate_go_type_to_rust_type(go_type: GoType, generic_counter: Option<&mut 
                 generics: data.generics,
                 libraries,
             }
-        },
+        }
         GoType::MapType(k, v) => {
             // TODO can we use a ref to the option to save this dance?
             let mut generics = 0;
@@ -792,22 +787,17 @@ fn translate_go_type_to_rust_type(go_type: GoType, generic_counter: Option<&mut 
                         generics: vec![RustGeneric {
                             value: next_generic.clone(),
                             default: Some("Value".to_string()),
-                            bounds: vec![
-                                "DeserializeOwned".to_string(),
-                                "Serialize".to_string(),
-                            ],
+                            bounds: vec!["DeserializeOwned".to_string(), "Serialize".to_string()],
                         }],
                         libraries,
                     }
                 }
-                None => {
-                    RustType {
-                        annotations: vec![],
-                        value: "Value".to_string(),
-                        generics: vec![],
-                        libraries,
-                    }
-                }
+                None => RustType {
+                    annotations: vec![],
+                    value: "Value".to_string(),
+                    generics: vec![],
+                    libraries,
+                },
             }
         }
         GoType::TimestampSecondsType => {

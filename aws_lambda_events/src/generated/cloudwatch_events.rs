@@ -7,9 +7,10 @@ use serde_json::Value;
 /// `CloudWatchEvent` is the outer structure of an event sent via CloudWatch Events.
 /// For examples of events that come via CloudWatch Events, see https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct CloudWatchEvent<T1=Value>
-where T1: DeserializeOwned,
-      T1: Serialize,
+pub struct CloudWatchEvent<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
 {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -33,6 +34,6 @@ where T1: DeserializeOwned,
     #[serde(default)]
     pub region: Option<String>,
     pub resources: Vec<String>,
-    #[serde(bound="")]
+    #[serde(bound = "")]
     pub detail: T1,
 }

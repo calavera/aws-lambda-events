@@ -6,15 +6,16 @@ use std::collections::HashMap;
 
 /// `AppSyncResolverTemplate` represents the requests from AppSync to Lambda
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct AppSyncResolverTemplate<T1=Value>
-where T1: DeserializeOwned,
-      T1: Serialize,
+pub struct AppSyncResolverTemplate<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
 {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
     pub operation: AppSyncOperation,
-    #[serde(bound="")]
+    #[serde(bound = "")]
     pub payload: T1,
 }
 
@@ -46,9 +47,10 @@ pub struct AppSyncIamIdentity {
 
 /// `AppSyncCognitoIdentity` contains information about the caller authed via Cognito.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct AppSyncCognitoIdentity<T1=Value>
-where T1: DeserializeOwned,
-      T1: Serialize,
+pub struct AppSyncCognitoIdentity<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
 {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -61,7 +63,7 @@ where T1: DeserializeOwned,
     pub username: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    #[serde(bound="")]
+    #[serde(bound = "")]
     pub claims: HashMap<String, T1>,
     #[serde(rename = "sourceIp")]
     pub source_ip: Vec<String>,
