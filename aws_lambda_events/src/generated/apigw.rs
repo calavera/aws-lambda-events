@@ -115,6 +115,126 @@ where
     pub apiid: Option<String>,
 }
 
+/// `ApiGatewayV2httpRequest` contains data coming from the new HTTP API Gateway
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpRequest {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub version: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "routeKey")]
+    pub route_key: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "rawPath")]
+    pub raw_path: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "rawQueryString")]
+    pub raw_query_string: Option<String>,
+    pub cookies: Vec<String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub headers: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "queryStringParameters")]
+    pub query_string_parameters: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "pathParameters")]
+    pub path_parameters: HashMap<String, String>,
+    #[serde(rename = "requestContext")]
+    pub request_context: ApiGatewayV2httpRequestContext,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "stageVariables")]
+    pub stage_variables: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub body: Option<String>,
+    #[serde(rename = "isBase64Encoded")]
+    pub is_base64_encoded: bool,
+}
+
+/// `ApiGatewayV2httpRequestContext` contains the information to identify the AWS account and resources invoking the Lambda function.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpRequestContext {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "routeKey")]
+    pub route_key: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "accountId")]
+    pub account_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub stage: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "requestId")]
+    pub request_id: Option<String>,
+    pub authorizer: ApiGatewayV2httpRequestContextAuthorizerDescription,
+    /// The API Gateway HTTP API Id
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "apiId")]
+    pub apiid: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "domainName")]
+    pub domain_name: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "domainPrefix")]
+    pub domain_prefix: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub time: Option<String>,
+    #[serde(rename = "timeEpoch")]
+    pub time_epoch: i64,
+    pub http: ApiGatewayV2httpRequestContextHttpDescription,
+}
+
+/// `ApiGatewayV2httpRequestContextAuthorizerDescription` contains authorizer information for the request context.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpRequestContextAuthorizerDescription {
+    pub jwt: ApiGatewayV2httpRequestContextAuthorizerJwtDescription,
+}
+
+/// `ApiGatewayV2httpRequestContextAuthorizerJwtDescription` contains JWT authorizer information for the request context.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpRequestContextAuthorizerJwtDescription {
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub claims: HashMap<String, String>,
+    pub scopes: Vec<String>,
+}
+
+/// `ApiGatewayV2httpRequestContextHttpDescription` contains HTTP information for the request context.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpRequestContextHttpDescription {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub method: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub path: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub protocol: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "sourceIp")]
+    pub source_ip: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "userAgent")]
+    pub user_agent: Option<String>,
+}
+
 /// `ApiGatewayRequestIdentity` contains identity information for the request caller.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ApiGatewayRequestIdentity {
