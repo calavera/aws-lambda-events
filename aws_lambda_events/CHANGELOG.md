@@ -1,6 +1,7 @@
 ## master
 
-- No changes yet
+- Generate events from `aws-lambda-go` v1.16.
+  Thanks @ewbankkit! [#16](https://github.com/LegNeato/aws-lambda-events/pull/16)
 
 ## [[0.2.6] - 2020-03-30](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.6)
 
