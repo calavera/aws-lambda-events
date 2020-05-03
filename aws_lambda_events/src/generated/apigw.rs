@@ -133,7 +133,7 @@ pub struct ApiGatewayV2httpRequest {
     #[serde(default)]
     #[serde(rename = "rawQueryString")]
     pub raw_query_string: Option<String>,
-    pub cookies: Vec<String>,
+    pub cookies: Option<Vec<String>>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub headers: HashMap<String, String>,
@@ -151,8 +151,6 @@ pub struct ApiGatewayV2httpRequest {
     #[serde(default)]
     #[serde(rename = "stageVariables")]
     pub stage_variables: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
     pub body: Option<String>,
     #[serde(rename = "isBase64Encoded")]
     pub is_base64_encoded: bool,
@@ -176,7 +174,7 @@ pub struct ApiGatewayV2httpRequestContext {
     #[serde(default)]
     #[serde(rename = "requestId")]
     pub request_id: Option<String>,
-    pub authorizer: ApiGatewayV2httpRequestContextAuthorizerDescription,
+    pub authorizer: Option<ApiGatewayV2httpRequestContextAuthorizerDescription>,
     /// The API Gateway HTTP API Id
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -233,6 +231,26 @@ pub struct ApiGatewayV2httpRequestContextHttpDescription {
     #[serde(default)]
     #[serde(rename = "userAgent")]
     pub user_agent: Option<String>,
+}
+
+/// `ApiGatewayV2httpResponse` configures the response to be returned by API Gateway V2 for the request
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpResponse {
+    #[serde(rename = "statusCode")]
+    pub status_code: i64,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub headers: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "multiValueHeaders")]
+    pub multi_value_headers: HashMap<String, Vec<String>>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub body: Option<String>,
+    #[serde(rename = "isBase64Encoded")]
+    pub is_base64_encoded: Option<bool>,
+    pub cookies: Vec<String>,
 }
 
 /// `ApiGatewayRequestIdentity` contains identity information for the request caller.
