@@ -88,7 +88,7 @@ pub struct S3Object {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub key: Option<String>,
-    pub size: i64,
+    pub size: Option<i64>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "urlDecodedKey")]
