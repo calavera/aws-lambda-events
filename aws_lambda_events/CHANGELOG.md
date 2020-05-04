@@ -1,6 +1,7 @@
 ## master
 
-- No changes yet
+- Various API Gateway v2 fixes. Thanks @ewbankkit! [#18](https://github.com/LegNeato/aws-lambda-events/pull/18)
+- The `size` size field in `S3Object` is now optional as it can be missing or `null` in the event json payload. [#11](https://github.com/LegNeato/aws-lambda-events/issues/11)
 
 ## [[0.2.7] - 2020-04-02](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.2.7)
 
