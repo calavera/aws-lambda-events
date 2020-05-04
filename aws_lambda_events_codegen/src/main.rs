@@ -59,12 +59,12 @@ fn overwrite_warning(path: &PathBuf, overwrite: bool) -> Option<()> {
         );
         return Some(());
     }
-    return None;
+    None
 }
 
 fn write_mod_index(
     mod_path: &PathBuf,
-    parsed_files: &Vec<ParsedEventFile>,
+    parsed_files: &[ParsedEventFile],
     overwrite: bool,
 ) -> Result<()> {
     if overwrite_warning(&mod_path, overwrite).is_none() {
@@ -85,7 +85,7 @@ fn write_mod_index(
         }
         let mut f = File::create(mod_path)?;
         f.write_all(mod_content.join("\n").as_bytes())?;
-        f.write_all("\n".as_bytes())?;
+        f.write_all(b"\n")?;
     }
     Ok(())
 }
@@ -105,7 +105,7 @@ fn write_readme(readme_path: &PathBuf, git_hash: &str, overwrite: bool) -> Resul
         content.push(&version_text);
         let mut f = File::create(readme_path)?;
         f.write_all(content.join("\n").as_bytes())?;
-        f.write_all("\n".as_bytes())?;
+        f.write_all(b"\n")?;
     }
     Ok(())
 }
@@ -131,7 +131,7 @@ fn find_example_event(
     service_name: &str,
     example_event_path: &Path,
 ) -> Result<Option<String>> {
-    let mut name_with_quirks = match service_name.as_ref() {
+    let mut name_with_quirks = match service_name {
         "codepipeline_job" => "codepipline-event.json".to_string(),
         "firehose" => "kinesis-firehose-event.json".to_string(),
         service_name => format!("{}-event.json", service_name),
@@ -167,9 +167,9 @@ fn read_example_event(test_fixture: &PathBuf) -> Result<Option<String>> {
 
 fn write_fixture(
     service_name: &str,
-    example_event: &String,
+    example_event: &str,
     out_dir: &PathBuf,
-    overwrite: &bool,
+    overwrite: bool,
 ) -> Result<PathBuf> {
     let relative = PathBuf::from(format!("fixtures/example-{}-event.json", service_name));
     // Write the example event to the output location.
@@ -181,10 +181,10 @@ fn write_fixture(
             create_dir(&parent)?;
         }
     }
-    if overwrite_warning(&full, *overwrite).is_none() {
+    if overwrite_warning(&full, overwrite).is_none() {
         let mut f = File::create(full)?;
         f.write_all(example_event.as_bytes())?;
-        f.write_all("\n".as_bytes())?;
+        f.write_all(b"\n")?;
     }
     Ok(relative)
 }
@@ -297,7 +297,7 @@ main!(|args: Cli, log_level: verbosity| {
                 &parsed.service_name,
                 &example_event,
                 &out_dir,
-                &args.overwrite,
+                args.overwrite,
             )?;
 
             // Generate a test module with a test that deserializes the example
@@ -310,7 +310,7 @@ main!(|args: Cli, log_level: verbosity| {
         if overwrite_warning(&output_path, args.overwrite).is_none() {
             let mut f = File::create(output_path)?;
             f.write_all(parsed.rust.to_string().as_bytes())?;
-            f.write_all("\n".as_bytes())?;
+            f.write_all(b"\n")?;
         }
     }
 

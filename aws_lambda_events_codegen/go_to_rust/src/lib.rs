@@ -124,7 +124,6 @@ pub fn parse_go_string(go_source: String) -> Result<(GoCode, RustCode), Error> {
             | Rule::function
             | Rule::enum_options => {
                 debug!("Skipping: {}", pair.clone().into_span().as_str());
-                ()
             }
             _ => {
                 panic!(
@@ -311,12 +310,10 @@ fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>)
                     .annotations
                     .push(format!("#[serde(rename = \"{}\")]", rename));
             }
-        } else {
-            if member_name != go_member_name {
-                rust_data
-                    .annotations
-                    .push(format!("#[serde(rename = \"{}\")]", go_member_name));
-            }
+        } else if member_name != go_member_name {
+            rust_data
+                .annotations
+                .push(format!("#[serde(rename = \"{}\")]", go_member_name));
         }
 
         if f.embedded {
@@ -436,7 +433,7 @@ fn parse_struct_field(pairs: Pairs<Rule>) -> Result<FieldDef, Error> {
                             go_type = Some(parse_go_type(pair.into_inner())?);
                             embedded = true;
                         }
-                        rule @ _ => panic!("invalid Rule found in struct_field_decl: {:?}", rule),
+                        rule => panic!("invalid Rule found in struct_field_decl: {:?}", rule),
                     }
                 }
             }
@@ -701,7 +698,7 @@ fn translate_go_type_to_rust_type(
         GoType::FloatType => make_rust_type_with_no_libraries("f64"),
         GoType::UserDefined(x) => make_rust_type_with_no_libraries(&x.to_camel_case()),
         GoType::ArrayType(x) => {
-            let mut i = translate_go_type_to_rust_type(*x.clone(), generic_counter)?;
+            let i = translate_go_type_to_rust_type(*x.clone(), generic_counter)?;
 
             if i.value == "u8" {
                 let mut libraries = i.libraries.clone();
@@ -711,7 +708,7 @@ fn translate_go_type_to_rust_type(
                     annotations: i.annotations,
                     value: "Base64Data".to_string(),
                     generics: i.generics,
-                    libraries: libraries,
+                    libraries,
                 }
             } else {
                 RustType {
@@ -743,7 +740,7 @@ fn translate_go_type_to_rust_type(
             let key_data = translate_go_type_to_rust_type(*k.clone(), Some(&mut generics))?;
             let value_data = translate_go_type_to_rust_type(*v.clone(), Some(&mut generics))?;
 
-            if let Some(mut generic_counter) = generic_counter {
+            if let Some(generic_counter) = generic_counter {
                 *generic_counter = generics;
             }
 
@@ -774,8 +771,8 @@ fn translate_go_type_to_rust_type(
             libraries.insert("serde_json::Value".to_string());
 
             match generic_counter {
-                Some(mut counter) => {
-                    *counter = *counter + 1;
+                Some(counter) => {
+                    *counter += 1;
                     let next_generic = format!("T{}", counter);
 
                     libraries.insert("serde::de::DeserializeOwned".to_string());
@@ -785,7 +782,7 @@ fn translate_go_type_to_rust_type(
                         annotations: vec!["#[serde(bound=\"\")]".to_string()],
                         value: next_generic.clone(),
                         generics: vec![RustGeneric {
-                            value: next_generic.clone(),
+                            value: next_generic,
                             default: Some("Value".to_string()),
                             bounds: vec!["DeserializeOwned".to_string(), "Serialize".to_string()],
                         }],
