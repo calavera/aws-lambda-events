@@ -1,22 +1,17 @@
 use super::super::encodings::{Base64Data, MillisecondTimestamp};
-use custom_serde::*;
 
 /// `KinesisFirehoseEvent` represents the input event from Amazon Kinesis Firehose. It is used as the input parameter.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct KinesisFirehoseEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "invocationId")]
     pub invocation_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "deliveryStreamArn")]
     pub delivery_stream_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "sourceKinesisStreamArn")]
     pub source_kinesis_stream_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
     pub records: Vec<KinesisFirehoseEventRecord>,
@@ -24,7 +19,6 @@ pub struct KinesisFirehoseEvent {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct KinesisFirehoseEventRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "recordId")]
     pub record_id: Option<String>,
@@ -42,12 +36,10 @@ pub struct KinesisFirehoseResponse {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct KinesisFirehoseResponseRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "recordId")]
     pub record_id: Option<String>,
     /// The status of the transformation. May be TransformedStateOk, TransformedStateDropped or TransformedStateProcessingFailed
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub result: Option<String>,
     pub data: Base64Data,
@@ -55,15 +47,12 @@ pub struct KinesisFirehoseResponseRecord {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct KinesisFirehoseRecordMetadata {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "shardId")]
     pub shard_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "partitionKey")]
     pub partition_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "sequenceNumber")]
     pub sequence_number: Option<String>,

@@ -12,21 +12,17 @@ pub struct S3Event {
 /// `S3EventRecord` which wrap record data
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3EventRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eventVersion")]
     pub event_version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eventSource")]
     pub event_source: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "awsRegion")]
     pub aws_region: Option<String>,
     #[serde(rename = "eventTime")]
     pub event_time: DateTime<Utc>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eventName")]
     pub event_name: Option<String>,
@@ -43,7 +39,6 @@ pub struct S3EventRecord {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3UserIdentity {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "principalId")]
     pub principal_id: Option<String>,
@@ -51,7 +46,6 @@ pub struct S3UserIdentity {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3RequestParameters {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "sourceIPAddress")]
     pub source_ip_address: Option<String>,
@@ -59,11 +53,9 @@ pub struct S3RequestParameters {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3Entity {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "s3SchemaVersion")]
     pub schema_version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "configurationId")]
     pub configuration_id: Option<String>,
@@ -73,60 +65,48 @@ pub struct S3Entity {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3Bucket {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub name: Option<String>,
     #[serde(rename = "ownerIdentity")]
     pub owner_identity: S3UserIdentity,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub arn: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3Object {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub key: Option<String>,
     pub size: Option<i64>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "urlDecodedKey")]
     pub url_decoded_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "versionId")]
     pub version_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eTag")]
     pub e_tag: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub sequencer: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct S3TestEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Service")]
     pub service: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Bucket")]
     pub bucket: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Event")]
     pub event: Option<String>,
     #[serde(rename = "Time")]
     pub time: DateTime<Utc>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "RequestId")]
     pub request_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "HostId")]
     pub host_id: Option<String>,

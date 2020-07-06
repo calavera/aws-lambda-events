@@ -4,11 +4,9 @@ use std::collections::HashMap;
 /// `AlbTargetGroupRequest` contains data originating from the ALB Lambda target group integration
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct AlbTargetGroupRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "httpMethod")]
     pub http_method: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -30,7 +28,6 @@ pub struct AlbTargetGroupRequest {
     pub request_context: AlbTargetGroupRequestContext,
     #[serde(rename = "isBase64Encoded")]
     pub is_base64_encoded: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
 }
@@ -44,7 +41,6 @@ pub struct AlbTargetGroupRequestContext {
 /// `ElbContext` contains the information to identify the ARN invoking the lambda
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ElbContext {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "targetGroupArn")]
     pub target_group_arn: Option<String>,
@@ -55,7 +51,6 @@ pub struct ElbContext {
 pub struct AlbTargetGroupResponse {
     #[serde(rename = "statusCode")]
     pub status_code: i64,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "statusDescription")]
     pub status_description: Option<String>,
@@ -66,7 +61,6 @@ pub struct AlbTargetGroupResponse {
     #[serde(default)]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HashMap<String, Vec<String>>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
     #[serde(rename = "isBase64Encoded")]

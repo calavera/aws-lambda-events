@@ -1,5 +1,3 @@
-use custom_serde::*;
-
 /// `CloudwatchLogsEvent` represents raw data from a cloudwatch logs event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CloudwatchLogsEvent {
@@ -11,7 +9,6 @@ pub struct CloudwatchLogsEvent {
 /// of a cloudwatch logs event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CloudwatchLogsRawData {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub data: Option<String>,
 }
@@ -19,20 +16,16 @@ pub struct CloudwatchLogsRawData {
 /// `CloudwatchLogsData` is an unmarshal'd, ungzip'd, cloudwatch logs event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CloudwatchLogsData {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub owner: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "logGroup")]
     pub log_group: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "logStream")]
     pub log_stream: Option<String>,
     #[serde(rename = "subscriptionFilters")]
     pub subscription_filters: Vec<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "messageType")]
     pub message_type: Option<String>,
@@ -43,11 +36,9 @@ pub struct CloudwatchLogsData {
 /// `CloudwatchLogsLogEvent` represents a log entry from cloudwatch logs
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CloudwatchLogsLogEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub id: Option<String>,
     pub timestamp: i64,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub message: Option<String>,
 }

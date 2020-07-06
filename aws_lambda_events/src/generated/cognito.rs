@@ -4,7 +4,6 @@ use std::collections::HashMap;
 /// `CognitoEvent` contains data from an event sent from AWS Cognito Sync
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "datasetName")]
     pub dataset_name: Option<String>,
@@ -12,19 +11,15 @@ pub struct CognitoEvent {
     #[serde(default)]
     #[serde(rename = "datasetRecords")]
     pub dataset_records: HashMap<String, CognitoDatasetRecord>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eventType")]
     pub event_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "identityId")]
     pub identity_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "identityPoolId")]
     pub identity_pool_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
     pub version: i64,
@@ -33,15 +28,12 @@ pub struct CognitoEvent {
 /// `CognitoDatasetRecord` represents a record from an AWS Cognito Sync event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoDatasetRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "newValue")]
     pub new_value: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "oldValue")]
     pub old_value: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub op: Option<String>,
 }
@@ -119,11 +111,9 @@ pub struct CognitoEventUserPoolsMigrateUser {
 /// `CognitoEventUserPoolsCallerContext` contains information about the caller
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsCallerContext {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "awsSdkVersion")]
     pub awssdk_version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "clientId")]
     pub client_id: Option<String>,
@@ -132,23 +122,18 @@ pub struct CognitoEventUserPoolsCallerContext {
 /// `CognitoEventUserPoolsHeader` contains common data from events sent by AWS Cognito User Pools
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsHeader {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "triggerSource")]
     pub trigger_source: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "userPoolId")]
     pub user_pool_id: Option<String>,
     #[serde(rename = "callerContext")]
     pub caller_context: CognitoEventUserPoolsCallerContext,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "userName")]
     pub user_name: Option<String>,
@@ -260,7 +245,6 @@ pub struct CognitoEventUserPoolsPostAuthenticationResponse;
 /// `CognitoEventUserPoolsMigrateUserRequest` contains the request portion of a MigrateUser event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsMigrateUserRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub password: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -276,11 +260,9 @@ pub struct CognitoEventUserPoolsMigrateUserResponse {
     #[serde(default)]
     #[serde(rename = "userAttributes")]
     pub user_attributes: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "finalUserStatus")]
     pub final_user_status: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "messageAction")]
     pub message_action: Option<String>,
@@ -318,13 +300,11 @@ pub struct GroupConfiguration {
 /// process that is underway, along with the corresponding result.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CognitoEventUserPoolsChallengeResult {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "challengeName")]
     pub challenge_name: Option<String>,
     #[serde(rename = "challengeResult")]
     pub challenge_result: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "challengeMetadata")]
     pub challenge_metadata: Option<String>,

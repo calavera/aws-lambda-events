@@ -13,15 +13,12 @@ pub struct SnsEvent {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct SnsEventRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "EventVersion")]
     pub event_version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "EventSubscriptionArn")]
     pub event_subscription_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "EventSource")]
     pub event_source: Option<String>,
@@ -35,19 +32,15 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Signature")]
     pub signature: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "MessageId")]
     pub message_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Type")]
     pub type_: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "TopicArn")]
     pub topic_arn: Option<String>,
@@ -56,25 +49,20 @@ where
     #[serde(bound = "")]
     #[serde(rename = "MessageAttributes")]
     pub message_attributes: HashMap<String, T1>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "SignatureVersion")]
     pub signature_version: Option<String>,
     #[serde(rename = "Timestamp")]
     pub timestamp: DateTime<Utc>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "SigningCertUrl")]
     pub signing_cert_url: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Message")]
     pub message: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "UnsubscribeUrl")]
     pub unsubscribe_url: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Subject")]
     pub subject: Option<String>,
