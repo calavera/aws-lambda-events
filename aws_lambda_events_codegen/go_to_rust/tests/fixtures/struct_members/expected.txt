@@ -15,7 +15,6 @@ where T1: DeserializeOwned,
 {
     #[serde(rename = "commonHeaders")]
     pub common_headers: SimpleEmailCommonHeaders,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source: Option<String>,
     pub timestamp: DateTime<Utc>,
@@ -26,7 +25,6 @@ where T1: DeserializeOwned,
     pub headers: Vec<SimpleEmailHeader>,
     #[serde(rename = "headersTruncated")]
     pub headers_truncated: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "messageId")]
     pub message_id: Option<String>,
@@ -41,7 +39,6 @@ where T1: DeserializeOwned,
     #[serde(bound="")]
     pub detail: HashMap<String, T2>,
     pub data: Base64Data,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Uppercase")]
     pub uppercase: Option<String>,
