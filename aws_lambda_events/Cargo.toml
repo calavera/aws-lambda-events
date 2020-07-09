@@ -17,12 +17,12 @@ categories = ["api-bindings", "encoding", "web-programming"]
 travis-ci = { repository = "LegNeato/aws-lambda-events" }
 
 [dependencies]
-base64 = "0.9.2"
+base64 = "0.12"
 serde = "1.0"
 serde_derive = "1.0"
 serde_json = "1.0"
-bytes = { version = "0.4", features = ["serde"] }
-chrono = { version = "0.4.4", features = ["serde"] }
+bytes = { version = "0.5", features = ["serde"] }
+chrono = { version = "^0.4.4", features = ["serde"] }
 
 [dev-dependencies]
-pretty_assertions = "0.5.1"
+pretty_assertions = "0.6"
