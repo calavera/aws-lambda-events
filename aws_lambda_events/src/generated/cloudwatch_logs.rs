@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 
 /// `CloudwatchLogsEvent` represents raw data from a cloudwatch logs event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]

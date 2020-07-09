@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 use std::collections::HashMap;
 
 /// `ConnectEvent` contains the data structure for a Connect event.

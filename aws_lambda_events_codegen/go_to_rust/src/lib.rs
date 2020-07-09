@@ -327,7 +327,7 @@ fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>)
             // Go converts null strings to "" and sometimes is wrong about
             // json string fields that can be `null`. We treat all `String`
             // fields as `Option<String>` and convert `""` to `None`.
-            libraries.insert("custom_serde::*".to_string());
+            libraries.insert("crate::custom_serde::*".to_string());
 
             let mut string_as_option = Field::new(&member_name, "Option<String>");
             string_as_option.annotation(vec![
@@ -337,7 +337,7 @@ fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>)
             field_defs.push(string_as_option);
         } else if HASHMAP_RE.is_match(&rust_type) {
             // We default to an empty `HashMap` even if the field is `null`.
-            libraries.insert("custom_serde::*".to_string());
+            libraries.insert("crate::custom_serde::*".to_string());
             let mut map_as_empty = Field::new(&member_name, &rust_type);
             map_as_empty.annotation(vec![
                 "#[serde(deserialize_with = \"deserialize_lambda_map\")]",

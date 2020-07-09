@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Christian Legnitto <christian@legnitto.com>"]
 build = "build.rs"
 publish = false
+edition = "2018"
 
 [[test]]
 name = "integration"

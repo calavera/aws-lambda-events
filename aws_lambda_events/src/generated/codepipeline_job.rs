@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 
 /// `CodePipelineEvent` contains data from an event sent from AWS Codepipeline
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]

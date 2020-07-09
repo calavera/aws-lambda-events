@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 use std::collections::HashMap;
 
 /// `CognitoEvent` contains data from an event sent from AWS Cognito Sync
