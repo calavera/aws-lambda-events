@@ -7,10 +7,8 @@ extern crate pest;
 extern crate pest;
 #[macro_use]
 extern crate pest_derive;
-extern crate codegen;
-extern crate failure;
-extern crate heck;
-extern crate regex;
+use codegen;
+
 #[macro_use]
 extern crate lazy_static;
 
@@ -34,7 +32,7 @@ pub struct AwsGoEventsParser;
 #[derive(Debug, Clone, PartialEq)]
 pub struct GoCode(String);
 impl fmt::Display for GoCode {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.0)
     }
 }
@@ -53,7 +51,7 @@ impl RustCode {
     }
 }
 impl fmt::Display for RustCode {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.0.to_string())
     }
 }
@@ -154,7 +152,7 @@ fn parse_comment(c: &str) -> String {
     c.replacen("//", "", 1).trim().to_string()
 }
 
-fn parse_type_alias(pairs: Pairs<Rule>) -> Result<Option<(String, RustType)>, Error> {
+fn parse_type_alias(pairs: Pairs<'_, Rule>) -> Result<Option<(String, RustType)>, Error> {
     debug!("Parsing type alias");
     let mut value = None;
     for pair in pairs {
@@ -171,7 +169,7 @@ fn parse_type_alias(pairs: Pairs<Rule>) -> Result<Option<(String, RustType)>, Er
     Ok(value)
 }
 
-fn parse_local_type_alias(pairs: Pairs<Rule>) -> Result<Option<(String, RustType)>, Error> {
+fn parse_local_type_alias(pairs: Pairs<'_, Rule>) -> Result<Option<(String, RustType)>, Error> {
     debug!("Parsing local type alias");
     let mut name: Option<String> = None;
     let mut target: Option<GoType> = None;
@@ -193,7 +191,7 @@ fn parse_local_type_alias(pairs: Pairs<Rule>) -> Result<Option<(String, RustType
     Ok(Some((name, translate_go_type_to_rust_type(target, None)?)))
 }
 
-fn parse_package_type_alias(pairs: Pairs<Rule>) -> Result<Option<(String, RustType)>, Error> {
+fn parse_package_type_alias(pairs: Pairs<'_, Rule>) -> Result<Option<(String, RustType)>, Error> {
     debug!("Parsing package type alias");
     let mut name: Option<String> = None;
     let mut target: Option<GoType> = None;
@@ -216,7 +214,7 @@ fn parse_package_type_alias(pairs: Pairs<Rule>) -> Result<Option<(String, RustTy
     Ok(Some((name, translate_go_type_to_rust_type(target, None)?)))
 }
 
-fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>), Error> {
+fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<String>), Error> {
     debug!("Parsing struct");
     let mut name: Option<String> = None;
     let mut fields: Vec<FieldDef> = Vec::new();
@@ -370,7 +368,7 @@ fn parse_struct(pairs: Pairs<Rule>) -> Result<(codegen::Struct, HashSet<String>)
     Ok((rust_struct, libraries))
 }
 
-fn parse_struct_preamble(pairs: Pairs<Rule>) -> Result<String, Error> {
+fn parse_struct_preamble(pairs: Pairs<'_, Rule>) -> Result<String, Error> {
     debug!("Parsing struct preamble");
     let mut name: Option<String> = None;
 
@@ -387,7 +385,7 @@ fn parse_struct_preamble(pairs: Pairs<Rule>) -> Result<String, Error> {
     Ok(name.expect("structs always have a name"))
 }
 
-fn parse_struct_fields(pairs: Pairs<Rule>) -> Result<Vec<FieldDef>, Error> {
+fn parse_struct_fields(pairs: Pairs<'_, Rule>) -> Result<Vec<FieldDef>, Error> {
     debug!("Parsing struct fields");
 
     let mut fields: Vec<FieldDef> = Vec::new();
@@ -402,7 +400,7 @@ fn parse_struct_fields(pairs: Pairs<Rule>) -> Result<Vec<FieldDef>, Error> {
     Ok(fields)
 }
 
-fn parse_struct_field(pairs: Pairs<Rule>) -> Result<FieldDef, Error> {
+fn parse_struct_field(pairs: Pairs<'_, Rule>) -> Result<FieldDef, Error> {
     debug!("Parsing struct field");
     let mut name: Option<String> = None;
     let mut json: Option<JsonMapping> = None;
@@ -488,7 +486,7 @@ struct JsonMapping {
     omit_empty: bool,
 }
 
-fn parse_json_mapping(pairs: Pairs<Rule>) -> Result<JsonMapping, Error> {
+fn parse_json_mapping(pairs: Pairs<'_, Rule>) -> Result<JsonMapping, Error> {
     debug!("Parsing json mapping");
     let mut name: Option<String> = None;
     let mut comment: Option<String> = None;
@@ -547,7 +545,7 @@ struct RustGeneric {
     bounds: Vec<String>,
 }
 
-fn parse_go_type(pairs: Pairs<Rule>) -> Result<GoType, Error> {
+fn parse_go_type(pairs: Pairs<'_, Rule>) -> Result<GoType, Error> {
     debug!("Parsing go type");
     let mut go_type: Option<GoType> = None;
 
@@ -569,7 +567,7 @@ fn parse_go_type(pairs: Pairs<Rule>) -> Result<GoType, Error> {
     Ok(go_type.expect("parsing go type"))
 }
 
-fn parse_go_type_array(pairs: Pairs<Rule>) -> Result<GoType, Error> {
+fn parse_go_type_array(pairs: Pairs<'_, Rule>) -> Result<GoType, Error> {
     debug!("Parsing go array");
     let mut go_type: Option<GoType> = None;
 
@@ -595,7 +593,7 @@ fn parse_go_type_array(pairs: Pairs<Rule>) -> Result<GoType, Error> {
     Ok(go_type.expect("parsing go array"))
 }
 
-fn parse_go_type_map(pairs: Pairs<Rule>) -> Result<GoType, Error> {
+fn parse_go_type_map(pairs: Pairs<'_, Rule>) -> Result<GoType, Error> {
     debug!("Parsing go map");
     let mut key_type: Option<GoType> = None;
     let mut value_type: Option<GoType> = None;
@@ -621,7 +619,7 @@ fn parse_go_type_interface(_t: &str) -> Result<GoType, Error> {
     Ok(GoType::InterfaceType)
 }
 
-fn parse_go_type_pointer(pairs: Pairs<Rule>) -> Result<GoType, Error> {
+fn parse_go_type_pointer(pairs: Pairs<'_, Rule>) -> Result<GoType, Error> {
     debug!("Parsing go pointer");
     let mut pointed_at = None;
     for pair in pairs {

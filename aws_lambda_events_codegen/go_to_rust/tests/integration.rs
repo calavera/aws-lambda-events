@@ -1,6 +1,4 @@
-extern crate env_logger;
-extern crate glob;
-extern crate go_to_rust;
+use go_to_rust;
 extern crate rustc_test as test;
 
 use crate::test::{DynTestFn, DynTestName, TestDesc, TestDescAndFn};
