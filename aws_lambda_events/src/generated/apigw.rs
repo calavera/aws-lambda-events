@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 use serde::de::DeserializeOwned;
 use serde::ser::Serialize;
 use serde_json::Value;
@@ -93,8 +93,19 @@ where
     pub stage: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
+    #[serde(rename = "domainName")]
+    pub domain_name: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "domainPrefix")]
+    pub domain_prefix: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     #[serde(rename = "requestId")]
     pub request_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub protocol: Option<String>,
     pub identity: ApiGatewayRequestIdentity,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -108,6 +119,12 @@ where
     #[serde(default)]
     #[serde(rename = "httpMethod")]
     pub http_method: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "requestTime")]
+    pub request_time: Option<String>,
+    #[serde(rename = "requestTimeEpoch")]
+    pub request_time_epoch: i64,
     /// The API Gateway rest API Id
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]

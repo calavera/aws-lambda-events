@@ -1,5 +1,5 @@
+use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
-use custom_serde::*;
 
 pub type CodeDeployDeploymentState = String;
 

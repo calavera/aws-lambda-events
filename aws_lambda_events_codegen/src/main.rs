@@ -1,7 +1,7 @@
-extern crate go_to_rust;
+use go_to_rust;
 #[macro_use]
 extern crate quicli;
-extern crate codegen;
+use codegen;
 
 use quicli::prelude::*;
 use std::collections::{HashMap, HashSet};

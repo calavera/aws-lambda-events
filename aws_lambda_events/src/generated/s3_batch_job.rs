@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 
 /// `S3BatchJobEvent` encapsulates the detail of a s3 batch job
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]

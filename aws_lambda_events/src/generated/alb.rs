@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 use std::collections::HashMap;
 
 /// `AlbTargetGroupRequest` contains data originating from the ALB Lambda target group integration

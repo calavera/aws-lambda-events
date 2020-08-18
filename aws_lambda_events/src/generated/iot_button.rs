@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct IoTButtonEvent {

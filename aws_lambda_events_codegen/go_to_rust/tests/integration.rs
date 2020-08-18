@@ -1,8 +1,7 @@
-extern crate env_logger;
-extern crate glob;
-extern crate go_to_rust;
+use go_to_rust;
 extern crate rustc_test as test;
 
+use crate::test::{DynTestFn, DynTestName, TestDesc, TestDescAndFn};
 use glob::glob;
 use std::env;
 use std::fs::File;
@@ -10,7 +9,6 @@ use std::io::prelude::*;
 use std::io::BufReader;
 use std::path::Path;
 use std::path::PathBuf;
-use test::{DynTestFn, DynTestName, TestDesc, TestDescAndFn};
 
 fn mk_test(desc: &str, input: String, expect: String, expected_path: PathBuf) -> TestDescAndFn {
     TestDescAndFn {

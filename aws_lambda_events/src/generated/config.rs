@@ -1,4 +1,4 @@
-use custom_serde::*;
+use crate::custom_serde::*;
 
 /// `ConfigEvent` contains data from an event sent from AWS Config
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
