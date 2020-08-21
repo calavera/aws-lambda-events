@@ -2,6 +2,10 @@
 
 - No changes yet
 
+## [[0.3.1] - 2020-08-20](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.3.1)
+
+- No changes yet
+
 ## [[0.3.0] - 2020-05-03](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.3.0)
 
 - Various API Gateway v2 fixes. Thanks @ewbankkit! [#18](https://github.com/LegNeato/aws-lambda-events/pull/18)
