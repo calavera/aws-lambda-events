@@ -404,7 +404,7 @@ where
     #[serde(rename = "resourcePath")]
     pub resource_path: Option<String>,
     #[serde(bound = "")]
-    pub authorizer: T1,
+    pub authorizer: Option<T1>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "httpMethod")]
