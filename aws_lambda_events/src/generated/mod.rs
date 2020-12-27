@@ -1,3 +1,5 @@
+/// AWS Lambda event definitions for activemq.
+pub mod activemq;
 /// AWS Lambda event definitions for alb.
 pub mod alb;
 /// AWS Lambda event definitions for apigw.
@@ -8,6 +10,8 @@ pub mod appsync;
 pub mod autoscaling;
 /// AWS Lambda event definitions for chime_bot.
 pub mod chime_bot;
+/// AWS Lambda event definitions for clientvpn.
+pub mod clientvpn;
 /// AWS Lambda event definitions for cloudwatch_events.
 pub mod cloudwatch_events;
 /// AWS Lambda event definitions for cloudwatch_logs.
@@ -30,6 +34,8 @@ pub mod connect;
 pub mod firehose;
 /// AWS Lambda event definitions for iot_button.
 pub mod iot_button;
+/// AWS Lambda event definitions for kafka.
+pub mod kafka;
 /// AWS Lambda event definitions for kinesis.
 pub mod kinesis;
 /// AWS Lambda event definitions for kinesis_analytics.
