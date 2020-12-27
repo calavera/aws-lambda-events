@@ -25,6 +25,10 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::PathBuf;
 
+lazy_static! {
+    static ref HASHMAP_RE: Regex = Regex::new("^HashMap<.+>$").expect("regex to compile");
+}
+
 #[derive(Parser)]
 #[grammar = "aws_go_events.pest"]
 pub struct AwsGoEventsParser;
@@ -188,7 +192,10 @@ fn parse_local_type_alias(pairs: Pairs<'_, Rule>) -> Result<Option<(String, Rust
     let name = name.expect("parsed name");
     let target = target.expect("parsed target");
 
-    Ok(Some((name, translate_go_type_to_rust_type(target, None)?)))
+    Ok(Some((
+        name,
+        translate_go_type_to_rust_type(target, None, None)?,
+    )))
 }
 
 fn parse_package_type_alias(pairs: Pairs<'_, Rule>) -> Result<Option<(String, RustType)>, Error> {
@@ -211,7 +218,10 @@ fn parse_package_type_alias(pairs: Pairs<'_, Rule>) -> Result<Option<(String, Ru
     let name = name.expect("parsed name");
     let target = target.expect("parsed target");
 
-    Ok(Some((name, translate_go_type_to_rust_type(target, None)?)))
+    Ok(Some((
+        name,
+        translate_go_type_to_rust_type(target, None, None)?,
+    )))
 }
 
 fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<String>), Error> {
@@ -258,10 +268,6 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
         rust_struct.doc(&annotated_comments.join("\n"));
     }
 
-    lazy_static! {
-        static ref HASHMAP_RE: Regex = Regex::new("^HashMap<.+>$").expect("regex to compile");
-    }
-
     let mut libraries: HashSet<String> = HashSet::new();
 
     let mut generics = 0;
@@ -271,7 +277,8 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
         let member_name = mangle(&f.name.to_snake_case());
         let go_member_name = mangle(&f.name);
 
-        let mut rust_data = translate_go_type_to_rust_type(f.go_type, Some(&mut generics))?;
+        let mut rust_data =
+            translate_go_type_to_rust_type(f.go_type, Some(&mut generics), Some(&member_name))?;
         let mut rust_type = rust_data.value;
 
         for generic in rust_data.generics {
@@ -297,7 +304,7 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
         // Make fields optional if they are optional in the json.
         if f.omit_empty {
             // We don't do this for HashMaps as they are handled special below.
-            if !HASHMAP_RE.is_match(&rust_type) {
+            if is_optional_type(&rust_type) {
                 rust_type = format!("Option<{}>", rust_type);
             }
         }
@@ -683,9 +690,10 @@ fn make_rust_type_with_no_libraries(value: &str) -> RustType {
     }
 }
 
-fn translate_go_type_to_rust_type(
+fn translate_go_type_to_rust_type<'a>(
     go_type: GoType,
     generic_counter: Option<&mut usize>,
+    member_name: Option<&'a str>,
 ) -> Result<RustType, Error> {
     let rust_type = match &go_type {
         GoType::StringType => make_rust_type_with_no_libraries("String"),
@@ -696,7 +704,7 @@ fn translate_go_type_to_rust_type(
         GoType::FloatType => make_rust_type_with_no_libraries("f64"),
         GoType::UserDefined(x) => make_rust_type_with_no_libraries(&x.to_camel_case()),
         GoType::ArrayType(x) => {
-            let i = translate_go_type_to_rust_type(*x.clone(), generic_counter)?;
+            let i = translate_go_type_to_rust_type(*x.clone(), generic_counter, None)?;
 
             if i.value == "u8" {
                 let mut libraries = i.libraries.clone();
@@ -718,12 +726,23 @@ fn translate_go_type_to_rust_type(
             }
         }
         GoType::PointerType(v) => {
-            let data = translate_go_type_to_rust_type(*v.clone(), generic_counter)?;
+            let data = translate_go_type_to_rust_type(*v.clone(), generic_counter, None)?;
             let libraries: HashSet<String> = data.libraries.iter().cloned().collect();
             RustType {
                 annotations: data.annotations,
                 value: format!("Option<{}>", data.value),
                 generics: data.generics,
+                libraries,
+            }
+        }
+        GoType::MapType(_k, _v) if is_http_headers(member_name) => {
+            let mut libraries = HashSet::new();
+            libraries.insert("http::HeaderMap".to_string());
+
+            RustType {
+                value: "HeaderMap".into(),
+                annotations: vec!["#[serde(with = \"http_serde::header_map\")]".to_string()],
+                generics: vec![],
                 libraries,
             }
         }
@@ -735,8 +754,8 @@ fn translate_go_type_to_rust_type(
                 generics = **generic_counter;
             }
 
-            let key_data = translate_go_type_to_rust_type(*k.clone(), Some(&mut generics))?;
-            let value_data = translate_go_type_to_rust_type(*v.clone(), Some(&mut generics))?;
+            let key_data = translate_go_type_to_rust_type(*k.clone(), Some(&mut generics), None)?;
+            let value_data = translate_go_type_to_rust_type(*v.clone(), Some(&mut generics), None)?;
 
             if let Some(generic_counter) = generic_counter {
                 *generic_counter = generics;
@@ -853,6 +872,18 @@ fn translate_go_type_to_rust_type(
     };
 
     Ok(rust_type)
+}
+
+fn is_http_headers<'a>(member_name: Option<&'a str>) -> bool {
+    match member_name {
+        Some("headers") => true,
+        Some("multi_value_headers") => true,
+        _ => false,
+    }
+}
+
+fn is_optional_type(rust_type: &str) -> bool {
+    !(HASHMAP_RE.is_match(rust_type) || rust_type == "HeaderMap")
 }
 
 #[cfg(test)]

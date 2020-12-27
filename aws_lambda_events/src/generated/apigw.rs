@@ -1,4 +1,5 @@
 use crate::custom_serde::*;
+use http::HeaderMap;
 use serde::de::DeserializeOwned;
 use serde::ser::Serialize;
 use serde_json::Value;
@@ -19,13 +20,11 @@ pub struct ApiGatewayProxyRequest {
     #[serde(default)]
     #[serde(rename = "httpMethod")]
     pub http_method: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    pub headers: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
+    #[serde(with = "http_serde::header_map")]
+    pub headers: HeaderMap,
+    #[serde(with = "http_serde::header_map")]
     #[serde(rename = "multiValueHeaders")]
-    pub multi_value_headers: HashMap<String, Vec<String>>,
+    pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     #[serde(rename = "queryStringParameters")]
@@ -56,13 +55,11 @@ pub struct ApiGatewayProxyRequest {
 pub struct ApiGatewayProxyResponse {
     #[serde(rename = "statusCode")]
     pub status_code: i64,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    pub headers: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
+    #[serde(with = "http_serde::header_map")]
+    pub headers: HeaderMap,
+    #[serde(with = "http_serde::header_map")]
     #[serde(rename = "multiValueHeaders")]
-    pub multi_value_headers: HashMap<String, Vec<String>>,
+    pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
@@ -151,9 +148,8 @@ pub struct ApiGatewayV2httpRequest {
     #[serde(rename = "rawQueryString")]
     pub raw_query_string: Option<String>,
     pub cookies: Option<Vec<String>>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    pub headers: HashMap<String, String>,
+    #[serde(with = "http_serde::header_map")]
+    pub headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     #[serde(rename = "queryStringParameters")]
@@ -309,13 +305,11 @@ pub struct ApiGatewayV2httpRequestContextHttpDescription {
 pub struct ApiGatewayV2httpResponse {
     #[serde(rename = "statusCode")]
     pub status_code: i64,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    pub headers: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
+    #[serde(with = "http_serde::header_map")]
+    pub headers: HeaderMap,
+    #[serde(with = "http_serde::header_map")]
     #[serde(rename = "multiValueHeaders")]
-    pub multi_value_headers: HashMap<String, Vec<String>>,
+    pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
@@ -394,13 +388,11 @@ pub struct ApiGatewayWebsocketProxyRequest {
     #[serde(default)]
     #[serde(rename = "httpMethod")]
     pub http_method: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    pub headers: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
+    #[serde(with = "http_serde::header_map")]
+    pub headers: HeaderMap,
+    #[serde(with = "http_serde::header_map")]
     #[serde(rename = "multiValueHeaders")]
-    pub multi_value_headers: HashMap<String, Vec<String>>,
+    pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     #[serde(rename = "queryStringParameters")]
@@ -616,13 +608,11 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     #[serde(default)]
     #[serde(rename = "httpMethod")]
     pub http_method: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    pub headers: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
+    #[serde(with = "http_serde::header_map")]
+    pub headers: HeaderMap,
+    #[serde(with = "http_serde::header_map")]
     #[serde(rename = "multiValueHeaders")]
-    pub multi_value_headers: HashMap<String, Vec<String>>,
+    pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     #[serde(rename = "queryStringParameters")]

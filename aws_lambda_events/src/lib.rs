@@ -10,6 +10,8 @@ extern crate serde;
 #[cfg(test)]
 #[macro_use]
 extern crate serde_json;
+extern crate http;
+extern crate http_serde;
 #[cfg(not(test))]
 extern crate serde_json;
 
