@@ -1,4 +1,5 @@
 use crate::custom_serde::*;
+use http::HeaderMap;
 use std::collections::HashMap;
 
 /// `AlbTargetGroupRequest` contains data originating from the ALB Lambda target group integration
@@ -19,13 +20,11 @@ pub struct AlbTargetGroupRequest {
     #[serde(default)]
     #[serde(rename = "multiValueQueryStringParameters")]
     pub multi_value_query_string_parameters: HashMap<String, Vec<String>>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    pub headers: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
+    #[serde(with = "http_serde::header_map")]
+    pub headers: HeaderMap,
+    #[serde(with = "http_serde::header_map")]
     #[serde(rename = "multiValueHeaders")]
-    pub multi_value_headers: HashMap<String, Vec<String>>,
+    pub multi_value_headers: HeaderMap,
     #[serde(rename = "requestContext")]
     pub request_context: AlbTargetGroupRequestContext,
     #[serde(rename = "isBase64Encoded")]
@@ -59,13 +58,11 @@ pub struct AlbTargetGroupResponse {
     #[serde(default)]
     #[serde(rename = "statusDescription")]
     pub status_description: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    pub headers: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
+    #[serde(with = "http_serde::header_map")]
+    pub headers: HeaderMap,
+    #[serde(with = "http_serde::header_map")]
     #[serde(rename = "multiValueHeaders")]
-    pub multi_value_headers: HashMap<String, Vec<String>>,
+    pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
