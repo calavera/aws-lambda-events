@@ -152,6 +152,12 @@ struct FieldDef {
     embedded: bool,
 }
 
+#[derive(Debug)]
+struct StructureFieldDef<'a> {
+    struct_name: &'a str,
+    member_name: &'a str,
+}
+
 fn parse_comment(c: &str) -> String {
     c.replacen("//", "", 1).trim().to_string()
 }
@@ -247,8 +253,9 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
     }
 
     let struct_name = name.expect("parsed name");
+    let camel_cased_struct_name = struct_name.to_camel_case();
 
-    let mut rust_struct = Struct::new(&struct_name.to_camel_case());
+    let mut rust_struct = Struct::new(&camel_cased_struct_name);
 
     // Make it public.
     rust_struct.vis("pub");
@@ -263,7 +270,7 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
     if !comments.is_empty() {
         let annotated_comments: Vec<String> = comments
             .iter_mut()
-            .map(|x| x.replace(&struct_name, &format!("`{}`", &struct_name.to_camel_case())))
+            .map(|x| x.replace(&struct_name, &format!("`{}`", &camel_cased_struct_name)))
             .collect();
         rust_struct.doc(&annotated_comments.join("\n"));
     }
@@ -277,8 +284,13 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
         let member_name = mangle(&f.name.to_snake_case());
         let go_member_name = mangle(&f.name);
 
+        let member_def = StructureFieldDef {
+            struct_name: &camel_cased_struct_name,
+            member_name: &member_name,
+        };
+
         let mut rust_data =
-            translate_go_type_to_rust_type(f.go_type, Some(&mut generics), Some(&member_name))?;
+            translate_go_type_to_rust_type(f.go_type, Some(&mut generics), Some(&member_def))?;
         let mut rust_type = rust_data.value;
 
         for generic in rust_data.generics {
@@ -693,9 +705,20 @@ fn make_rust_type_with_no_libraries(value: &str) -> RustType {
 fn translate_go_type_to_rust_type<'a>(
     go_type: GoType,
     generic_counter: Option<&mut usize>,
-    member_name: Option<&'a str>,
+    member_def: Option<&'a StructureFieldDef>,
 ) -> Result<RustType, Error> {
     let rust_type = match &go_type {
+        GoType::StringType if is_http_method(member_def) => {
+            let mut libraries = HashSet::new();
+            libraries.insert("http::Method".to_string());
+
+            RustType {
+                value: "Method".into(),
+                annotations: vec!["#[serde(with = \"http_serde::method\")]".to_string()],
+                generics: vec![],
+                libraries,
+            }
+        }
         GoType::StringType => make_rust_type_with_no_libraries("String"),
         GoType::BoolType => make_rust_type_with_no_libraries("bool"),
         GoType::ByteType => make_rust_type_with_no_libraries("u8"),
@@ -735,7 +758,7 @@ fn translate_go_type_to_rust_type<'a>(
                 libraries,
             }
         }
-        GoType::MapType(_k, _v) if is_http_headers(member_name) => {
+        GoType::MapType(_k, _v) if is_http_headers(member_def) => {
             let mut libraries = HashSet::new();
             libraries.insert("http::HeaderMap".to_string());
 
@@ -874,16 +897,26 @@ fn translate_go_type_to_rust_type<'a>(
     Ok(rust_type)
 }
 
-fn is_http_headers<'a>(member_name: Option<&'a str>) -> bool {
-    match member_name {
-        Some("headers") => true,
-        Some("multi_value_headers") => true,
+fn is_http_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
+    match def {
+        Some(s) => s.member_name == "headers" || s.member_name == "multi_value_headers",
+        _ => false,
+    }
+}
+
+fn is_http_method<'a>(def: Option<&'a StructureFieldDef>) -> bool {
+    match def {
+        Some(s) => {
+            s.member_name == "http_method"
+                || (s.struct_name == "ApiGatewayV2httpRequestContextHttpDescription"
+                    && s.member_name == "method")
+        }
         _ => false,
     }
 }
 
 fn is_optional_type(rust_type: &str) -> bool {
-    !(HASHMAP_RE.is_match(rust_type) || rust_type == "HeaderMap")
+    !(HASHMAP_RE.is_match(rust_type) || rust_type == "HeaderMap" || rust_type == "Method")
 }
 
 #[cfg(test)]
