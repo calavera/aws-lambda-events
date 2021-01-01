@@ -916,7 +916,7 @@ fn is_http_method<'a>(def: Option<&'a StructureFieldDef>) -> bool {
 }
 
 fn is_optional_type(rust_type: &str) -> bool {
-    !(HASHMAP_RE.is_match(rust_type) || rust_type == "HeaderMap" || rust_type == "Method")
+    !(HASHMAP_RE.is_match(rust_type) || rust_type == "HeaderMap")
 }
 
 #[cfg(test)]
