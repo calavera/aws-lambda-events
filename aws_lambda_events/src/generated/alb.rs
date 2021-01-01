@@ -1,14 +1,13 @@
 use crate::custom_serde::*;
-use http::HeaderMap;
+use http::{HeaderMap, Method};
 use std::collections::HashMap;
 
 /// `AlbTargetGroupRequest` contains data originating from the ALB Lambda target group integration
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct AlbTargetGroupRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
+    #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
-    pub http_method: Option<String>,
+    pub http_method: Method,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,

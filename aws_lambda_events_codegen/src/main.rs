@@ -134,10 +134,15 @@ fn find_example_event(
     let mut name_with_quirks = match service_name {
         "codepipeline_job" => "codepipline-event.json".to_string(),
         "firehose" => "kinesis-firehose-event.json".to_string(),
+        "apigw" => "apigw-request.json".to_string(),
         service_name => format!("{}-event.json", service_name),
     };
     fuzz(&mut name_with_quirks);
-    trace!("Looking for example event: {}", service_name);
+    trace!(
+        "Looking for example event: {} - {}",
+        service_name,
+        name_with_quirks
+    );
     let file = match fuzzy_files.get(&name_with_quirks) {
         None => {
             info!("No example event for service: {}", service_name);
@@ -189,20 +194,46 @@ fn write_fixture(
     Ok(relative)
 }
 
-fn generate_test_module(scope: &codegen::Scope, relative: &PathBuf) -> Result<codegen::Module> {
+fn generate_test_module(
+    service_name: &str,
+    scope: &codegen::Scope,
+    relative: &PathBuf,
+) -> Result<codegen::Module> {
     let mut toplevel_type = None;
     for item in scope.items() {
         match item {
-            codegen::Item::Struct(s) => {
-                if s.ty().name().ends_with("Event") {
-                    toplevel_type = Some(s.ty().name());
-                    break;
-                }
+            codegen::Item::Struct(s) if s.ty().name().ends_with("Event") => {
+                toplevel_type = Some(s.ty().name());
+                break;
+            }
+            codegen::Item::Struct(s)
+                if s.ty().name().as_str() == "ApiGatewayProxyRequest"
+                    && service_name == "apigw" =>
+            {
+                toplevel_type = Some(s.ty().name());
+                break;
             }
             _ => continue,
         }
     }
-    let mut test_function = codegen::Function::new("example_event");
+
+    let test_function =
+        generate_test_function("example_event", toplevel_type.map(|s| s.as_str()), relative);
+
+    let mut test_module = codegen::Module::new("test");
+    test_module.annotation(vec!["cfg(test)"]);
+    test_module.import("super", "*");
+    test_module.scope().raw("extern crate serde_json;");
+    test_module.scope().push_fn(test_function);
+    Ok(test_module)
+}
+
+fn generate_test_function(
+    fn_name: &str,
+    toplevel_type: Option<&str>,
+    relative: &Path,
+) -> codegen::Function {
+    let mut test_function = codegen::Function::new(fn_name);
     test_function.annotation(vec!["test"]);
     // Include the fixture content.
     test_function.line(format!(
@@ -225,13 +256,7 @@ fn generate_test_module(scope: &codegen::Scope, relative: &PathBuf) -> Result<co
     ));
     // Compare.
     test_function.line(String::from(r#"assert_eq!(parsed, reparsed);"#));
-
-    let mut test_module = codegen::Module::new("test");
-    test_module.annotation(vec!["cfg(test)"]);
-    test_module.import("super", "*");
-    test_module.scope().raw("extern crate serde_json;");
-    test_module.scope().push_fn(test_function);
-    Ok(test_module)
+    test_function
 }
 
 main!(|args: Cli, log_level: verbosity| {
@@ -303,7 +328,8 @@ main!(|args: Cli, log_level: verbosity| {
             // Generate a test module with a test that deserializes the example
             // event.
             trace!("Generating test module for: {:?}", parsed.service_name);
-            let test_module = generate_test_module(&parsed.rust.scope(), &relative)?;
+            let test_module =
+                generate_test_module(&parsed.service_name, &parsed.rust.scope(), &relative)?;
             parsed.rust.push_module(test_module);
         }
 
