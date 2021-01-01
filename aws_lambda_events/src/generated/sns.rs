@@ -217,7 +217,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
-    fn example_event() {
+    fn example_sns_event() {
         let data = include_bytes!("fixtures/example-sns-event.json");
         let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();

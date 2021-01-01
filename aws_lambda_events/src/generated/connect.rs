@@ -101,7 +101,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
-    fn example_event() {
+    fn example_connect_event() {
         let data = include_bytes!("fixtures/example-connect-event.json");
         let parsed: ConnectEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();

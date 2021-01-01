@@ -40,7 +40,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
-    fn example_event() {
+    fn example_kafka_event() {
         let data = include_bytes!("fixtures/example-kafka-event.json");
         let parsed: KafkaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
