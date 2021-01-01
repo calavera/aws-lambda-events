@@ -80,7 +80,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
-    fn example_event() {
+    fn example_firehose_event() {
         let data = include_bytes!("fixtures/example-firehose-event.json");
         let parsed: KinesisFirehoseEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
