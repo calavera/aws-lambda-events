@@ -12,12 +12,19 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 #[derive(Debug)]
+struct ExampleEvent {
+    name: String,
+    content: String,
+    event_type: String,
+}
+
+#[derive(Debug)]
 struct ParsedEventFile {
     service_name: String,
     path: PathBuf,
     go: go_to_rust::GoCode,
     rust: go_to_rust::RustCode,
-    example_event: Option<String>,
+    example_events: Vec<ExampleEvent>,
 }
 
 /// Generate rust code for AWS lambda events sourced from `aws-go-sdk`
@@ -126,15 +133,15 @@ fn get_fuzzy_file_listing(dir_path: &Path) -> Result<HashMap<String, PathBuf>> {
     Ok(listing)
 }
 
-fn find_example_event(
+fn find_example_events(
     fuzzy_files: &HashMap<String, PathBuf>,
     service_name: &str,
     example_event_path: &Path,
-) -> Result<Option<String>> {
+    scope: &codegen::Scope,
+) -> Vec<ExampleEvent> {
     let mut name_with_quirks = match service_name {
         "codepipeline_job" => "codepipline-event.json".to_string(),
         "firehose" => "kinesis-firehose-event.json".to_string(),
-        "apigw" => "apigw-request.json".to_string(),
         service_name => format!("{}-event.json", service_name),
     };
     fuzz(&mut name_with_quirks);
@@ -143,42 +150,139 @@ fn find_example_event(
         service_name,
         name_with_quirks
     );
-    let file = match fuzzy_files.get(&name_with_quirks) {
-        None => {
-            info!("No example event for service: {}", service_name);
-            return Ok(None);
+
+    let mut examples = vec![];
+    if let Some(file) = fuzzy_files.get(&name_with_quirks) {
+        info!(
+            "Found example event for service {} at: {}",
+            service_name,
+            file.to_string_lossy()
+        );
+        if let Some(content) = read_example_event(&example_event_path.join(&file)) {
+            let mut event_type = None;
+
+            for item in scope.items() {
+                match item {
+                    codegen::Item::Struct(s) if s.ty().name().ends_with("Event") => {
+                        event_type = Some(s.ty().name());
+                        break;
+                    }
+                    codegen::Item::Struct(s)
+                        if s.ty().name().as_str() == "ApiGatewayProxyRequest"
+                            && service_name == "apigw" =>
+                    {
+                        event_type = Some(s.ty().name());
+                        break;
+                    }
+                    _ => {}
+                }
+            }
+
+            if let Some(event_type) = event_type {
+                examples.push(ExampleEvent {
+                    name: format!("example-{}-event.json", &service_name),
+                    content,
+                    event_type: event_type.clone(),
+                });
+            }
         }
-        Some(file) => {
+    };
+
+    if let Some(extra_examples) =
+        find_custom_examples(service_name, fuzzy_files, example_event_path)
+    {
+        examples.extend(extra_examples);
+    }
+
+    examples
+}
+
+fn find_custom_examples(
+    service_name: &str,
+    fuzzy_files: &HashMap<String, PathBuf>,
+    example_event_path: &Path,
+) -> Option<Vec<ExampleEvent>> {
+    let files = match service_name {
+        "apigw" => &[
+            (
+                "apigw-custom-auth-request-type-request.json",
+                "ApiGatewayCustomAuthorizerRequestTypeRequest",
+            ),
+            (
+                "apigw-custom-auth-request.json",
+                "ApiGatewayCustomAuthorizerRequest",
+            ),
+            (
+                "apigw-custom-auth-response.json",
+                "ApiGatewayCustomAuthorizerResponse",
+            ),
+            ("apigw-request.json", "ApiGatewayProxyRequest"),
+            ("apigw-response.json", "ApiGatewayProxyResponse"),
+            (
+                "apigw-restapi-openapi-request.json",
+                "ApiGatewayProxyRequest",
+            ),
+            ("apigw-v2-request-iam.json", "ApiGatewayV2httpRequest"),
+            (
+                "apigw-v2-request-jwt-authorizer.json",
+                "ApiGatewayV2httpRequest",
+            ),
+            (
+                "apigw-v2-request-lambda-authorizer.json",
+                "ApiGatewayV2httpRequest",
+            ),
+            (
+                "apigw-v2-request-no-authorizer.json",
+                "ApiGatewayV2httpRequest",
+            ),
+            (
+                "apigw-websocket-request.json",
+                "ApiGatewayWebsocketProxyRequest",
+            ),
+        ],
+        _ => return None,
+    };
+
+    let mut examples = vec![];
+    for (name, event_type) in files {
+        let mut filename = name.to_string();
+        fuzz(&mut filename);
+
+        if let Some(file) = fuzzy_files.get(&filename) {
             info!(
                 "Found example event for service {} at: {}",
                 service_name,
                 file.to_string_lossy()
             );
-            example_event_path.join(&file)
+            if let Some(content) = read_example_event(&example_event_path.join(&file)) {
+                examples.push(ExampleEvent {
+                    name: name.to_string(),
+                    content,
+                    event_type: event_type.to_string(),
+                });
+            }
         }
-    };
+    }
 
-    read_example_event(&file)
+    if !examples.is_empty() {
+        Some(examples)
+    } else {
+        None
+    }
 }
 
-fn read_example_event(test_fixture: &PathBuf) -> Result<Option<String>> {
+fn read_example_event(test_fixture: &PathBuf) -> Option<String> {
     let mut f = File::open(test_fixture).expect("fixture not found");
     let mut contents = String::new();
     f.read_to_string(&mut contents)
         .expect("something went wrong reading the fixture");
     debug!("Example event content: {}", contents);
-    Ok(Some(contents))
+    Some(contents)
 }
 
-fn write_fixture(
-    service_name: &str,
-    example_event: &str,
-    out_dir: &PathBuf,
-    overwrite: bool,
-) -> Result<PathBuf> {
-    let relative = PathBuf::from(format!("fixtures/example-{}-event.json", service_name));
+fn write_fixture(example_event: &ExampleEvent, out_dir: &PathBuf, overwrite: bool) -> Result<()> {
     // Write the example event to the output location.
-    let full = out_dir.join(relative.clone());
+    let full = out_dir.join("fixtures").join(&example_event.name);
     {
         let parent = full.parent().expect("parent directory");
         if !parent.exists() {
@@ -188,50 +292,33 @@ fn write_fixture(
     }
     if overwrite_warning(&full, overwrite).is_none() {
         let mut f = File::create(full)?;
-        f.write_all(example_event.as_bytes())?;
+        f.write_all(example_event.content.as_bytes())?;
         f.write_all(b"\n")?;
     }
-    Ok(relative)
+    Ok(())
 }
 
-fn generate_test_module(
-    service_name: &str,
-    scope: &codegen::Scope,
-    relative: &PathBuf,
-) -> Result<codegen::Module> {
-    let mut toplevel_type = None;
-    for item in scope.items() {
-        match item {
-            codegen::Item::Struct(s) if s.ty().name().ends_with("Event") => {
-                toplevel_type = Some(s.ty().name());
-                break;
-            }
-            codegen::Item::Struct(s)
-                if s.ty().name().as_str() == "ApiGatewayProxyRequest"
-                    && service_name == "apigw" =>
-            {
-                toplevel_type = Some(s.ty().name());
-                break;
-            }
-            _ => continue,
-        }
-    }
-
-    let test_function =
-        generate_test_function("example_event", toplevel_type.map(|s| s.as_str()), relative);
-
+fn generate_test_module(example_events: &[ExampleEvent]) -> Result<codegen::Module> {
     let mut test_module = codegen::Module::new("test");
     test_module.annotation(vec!["cfg(test)"]);
     test_module.import("super", "*");
     test_module.scope().raw("extern crate serde_json;");
-    test_module.scope().push_fn(test_function);
+
+    for e in example_events {
+        let name = e.name.trim_end_matches(".json").replace("-", "_");
+        let path = PathBuf::from("fixtures").join(&e.name);
+        let test_function = generate_test_function(&name, &e.event_type, path);
+
+        test_module.scope().push_fn(test_function);
+    }
+
     Ok(test_module)
 }
 
 fn generate_test_function(
     fn_name: &str,
-    toplevel_type: Option<&str>,
-    relative: &Path,
+    toplevel_type: &str,
+    relative: PathBuf,
 ) -> codegen::Function {
     let mut test_function = codegen::Function::new(fn_name);
     test_function.annotation(vec!["test"]);
@@ -243,7 +330,7 @@ fn generate_test_function(
     // Deserialize.
     test_function.line(format!(
         r#"let parsed: {} = serde_json::from_slice(data).unwrap();"#,
-        toplevel_type.expect("top-level type defined"),
+        toplevel_type,
     ));
     // Serialize.
     test_function.line(String::from(
@@ -252,7 +339,7 @@ fn generate_test_function(
     // Deserialize.
     test_function.line(format!(
         r#"let reparsed: {} = serde_json::from_slice(output.as_bytes()).unwrap();"#,
-        toplevel_type.expect("top-level type defined"),
+        toplevel_type,
     ));
     // Compare.
     test_function.line(String::from(r#"assert_eq!(parsed, reparsed);"#));
@@ -285,15 +372,19 @@ main!(|args: Cli, log_level: verbosity| {
             debug!("Rust-----v\n{}", rust);
 
             // Check for an example event in their test data.
-            let example_event =
-                find_example_event(&fuzzy_example_events, &file_name, &example_event_path)?;
+            let example_events = find_example_events(
+                &fuzzy_example_events,
+                &file_name,
+                &example_event_path,
+                &rust.scope(),
+            );
 
             parsed_files.push(ParsedEventFile {
                 service_name: file_name.into_owned(),
                 path,
                 go,
                 rust,
-                example_event,
+                example_events,
             });
         }
     }
@@ -315,21 +406,15 @@ main!(|args: Cli, log_level: verbosity| {
                 .expect("a file name exists"),
         );
 
-        if let Some(ref example_event) = parsed.example_event {
-            // Write the example event to a test fixture.
-            trace!("Writing fixure for: {:?}", parsed.service_name);
-            let relative = write_fixture(
-                &parsed.service_name,
-                &example_event,
-                &out_dir,
-                args.overwrite,
-            )?;
+        if !parsed.example_events.is_empty() {
+            for example_event in &parsed.example_events {
+                // Write the example event to a test fixture.
+                trace!("Writing fixure for: {:?}", parsed.service_name);
+                let _ = write_fixture(&example_event, &out_dir, args.overwrite)?;
+            }
 
-            // Generate a test module with a test that deserializes the example
-            // event.
             trace!("Generating test module for: {:?}", parsed.service_name);
-            let test_module =
-                generate_test_module(&parsed.service_name, &parsed.rust.scope(), &relative)?;
+            let test_module = generate_test_module(&parsed.example_events)?;
             parsed.rust.push_module(test_module);
         }
 

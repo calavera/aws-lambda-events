@@ -113,7 +113,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
-    fn example_event() {
+    fn example_s3_event() {
         let data = include_bytes!("fixtures/example-s3-event.json");
         let parsed: S3Event = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
