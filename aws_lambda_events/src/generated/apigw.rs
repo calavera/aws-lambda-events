@@ -1,5 +1,5 @@
 use crate::custom_serde::*;
-use http::HeaderMap;
+use http::{HeaderMap, Method};
 use serde::de::DeserializeOwned;
 use serde::ser::Serialize;
 use serde_json::Value;
@@ -16,10 +16,9 @@ pub struct ApiGatewayProxyRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
+    #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
-    pub http_method: Option<String>,
+    pub http_method: Method,
     #[serde(with = "http_serde::header_map")]
     pub headers: HeaderMap,
     #[serde(with = "http_serde::header_map")]
@@ -112,10 +111,9 @@ where
     #[serde(default)]
     #[serde(bound = "")]
     pub authorizer: HashMap<String, T1>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
+    #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
-    pub http_method: Option<String>,
+    pub http_method: Method,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "requestTime")]
@@ -281,9 +279,8 @@ pub struct ApiGatewayV2httpRequestContextAuthorizerCognitoIdentity {
 /// `ApiGatewayV2httpRequestContextHttpDescription` contains HTTP information for the request context.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ApiGatewayV2httpRequestContextHttpDescription {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
-    pub method: Option<String>,
+    #[serde(with = "http_serde::method")]
+    pub method: Method,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
@@ -384,10 +381,9 @@ pub struct ApiGatewayWebsocketProxyRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
+    #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
-    pub http_method: Option<String>,
+    pub http_method: Method,
     #[serde(with = "http_serde::header_map")]
     pub headers: HeaderMap,
     #[serde(with = "http_serde::header_map")]
@@ -451,10 +447,9 @@ where
     pub resource_path: Option<String>,
     #[serde(bound = "")]
     pub authorizer: T1,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
+    #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
-    pub http_method: Option<String>,
+    pub http_method: Method,
     /// The API Gateway rest API Id
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -560,10 +555,9 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
     #[serde(default)]
     #[serde(rename = "resourcePath")]
     pub resource_path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
+    #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
-    pub http_method: Option<String>,
+    pub http_method: Method,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
@@ -604,10 +598,9 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
+    #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
-    pub http_method: Option<String>,
+    pub http_method: Method,
     #[serde(with = "http_serde::header_map")]
     pub headers: HeaderMap,
     #[serde(with = "http_serde::header_map")]
@@ -676,4 +669,20 @@ pub struct IamPolicyStatement {
     pub effect: Option<String>,
     #[serde(rename = "Resource")]
     pub resource: Vec<String>,
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    extern crate serde_json;
+
+    #[test]
+    fn example_event() {
+        let data = include_bytes!("fixtures/example-apigw-event.json");
+        let parsed: ApiGatewayProxyRequest = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: ApiGatewayProxyRequest = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
 }
