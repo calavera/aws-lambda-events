@@ -361,6 +361,11 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
                 "#[serde(default)]",
             ]);
             field_defs.push(map_as_empty);
+        } else if rust_type == "Option<bool>" {
+            let mut skip_none_boolean = Field::new(&member_name, &rust_type);
+            skip_none_boolean
+                .annotation(vec!["#[serde(skip_serializing_if = \"Option::is_none\")]"]);
+            field_defs.push(skip_none_boolean);
         } else {
             field_defs = vec![Field::new(&member_name, &rust_type)];
         }

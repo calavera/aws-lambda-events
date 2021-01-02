@@ -48,6 +48,7 @@ pub struct ApiGatewayProxyRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "isBase64Encoded")]
     pub is_base64_encoded: Option<bool>,
 }
@@ -67,6 +68,7 @@ pub struct ApiGatewayProxyResponse {
     #[serde(skip_deserializing)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub body: Option<Body>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "isBase64Encoded")]
     pub is_base64_encoded: Option<bool>,
 }
@@ -318,6 +320,7 @@ pub struct ApiGatewayV2httpResponse {
     #[serde(skip_deserializing)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub body: Option<Body>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "isBase64Encoded")]
     pub is_base64_encoded: Option<bool>,
     pub cookies: Vec<String>,
@@ -420,6 +423,7 @@ pub struct ApiGatewayWebsocketProxyRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "isBase64Encoded")]
     pub is_base64_encoded: Option<bool>,
 }
@@ -535,6 +539,7 @@ pub struct ApiGatewayCustomAuthorizerContext {
     pub string_key: Option<String>,
     #[serde(rename = "numKey")]
     pub num_key: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "boolKey")]
     pub bool_key: Option<bool>,
 }

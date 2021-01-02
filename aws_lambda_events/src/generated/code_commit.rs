@@ -77,6 +77,7 @@ pub struct CodeCommitReference {
     #[serde(default)]
     #[serde(rename = "ref")]
     pub ref_: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub created: Option<bool>,
 }
 
