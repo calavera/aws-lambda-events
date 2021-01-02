@@ -1,8 +1,9 @@
 use base64::{decode, encode};
 use chrono::{DateTime, Duration, TimeZone, Utc};
+use http::HeaderMap;
 use serde;
 use serde::de::{Deserialize, Deserializer, Error as DeError};
-use serde::ser::Serializer;
+use serde::ser::{Error as SerError, SerializeMap, Serializer};
 use std;
 use std::collections::HashMap;
 
@@ -176,6 +177,40 @@ where
 {
     let minutes = f64::deserialize(deserializer)?;
     Ok(Duration::minutes(minutes as i64))
+}
+
+/// Serialize a http::HeaderMap into a serde str => Vec<str> map
+#[allow(dead_code)]
+pub(crate) fn serialize_multi_value_headers<S>(
+    headers: &HeaderMap,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    let mut map = serializer.serialize_map(Some(headers.keys_len()))?;
+    for key in headers.keys() {
+        let mut map_values = Vec::new();
+        for value in headers.get_all(key) {
+            map_values.push(value.to_str().map_err(S::Error::custom)?)
+        }
+        map.serialize_entry(key.as_str(), &map_values)?;
+    }
+    map.end()
+}
+
+/// Serialize a http::HeaderMap into a serde str => str map
+#[allow(dead_code)]
+pub(crate) fn serialize_headers<S>(headers: &HeaderMap, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    let mut map = serializer.serialize_map(Some(headers.keys_len()))?;
+    for key in headers.keys() {
+        let map_value = headers[key].to_str().map_err(S::Error::custom)?;
+        map.serialize_entry(key.as_str(), map_value)?;
+    }
+    map.end()
 }
 
 #[cfg(test)]
