@@ -1,3 +1,4 @@
+use super::super::encodings::Body;
 use crate::custom_serde::*;
 use http::{HeaderMap, Method};
 use std::collections::HashMap;
@@ -66,9 +67,9 @@ pub struct AlbTargetGroupResponse {
     #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
-    pub body: Option<String>,
+    #[serde(skip_deserializing)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub body: Option<Body>,
     #[serde(rename = "isBase64Encoded")]
     pub is_base64_encoded: bool,
 }
