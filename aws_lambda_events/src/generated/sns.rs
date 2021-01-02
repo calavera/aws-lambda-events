@@ -172,6 +172,7 @@ pub struct CloudWatchMetricDataQuery {
     pub metric_stat: Option<CloudWatchMetricStat>,
     #[serde(rename = "Period")]
     pub period: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "ReturnData")]
     pub return_data: Option<bool>,
 }
