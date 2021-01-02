@@ -719,6 +719,22 @@ fn translate_go_type_to_rust_type<'a>(
                 libraries,
             }
         }
+        GoType::StringType if is_http_body(member_def) => {
+            let mut libraries = HashSet::new();
+            libraries.insert("super::super::encodings::Body".to_string());
+
+            let annotations = vec![
+                "#[serde(skip_deserializing)]".to_string(),
+                "#[serde(skip_serializing_if = \"Option::is_none\")]".to_string(),
+            ];
+
+            RustType {
+                value: "Option<Body>".into(),
+                generics: vec![],
+                annotations,
+                libraries,
+            }
+        }
         GoType::StringType => make_rust_type_with_no_libraries("String"),
         GoType::BoolType => make_rust_type_with_no_libraries("bool"),
         GoType::ByteType => make_rust_type_with_no_libraries("u8"),
@@ -922,10 +938,15 @@ fn is_http_multivalue_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
 
 fn is_http_method<'a>(def: Option<&'a StructureFieldDef>) -> bool {
     match def {
-        Some(s) => {
-            s.member_name == "http_method"
-                || (s.struct_name == "ApiGatewayV2httpRequestContextHttpDescription"
-                    && s.member_name == "method")
+        Some(&StructureFieldDef { member_name, .. }) if member_name == "http_method" => true,
+        Some(&StructureFieldDef {
+            member_name,
+            struct_name,
+            ..
+        }) if struct_name == "ApiGatewayV2httpRequestContextHttpDescription"
+            && member_name == "method" =>
+        {
+            true
         }
         _ => false,
     }
@@ -933,6 +954,22 @@ fn is_http_method<'a>(def: Option<&'a StructureFieldDef>) -> bool {
 
 fn is_optional_type(rust_type: &str) -> bool {
     !(HASHMAP_RE.is_match(rust_type) || rust_type == "HeaderMap")
+}
+
+fn is_http_body<'a>(def: Option<&'a StructureFieldDef>) -> bool {
+    match def {
+        Some(&StructureFieldDef {
+            member_name,
+            struct_name,
+            ..
+        }) => {
+            member_name == "body"
+                && (struct_name == "ApiGatewayProxyResponse"
+                    || struct_name == "ApiGatewayV2httpResponse"
+                    || struct_name == "AlbTargetGroupResponse")
+        }
+        _ => false,
+    }
 }
 
 #[cfg(test)]
