@@ -19,9 +19,11 @@ pub struct AlbTargetGroupRequest {
     #[serde(default)]
     #[serde(rename = "multiValueQueryStringParameters")]
     pub multi_value_query_string_parameters: HashMap<String, Vec<String>>,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
     #[serde(rename = "requestContext")]
@@ -57,9 +59,11 @@ pub struct AlbTargetGroupResponse {
     #[serde(default)]
     #[serde(rename = "statusDescription")]
     pub status_description: Option<String>,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_string")]

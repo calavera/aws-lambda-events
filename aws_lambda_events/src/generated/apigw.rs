@@ -19,9 +19,11 @@ pub struct ApiGatewayProxyRequest {
     #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -54,9 +56,11 @@ pub struct ApiGatewayProxyRequest {
 pub struct ApiGatewayProxyResponse {
     #[serde(rename = "statusCode")]
     pub status_code: i64,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -146,7 +150,8 @@ pub struct ApiGatewayV2httpRequest {
     #[serde(rename = "rawQueryString")]
     pub raw_query_string: Option<String>,
     pub cookies: Option<Vec<String>>,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -302,9 +307,11 @@ pub struct ApiGatewayV2httpRequestContextHttpDescription {
 pub struct ApiGatewayV2httpResponse {
     #[serde(rename = "statusCode")]
     pub status_code: i64,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -384,9 +391,11 @@ pub struct ApiGatewayWebsocketProxyRequest {
     #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -601,9 +610,11 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     #[serde(with = "http_serde::method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(with = "http_serde::header_map")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]

@@ -760,12 +760,23 @@ fn translate_go_type_to_rust_type<'a>(
         }
         GoType::MapType(_k, _v) if is_http_headers(member_def) => {
             let mut libraries = HashSet::new();
+            libraries.insert("crate::custom_serde::*".to_string());
             libraries.insert("http::HeaderMap".to_string());
+
+            let mut annotations = vec![
+                "#[serde(deserialize_with = \"http_serde::header_map::deserialize\")]".to_string(),
+            ];
+            let ser = if is_http_multivalue_headers(member_def) {
+                "#[serde(serialize_with = \"serialize_multi_value_headers\")]"
+            } else {
+                "#[serde(serialize_with = \"serialize_headers\")]"
+            };
+            annotations.push(ser.to_string());
 
             RustType {
                 value: "HeaderMap".into(),
-                annotations: vec!["#[serde(with = \"http_serde::header_map\")]".to_string()],
                 generics: vec![],
+                annotations,
                 libraries,
             }
         }
@@ -902,6 +913,11 @@ fn is_http_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
         Some(s) => s.member_name == "headers" || s.member_name == "multi_value_headers",
         _ => false,
     }
+}
+
+fn is_http_multivalue_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
+    def.map(|s| s.member_name == "multi_value_headers")
+        .unwrap_or_default()
 }
 
 fn is_http_method<'a>(def: Option<&'a StructureFieldDef>) -> bool {
