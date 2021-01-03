@@ -17,7 +17,7 @@ pub struct ApiGatewayProxyRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(with = "http_serde::method")]
+    #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
     #[serde(deserialize_with = "http_serde::header_map::deserialize")]
@@ -118,7 +118,7 @@ where
     #[serde(default)]
     #[serde(bound = "")]
     pub authorizer: HashMap<String, T1>,
-    #[serde(with = "http_serde::method")]
+    #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -287,7 +287,7 @@ pub struct ApiGatewayV2httpRequestContextAuthorizerCognitoIdentity {
 /// `ApiGatewayV2httpRequestContextHttpDescription` contains HTTP information for the request context.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ApiGatewayV2httpRequestContextHttpDescription {
-    #[serde(with = "http_serde::method")]
+    #[serde(with = "http_method")]
     pub method: Method,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -392,7 +392,7 @@ pub struct ApiGatewayWebsocketProxyRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(with = "http_serde::method")]
+    #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
     #[serde(deserialize_with = "http_serde::header_map::deserialize")]
@@ -461,7 +461,7 @@ where
     pub resource_path: Option<String>,
     #[serde(bound = "")]
     pub authorizer: T1,
-    #[serde(with = "http_serde::method")]
+    #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
     /// The API Gateway rest API Id
@@ -570,7 +570,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
     #[serde(default)]
     #[serde(rename = "resourcePath")]
     pub resource_path: Option<String>,
-    #[serde(with = "http_serde::method")]
+    #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -613,7 +613,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(with = "http_serde::method")]
+    #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
     #[serde(deserialize_with = "http_serde::header_map::deserialize")]

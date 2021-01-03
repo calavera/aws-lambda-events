@@ -180,7 +180,6 @@ where
 }
 
 /// Serialize a http::HeaderMap into a serde str => Vec<str> map
-#[allow(dead_code)]
 pub(crate) fn serialize_multi_value_headers<S>(
     headers: &HeaderMap,
     serializer: S,
@@ -200,7 +199,6 @@ where
 }
 
 /// Serialize a http::HeaderMap into a serde str => str map
-#[allow(dead_code)]
 pub(crate) fn serialize_headers<S>(headers: &HeaderMap, serializer: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
@@ -211,6 +209,45 @@ where
         map.serialize_entry(key.as_str(), map_value)?;
     }
     map.end()
+}
+
+pub mod http_method {
+    use http::Method;
+    use serde::de;
+    use serde::de::{Unexpected, Visitor};
+    use serde::{Deserializer, Serializer};
+    use std::fmt;
+
+    /// Implementation detail. Use derive annotations instead.
+    pub fn serialize<S: Serializer>(method: &Method, ser: S) -> Result<S::Ok, S::Error> {
+        ser.serialize_str(method.as_str())
+    }
+
+    struct MethodVisitor;
+    impl<'de> Visitor<'de> for MethodVisitor {
+        type Value = Method;
+
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            write!(formatter, "valid method name")
+        }
+
+        fn visit_str<E: de::Error>(self, val: &str) -> Result<Self::Value, E> {
+            if val.is_empty() {
+                Ok(Method::GET)
+            } else {
+                val.parse()
+                    .map_err(|_| de::Error::invalid_value(Unexpected::Str(val), &self))
+            }
+        }
+    }
+
+    /// Implementation detail.
+    pub fn deserialize<'de, D>(de: D) -> Result<Method, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        de.deserialize_str(MethodVisitor)
+    }
 }
 
 #[cfg(test)]
