@@ -715,11 +715,12 @@ fn translate_go_type_to_rust_type<'a>(
     let rust_type = match &go_type {
         GoType::StringType if is_http_method(member_def) => {
             let mut libraries = HashSet::new();
+            libraries.insert("crate::custom_serde::*".to_string());
             libraries.insert("http::Method".to_string());
 
             RustType {
                 value: "Method".into(),
-                annotations: vec!["#[serde(with = \"http_serde::method\")]".to_string()],
+                annotations: vec!["#[serde(with = \"http_method\")]".to_string()],
                 generics: vec![],
                 libraries,
             }
