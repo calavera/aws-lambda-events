@@ -6,7 +6,7 @@ use std::collections::HashMap;
 /// `AlbTargetGroupRequest` contains data originating from the ALB Lambda target group integration
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct AlbTargetGroupRequest {
-    #[serde(with = "http_serde::method")]
+    #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
     #[serde(deserialize_with = "deserialize_lambda_string")]
