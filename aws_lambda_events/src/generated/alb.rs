@@ -67,7 +67,6 @@ pub struct AlbTargetGroupResponse {
     #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,
-    #[serde(skip_deserializing)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub body: Option<Body>,
     #[serde(rename = "isBase64Encoded")]
