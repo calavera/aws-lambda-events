@@ -43,6 +43,7 @@ pub struct ApiGatewayProxyRequest {
     #[serde(default)]
     #[serde(rename = "stageVariables")]
     pub stage_variables: HashMap<String, String>,
+    #[serde(default)]
     #[serde(rename = "requestContext")]
     pub request_context: ApiGatewayProxyRequestContext,
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -75,7 +76,7 @@ pub struct ApiGatewayProxyResponse {
 
 /// `ApiGatewayProxyRequestContext` contains the information to identify the AWS account and resources invoking the
 /// Lambda function. It also includes Cognito identity information for the caller.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
 pub struct ApiGatewayProxyRequestContext<T1 = Value>
 where
     T1: DeserializeOwned,
@@ -109,6 +110,7 @@ where
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub protocol: Option<String>,
+    #[serde(default)]
     pub identity: ApiGatewayRequestIdentity,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -327,7 +329,7 @@ pub struct ApiGatewayV2httpResponse {
 }
 
 /// `ApiGatewayRequestIdentity` contains identity information for the request caller.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
 pub struct ApiGatewayRequestIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -454,6 +456,7 @@ where
     #[serde(default)]
     #[serde(rename = "requestId")]
     pub request_id: Option<String>,
+    #[serde(default)]
     pub identity: ApiGatewayRequestIdentity,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]

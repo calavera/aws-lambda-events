@@ -266,6 +266,9 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
     rust_struct.derive("PartialEq");
     rust_struct.derive("Deserialize");
     rust_struct.derive("Serialize");
+    if is_default_http_context(&camel_cased_struct_name) {
+        rust_struct.derive("Default");
+    }
 
     if !comments.is_empty() {
         let annotated_comments: Vec<String> = comments
@@ -747,7 +750,14 @@ fn translate_go_type_to_rust_type<'a>(
         GoType::IntType => make_rust_type_with_no_libraries("i64"),
         GoType::UnsignedIntType => make_rust_type_with_no_libraries("u64"),
         GoType::FloatType => make_rust_type_with_no_libraries("f64"),
-        GoType::UserDefined(x) => make_rust_type_with_no_libraries(&x.to_camel_case()),
+        GoType::UserDefined(x) => {
+            let rust_name = x.to_camel_case();
+            let mut rust_type = make_rust_type_with_no_libraries(&rust_name);
+            if is_default_http_context(&rust_name) {
+                rust_type.annotations.push("#[serde(default)]".to_string());
+            }
+            rust_type
+        }
         GoType::ArrayType(x) => {
             let i = translate_go_type_to_rust_type(*x.clone(), generic_counter, None)?;
 
@@ -976,6 +986,10 @@ fn is_http_body<'a>(def: Option<&'a StructureFieldDef>) -> bool {
         }
         _ => false,
     }
+}
+
+fn is_default_http_context(rust_type: &str) -> bool {
+    rust_type == "ApiGatewayProxyRequestContext" || rust_type == "ApiGatewayRequestIdentity"
 }
 
 #[cfg(test)]
