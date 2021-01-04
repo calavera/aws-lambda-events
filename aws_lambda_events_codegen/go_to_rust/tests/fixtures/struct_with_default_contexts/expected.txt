@@ -1,0 +1,15 @@
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
+pub struct ApiGatewayRequestIdentity;
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
+pub struct ApiGatewayProxyRequestContext {
+    #[serde(default)]
+    pub identity: ApiGatewayRequestIdentity,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct HttpMessage {
+    #[serde(default)]
+    #[serde(rename = "requestContext")]
+    pub request_context: ApiGatewayProxyRequestContext,
+}

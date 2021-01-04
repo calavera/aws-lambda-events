@@ -1,0 +1,10 @@
+type HttpMessage struct {
+	HttpMethod        string              `json:"httpMethod"`
+	Headers 		  map[string]string   `json:"headers"`
+	MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
+	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
+}
+
+type ApiGatewayProxyResponse struct {
+	Body string `json:"body"`
+}

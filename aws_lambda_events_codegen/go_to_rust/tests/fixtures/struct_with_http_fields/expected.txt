@@ -1,0 +1,26 @@
+use crate::custom_serde::*;
+use http::{HeaderMap, Method};
+use super::super::encodings::Body;
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct HttpMessage {
+    #[serde(with = "http_method")]
+    #[serde(rename = "httpMethod")]
+    pub http_method: Method,
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_headers")]
+    pub headers: HeaderMap,
+    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(serialize_with = "serialize_multi_value_headers")]
+    #[serde(rename = "multiValueHeaders")]
+    pub multi_value_headers: HeaderMap,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "isBase64Encoded")]
+    pub is_base64_encoded: Option<bool>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayProxyResponse {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub body: Option<Body>,
+}
