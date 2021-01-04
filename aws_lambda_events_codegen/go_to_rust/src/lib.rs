@@ -732,10 +732,8 @@ fn translate_go_type_to_rust_type<'a>(
             let mut libraries = HashSet::new();
             libraries.insert("super::super::encodings::Body".to_string());
 
-            let annotations = vec![
-                "#[serde(skip_deserializing)]".to_string(),
-                "#[serde(skip_serializing_if = \"Option::is_none\")]".to_string(),
-            ];
+            let annotations =
+                vec!["#[serde(skip_serializing_if = \"Option::is_none\")]".to_string()];
 
             RustType {
                 value: "Option<Body>".into(),
