@@ -4,6 +4,7 @@ use std::borrow::Cow;
 use std::ops::{Deref, DerefMut};
 
 use base64::display::Base64Display;
+use serde::de::{Deserialize, Deserializer, Error as DeError, Visitor};
 use serde::ser::{Error as SerError, Serialize, Serializer};
 
 /// Binary data encoded in base64.
@@ -294,6 +295,32 @@ impl<'a> Serialize for Body {
             }
             Body::Empty => serializer.serialize_unit(),
         }
+    }
+}
+
+impl<'de> Deserialize<'de> for Body {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct BodyVisitor;
+
+        impl<'de> Visitor<'de> for BodyVisitor {
+            type Value = Body;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("string")
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<Body, E>
+            where
+                E: DeError,
+            {
+                Ok(Body::from(value))
+            }
+        }
+
+        deserializer.deserialize_str(BodyVisitor)
     }
 }
 
