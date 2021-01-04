@@ -66,7 +66,7 @@ pub struct CodeBuildEventDetail {
     #[serde(rename = "additional-information")]
     pub additional_information: CodeBuildEventAdditionalInformation,
     #[serde(rename = "current-phase")]
-    pub current_phase: CodeBuildPhaseStatus,
+    pub current_phase: CodeBuildPhaseType,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "current-phase-context")]
@@ -77,7 +77,7 @@ pub struct CodeBuildEventDetail {
     #[serde(rename = "completed-phase-status")]
     pub completed_phase_status: CodeBuildPhaseStatus,
     #[serde(rename = "completed-phase")]
-    pub completed_phase: CodeBuildPhaseStatus,
+    pub completed_phase: CodeBuildPhaseType,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "completed-phase-context")]
@@ -90,7 +90,7 @@ pub struct CodeBuildEventDetail {
     pub completed_phase_end: CodeBuildTime,
 }
 
-/// `CodeBuildEventAdditionalInformation` represents additional informations to the code build event
+/// `CodeBuildEventAdditionalInformation` represents additional information to the code build event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct CodeBuildEventAdditionalInformation {
     pub artifact: CodeBuildArtifact,
