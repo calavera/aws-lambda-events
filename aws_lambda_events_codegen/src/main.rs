@@ -158,33 +158,32 @@ fn find_example_events(
             service_name,
             file.to_string_lossy()
         );
-        if let Some(content) = read_example_event(&example_event_path.join(&file)) {
-            let mut event_type = None;
+        let content = read_example_event(&example_event_path.join(&file));
+        let mut event_type = None;
 
-            for item in scope.items() {
-                match item {
-                    codegen::Item::Struct(s) if s.ty().name().ends_with("Event") => {
-                        event_type = Some(s.ty().name());
-                        break;
-                    }
-                    codegen::Item::Struct(s)
-                        if s.ty().name().as_str() == "ApiGatewayProxyRequest"
-                            && service_name == "apigw" =>
-                    {
-                        event_type = Some(s.ty().name());
-                        break;
-                    }
-                    _ => {}
+        for item in scope.items() {
+            match item {
+                codegen::Item::Struct(s) if s.ty().name().ends_with("Event") => {
+                    event_type = Some(s.ty().name());
+                    break;
                 }
+                codegen::Item::Struct(s)
+                    if s.ty().name().as_str() == "ApiGatewayProxyRequest"
+                        && service_name == "apigw" =>
+                {
+                    event_type = Some(s.ty().name());
+                    break;
+                }
+                _ => {}
             }
+        }
 
-            if let Some(event_type) = event_type {
-                examples.push(ExampleEvent {
-                    name: format!("example-{}-event.json", &service_name),
-                    content,
-                    event_type: event_type.clone(),
-                });
-            }
+        if let Some(event_type) = event_type {
+            examples.push(ExampleEvent {
+                name: format!("example-{}-event.json", &service_name),
+                content,
+                event_type: event_type.clone(),
+            });
         }
     };
 
@@ -254,13 +253,12 @@ fn find_custom_examples(
                 service_name,
                 file.to_string_lossy()
             );
-            if let Some(content) = read_example_event(&example_event_path.join(&file)) {
-                examples.push(ExampleEvent {
-                    name: name.to_string(),
-                    content,
-                    event_type: event_type.to_string(),
-                });
-            }
+            let content = read_example_event(&example_event_path.join(&file));
+            examples.push(ExampleEvent {
+                name: name.to_string(),
+                content,
+                event_type: event_type.to_string(),
+            });
         }
     }
 
@@ -271,13 +269,13 @@ fn find_custom_examples(
     }
 }
 
-fn read_example_event(test_fixture: &PathBuf) -> Option<String> {
+fn read_example_event(test_fixture: &PathBuf) -> String {
     let mut f = File::open(test_fixture).expect("fixture not found");
     let mut contents = String::new();
     f.read_to_string(&mut contents)
         .expect("something went wrong reading the fixture");
     debug!("Example event content: {}", contents);
-    Some(contents)
+    contents
 }
 
 fn write_fixture(example_event: &ExampleEvent, out_dir: &PathBuf, overwrite: bool) -> Result<()> {
