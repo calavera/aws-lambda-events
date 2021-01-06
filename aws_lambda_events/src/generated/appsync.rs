@@ -16,7 +16,7 @@ where
     pub version: Option<String>,
     pub operation: AppSyncOperation,
     #[serde(bound = "")]
-    pub payload: T1,
+    pub payload: Option<T1>,
 }
 
 /// `AppSyncIamIdentity` contains information about the caller authed via IAM.

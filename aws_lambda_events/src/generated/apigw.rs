@@ -461,7 +461,7 @@ where
     #[serde(rename = "resourcePath")]
     pub resource_path: Option<String>,
     #[serde(bound = "")]
-    pub authorizer: T1,
+    pub authorizer: Option<T1>,
     #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
@@ -501,7 +501,7 @@ where
     pub message_direction: Option<String>,
     #[serde(bound = "")]
     #[serde(rename = "messageId")]
-    pub message_id: T2,
+    pub message_id: Option<T2>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "requestTime")]
