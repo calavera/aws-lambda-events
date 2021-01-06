@@ -35,5 +35,5 @@ where
     pub region: Option<String>,
     pub resources: Vec<String>,
     #[serde(bound = "")]
-    pub detail: T1,
+    pub detail: Option<T1>,
 }

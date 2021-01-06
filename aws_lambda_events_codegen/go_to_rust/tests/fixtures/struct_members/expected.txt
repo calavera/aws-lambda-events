@@ -21,7 +21,7 @@ where T1: DeserializeOwned,
     pub timestamp: DateTime<Utc>,
     #[serde(bound="")]
     #[serde(rename = "rawJson")]
-    pub raw: T1,
+    pub raw: Option<T1>,
     pub destination: Vec<String>,
     pub headers: Vec<SimpleEmailHeader>,
     #[serde(rename = "headersTruncated")]

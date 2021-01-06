@@ -296,6 +296,7 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
             translate_go_type_to_rust_type(f.go_type, Some(&mut generics), Some(&member_def))?;
         let mut rust_type = rust_data.value;
 
+        let mut bounded_generic = false;
         for generic in rust_data.generics {
             match generic.default {
                 None => {
@@ -308,6 +309,10 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
 
             for bound in generic.bounds {
                 rust_struct.bound(&generic.value, bound);
+            }
+
+            if !bounded_generic && generic.value == rust_type && rust_type != "Value" {
+                bounded_generic = true;
             }
         }
 
@@ -369,6 +374,9 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
             skip_none_boolean
                 .annotation(vec!["#[serde(skip_serializing_if = \"Option::is_none\")]"]);
             field_defs.push(skip_none_boolean);
+        } else if bounded_generic {
+            let optional_interface = format!("Option<{}>", rust_type);
+            field_defs = vec![Field::new(&member_name, &optional_interface)];
         } else {
             field_defs = vec![Field::new(&member_name, &rust_type)];
         }
