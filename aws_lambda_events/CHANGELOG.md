@@ -1,6 +1,8 @@
 ## master
 
-- No changes yet
+- The [`http`](https://crates.io/crates/http) crate is used for events that contain HTTP headers, methods, and bodies. Thanks @calavera! [#29](https://github.com/LegNeato/aws-lambda-events/pull/29)
+- Bounded fields of the `interface{}` type in Go are nullable and now mapped to an `Optional<>`. Thanks @calavera! [#31](https://github.com/LegNeato/aws-lambda-events/pull/31)
+- Generate events from the latest `aws-lambda-go`.
 
 ## [[0.3.1] - 2020-08-20](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.3.1)
 
