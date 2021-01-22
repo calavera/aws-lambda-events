@@ -214,11 +214,10 @@ where
 pub mod http_method {
     use http::Method;
     use serde::de;
-    use serde::de::{Unexpected, Visitor};
+    use serde::de::{Deserialize, Unexpected, Visitor};
     use serde::{Deserializer, Serializer};
     use std::fmt;
 
-    /// Implementation detail. Use derive annotations instead.
     pub fn serialize<S: Serializer>(method: &Method, ser: S) -> Result<S::Ok, S::Error> {
         ser.serialize_str(method.as_str())
     }
@@ -241,12 +240,35 @@ pub mod http_method {
         }
     }
 
-    /// Implementation detail.
     pub fn deserialize<'de, D>(de: D) -> Result<Method, D::Error>
     where
         D: Deserializer<'de>,
     {
         de.deserialize_str(MethodVisitor)
+    }
+
+    pub fn deserialize_optional<'de, D>(deserializer: D) -> Result<Option<Method>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s: Option<&str> = Option::deserialize(deserializer)?;
+        if let Some(val) = s {
+            let visitor = MethodVisitor {};
+            return visitor.visit_str(val).map(Some);
+        }
+
+        Ok(None)
+    }
+
+    pub fn serialize_optional<S: Serializer>(
+        method: &Option<Method>,
+        ser: S,
+    ) -> Result<S::Ok, S::Error> {
+        if let Some(method) = method {
+            return serialize(method, ser);
+        }
+
+        ser.serialize_none()
     }
 }
 

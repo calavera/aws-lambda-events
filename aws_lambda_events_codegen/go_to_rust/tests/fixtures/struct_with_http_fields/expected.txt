@@ -24,3 +24,12 @@ pub struct ApiGatewayProxyResponse {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub body: Option<Body>,
 }
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayWebsocketProxyRequest {
+    #[serde(deserialize_with = "http_method::deserialize_optional")]
+    #[serde(serialize_with = "http_method::serialize_optional")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "httpMethod")]
+    pub http_method: Option<Method>,
+}
