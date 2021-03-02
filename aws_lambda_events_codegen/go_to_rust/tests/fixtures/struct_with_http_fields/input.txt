@@ -10,5 +10,5 @@ type ApiGatewayProxyResponse struct {
 }
 
 type ApiGatewayWebsocketProxyRequest struct {
-	HttpMethod string `json:"httpMethod"`
+	HttpMethod string `json:"httpMethod,omitempty"`
 }

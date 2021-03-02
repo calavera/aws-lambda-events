@@ -731,21 +731,9 @@ fn translate_go_type_to_rust_type<'a>(
             libraries.insert("crate::custom_serde::*".to_string());
             libraries.insert("http::Method".to_string());
 
-            // Temporary patch to fix https://github.com/LegNeato/aws-lambda-events/issues/33
-            // It will allow the code to be correct even after the Go bindings make the
-            // http method optional.
-            let mut value = "Method";
             let mut annotations = vec!["#[serde(with = \"http_method\")]".to_string()];
-
             if let Some(def) = member_def {
                 if def.struct_name == "ApiGatewayWebsocketProxyRequest" {
-                    // The Go bindings don't mark this field as an optional, but it is.
-                    // When the Go bindings fix that problem, the following check will
-                    // prevent us from creating an Option<Option<Method>>, which would
-                    // be wrong.
-                    if !def.omit_empty {
-                        value = "Option<Method>";
-                    }
                     annotations = vec![
                         "#[serde(deserialize_with = \"http_method::deserialize_optional\")]"
                             .to_string(),
@@ -757,7 +745,7 @@ fn translate_go_type_to_rust_type<'a>(
             }
 
             RustType {
-                value: value.into(),
+                value: "Method".into(),
                 annotations,
                 libraries,
                 generics: vec![],
