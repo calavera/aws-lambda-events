@@ -265,6 +265,10 @@ pub struct CognitoEventUserPoolsMigrateUserRequest {
     pub password: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
+    #[serde(rename = "validationData")]
+    pub validation_data: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
     #[serde(rename = "clientMetadata")]
     pub client_metadata: HashMap<String, String>,
 }

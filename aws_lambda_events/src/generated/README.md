@@ -3,4 +3,4 @@
 These types are automatically generated from the
 [official Go SDK](https://github.com/aws/aws-lambda-go/tree/master/events).
 
-Generated from commit [b3dd246b7d83fd62856549646711e5328075c69a](https://github.com/aws/aws-lambda-go/commit/b3dd246b7d83fd62856549646711e5328075c69a).
+Generated from commit [a8e138ffcbc1fffe8b5a615dc9d8276b844d670a](https://github.com/aws/aws-lambda-go/commit/a8e138ffcbc1fffe8b5a615dc9d8276b844d670a).

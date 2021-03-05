@@ -156,6 +156,7 @@ struct FieldDef {
 struct StructureFieldDef<'a> {
     struct_name: &'a str,
     member_name: &'a str,
+    omit_empty: bool,
 }
 
 fn parse_comment(c: &str) -> String {
@@ -290,6 +291,7 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
         let member_def = StructureFieldDef {
             struct_name: &camel_cased_struct_name,
             member_name: &member_name,
+            omit_empty: f.omit_empty,
         };
 
         let mut rust_data =
@@ -729,11 +731,24 @@ fn translate_go_type_to_rust_type<'a>(
             libraries.insert("crate::custom_serde::*".to_string());
             libraries.insert("http::Method".to_string());
 
+            let mut annotations = vec!["#[serde(with = \"http_method\")]".to_string()];
+            if let Some(def) = member_def {
+                if def.struct_name == "ApiGatewayWebsocketProxyRequest" {
+                    annotations = vec![
+                        "#[serde(deserialize_with = \"http_method::deserialize_optional\")]"
+                            .to_string(),
+                        "#[serde(serialize_with = \"http_method::serialize_optional\")]"
+                            .to_string(),
+                        "#[serde(skip_serializing_if = \"Option::is_none\")]".to_string(),
+                    ];
+                }
+            }
+
             RustType {
                 value: "Method".into(),
-                annotations: vec!["#[serde(with = \"http_method\")]".to_string()],
-                generics: vec![],
+                annotations,
                 libraries,
+                generics: vec![],
             }
         }
         GoType::StringType if is_http_body(member_def) => {
@@ -960,15 +975,14 @@ fn is_http_multivalue_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
 
 fn is_http_method<'a>(def: Option<&'a StructureFieldDef>) -> bool {
     match def {
-        Some(&StructureFieldDef { member_name, .. }) if member_name == "http_method" => true,
         Some(&StructureFieldDef {
             member_name,
             struct_name,
             ..
-        }) if struct_name == "ApiGatewayV2httpRequestContextHttpDescription"
-            && member_name == "method" =>
-        {
-            true
+        }) => {
+            member_name == "http_method"
+                || (struct_name == "ApiGatewayV2httpRequestContextHttpDescription"
+                    && member_name == "method")
         }
         _ => false,
     }

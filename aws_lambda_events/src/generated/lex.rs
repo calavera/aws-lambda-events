@@ -22,6 +22,8 @@ pub struct LexEvent {
     pub output_dialog_mode: Option<String>,
     #[serde(rename = "currentIntent")]
     pub current_intent: Option<LexCurrentIntent>,
+    #[serde(rename = "alternativeIntents")]
+    pub alternative_intents: Option<Vec<LexAlternativeIntents>>,
     #[serde(rename = "dialogAction")]
     pub dialog_action: Option<LexDialogAction>,
 }
@@ -36,6 +38,22 @@ pub struct LexBot {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct LexCurrentIntent {
     pub name: Option<String>,
+    #[serde(rename = "nluIntentConfidenceScore")]
+    pub nlu_intent_confidence_score: Option<f64>,
+    pub slots: Option<Slots>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "slotDetails")]
+    pub slot_details: HashMap<String, SlotDetail>,
+    #[serde(rename = "confirmationStatus")]
+    pub confirmation_status: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct LexAlternativeIntents {
+    pub name: Option<String>,
+    #[serde(rename = "nluIntentConfidenceScore")]
+    pub nlu_intent_confidence_score: Option<f64>,
     pub slots: Option<Slots>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]

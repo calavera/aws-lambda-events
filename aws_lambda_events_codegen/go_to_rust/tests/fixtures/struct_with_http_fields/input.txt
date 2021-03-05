@@ -8,3 +8,7 @@ type HttpMessage struct {
 type ApiGatewayProxyResponse struct {
 	Body string `json:"body"`
 }
+
+type ApiGatewayWebsocketProxyRequest struct {
+	HttpMethod string `json:"httpMethod,omitempty"`
+}
