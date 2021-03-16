@@ -817,7 +817,7 @@ fn translate_go_type_to_rust_type<'a>(
             libraries.insert("http::HeaderMap".to_string());
 
             let mut annotations = vec![
-                "#[serde(deserialize_with = \"http_serde::header_map::deserialize\")]".to_string(),
+                "#[serde(deserialize_with = \"http_serde::header_map::deserialize\", default)]".to_string(),
             ];
             let ser = if is_http_multivalue_headers(member_def) {
                 "#[serde(serialize_with = \"serialize_multi_value_headers\")]"

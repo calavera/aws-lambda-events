@@ -7,10 +7,10 @@ pub struct HttpMessage {
     #[serde(with = "http_method")]
     #[serde(rename = "httpMethod")]
     pub http_method: Method,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize")]
+    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     #[serde(rename = "multiValueHeaders")]
     pub multi_value_headers: HeaderMap,

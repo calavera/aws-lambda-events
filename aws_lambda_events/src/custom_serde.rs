@@ -518,4 +518,21 @@ mod test {
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":36}"#));
     }
+
+    #[test]
+    fn test_deserialize_missing_http_headers() {
+        #[derive(Deserialize)]
+        struct Test {
+            #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+            pub headers: HeaderMap,
+        }
+        let data = json!({
+            "not_headers": {}
+        });
+
+        let expected = HeaderMap::new();
+
+        let decoded: Test = serde_json::from_value(data).unwrap();
+        assert_eq!(expected, decoded.headers);
+    }
 }
