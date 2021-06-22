@@ -1,6 +1,6 @@
 [package]
 name = "go_to_rust"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Christian Legnitto <christian@legnitto.com>"]
 build = "build.rs"
 publish = false

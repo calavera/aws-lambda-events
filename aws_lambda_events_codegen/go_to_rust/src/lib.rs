@@ -622,6 +622,9 @@ fn parse_go_type_array(pairs: Pairs<'_, Rule>) -> Result<GoType, Error> {
             Rule::array => Some(GoType::ArrayType(Box::new(parse_go_type_array(
                 pair.into_inner(),
             )?))),
+            Rule::pointer_type => Some(GoType::ArrayType(Box::new(parse_go_type_pointer(
+                pair.into_inner(),
+            )?))),
             Rule::interface => Some(GoType::ArrayType(Box::new(parse_go_type_interface(value)?))),
             _ => unimplemented!("{}\n{}", value, pair),
         };

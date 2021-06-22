@@ -32,6 +32,8 @@ pub mod config;
 pub mod connect;
 /// AWS Lambda event definitions for firehose.
 pub mod firehose;
+/// AWS Lambda event definitions for iot_1_click.
+pub mod iot_1_click;
 /// AWS Lambda event definitions for iot_button.
 pub mod iot_button;
 /// AWS Lambda event definitions for kafka.
