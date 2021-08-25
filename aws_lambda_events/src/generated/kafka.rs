@@ -1,4 +1,4 @@
-use super::super::encodings::MillisecondTimestamp;
+use super::super::encodings::{Base64Data, MillisecondTimestamp};
 use crate::custom_serde::*;
 use std::collections::HashMap;
 
@@ -15,6 +15,10 @@ pub struct KafkaEvent {
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub records: HashMap<String, Vec<KafkaRecord>>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "bootstrapServers")]
+    pub bootstrap_servers: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -31,6 +35,7 @@ pub struct KafkaRecord {
     pub timestamp_type: Option<String>,
     pub key: Option<String>,
     pub value: Option<String>,
+    pub headers: Vec<HashMap<String, Base64Data>>,
 }
 
 #[cfg(test)]

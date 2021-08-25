@@ -1,8 +1,8 @@
 use crate::custom_serde::*;
 
-/// `CodePipelineEvent` contains data from an event sent from AWS Codepipeline
+/// `CodePipelineJobEvent` contains data from an event sent from AWS CodePipeline
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct CodePipelineEvent {
+pub struct CodePipelineJobEvent {
     #[serde(rename = "CodePipeline.job")]
     pub code_pipeline_job: CodePipelineJob,
 }
@@ -126,20 +126,4 @@ pub struct CodePipelineArtifactCredentials {
     #[serde(default)]
     #[serde(rename = "accessKeyId")]
     pub access_key_id: Option<String>,
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    extern crate serde_json;
-
-    #[test]
-    fn example_codepipeline_job_event() {
-        let data = include_bytes!("fixtures/example-codepipeline_job-event.json");
-        let parsed: CodePipelineEvent = serde_json::from_slice(data).unwrap();
-        let output: String = serde_json::to_string(&parsed).unwrap();
-        let reparsed: CodePipelineEvent = serde_json::from_slice(output.as_bytes()).unwrap();
-        assert_eq!(parsed, reparsed);
-    }
 }
