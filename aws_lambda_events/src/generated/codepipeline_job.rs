@@ -127,3 +127,19 @@ pub struct CodePipelineArtifactCredentials {
     #[serde(rename = "accessKeyId")]
     pub access_key_id: Option<String>,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    extern crate serde_json;
+
+    #[test]
+    fn example_codepipeline_job_event() {
+        let data = include_bytes!("fixtures/example-codepipeline_job-event.json");
+        let parsed: CodePipelineJobEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CodePipelineJobEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+}
