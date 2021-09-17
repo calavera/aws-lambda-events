@@ -747,6 +747,21 @@ where
     pub usage_identifier_key: Option<String>,
 }
 
+/// `ApiGatewayV2CustomAuthorizerSimpleResponse` represents the simple format of an API Gateway V2 authorization response.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2CustomAuthorizerSimpleResponse<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
+    #[serde(rename = "isAuthorized")]
+    pub is_authorized: bool,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(bound = "")]
+    pub context: HashMap<String, T1>,
+}
+
 /// `ApiGatewayCustomAuthorizerPolicy` represents an IAM policy
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ApiGatewayCustomAuthorizerPolicy {
