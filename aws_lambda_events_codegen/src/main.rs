@@ -140,7 +140,7 @@ fn find_example_events(
     scope: &codegen::Scope,
 ) -> Vec<ExampleEvent> {
     let mut name_with_quirks = match service_name {
-        "codepipeline_job" => "codepipline-event.json".to_string(),
+        "codepipeline_job" => "codepipeline-job-event.json".to_string(),
         "firehose" => "kinesis-firehose-event.json".to_string(),
         service_name => format!("{}-event.json", service_name),
     };
