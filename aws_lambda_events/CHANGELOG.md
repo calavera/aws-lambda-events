@@ -1,5 +1,9 @@
 ## master
 
+- No changes yet
+
+## [[0.5.0] - 2021-09-20](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.5.0)
+
 - Specific `int` and `unit` sizes (such as `uint8`) are preserved rather than defaulting to 64 bits.
 - Array pointers are now correctly parsed. Thanks @michaetto! [#37](https://github.com/LegNeato/aws-lambda-events/pull/37)
 - Generate events from the latest `aws-lambda-go`.

@@ -1,7 +1,7 @@
 # [aws_lambda_events](https://github.com/LegNeato/aws-lambda-events)
 
 [![Build Status](https://travis-ci.org/LegNeato/aws-lambda-events.svg?branch=master)](https://travis-ci.org/LegNeato/aws-lambda-events)
-[![Documentation](https://docs.rs/aws_lambda_events/badge.svg?version=0.4.0)](https://docs.rs/aws_lambda_events/0.4.0)
+[![Documentation](https://docs.rs/aws_lambda_events/badge.svg?version=0.5.0)](https://docs.rs/aws_lambda_events/0.5.0)
 
 This crate provides strongly-typed [AWS Lambda event structs](https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html) in Rust.
 
@@ -11,7 +11,7 @@ Include the crate in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-aws_lambda_events = "^0.4.0"
+aws_lambda_events = "^0.5.0"
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ and deserialize AWS Lambda events into strongly-typed Rust structs.
 The types
 defined in this crate are usually used with handlers / runtimes provided by the [official Rust runtime](https://github.com/awslabs/aws-lambda-rust-runtime).
 
-For a list of supported AWS Lambda events and services, see [the crate reference documentation](https://docs.rs/aws_lambda_events/0.4.0).
+For a list of supported AWS Lambda events and services, see [the crate reference documentation](https://docs.rs/aws_lambda_events/0.5.0).
 
 ## How it works
 

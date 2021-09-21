@@ -4,7 +4,7 @@ post-release-commit-message = "Bump version to {{next_version}}"
 tag-prefix = "v"
 tag-message = "Release {{prefix}}{{version}}"
 pre-release-replacements = [
-  {file="README.md", search="0.4.0", replace="{{version}}"},
-  {file="release.toml", search="0.4.0", replace="{{version}}"},
+  {file="README.md", search="0.5.0", replace="{{version}}"},
+  {file="release.toml", search="0.5.0", replace="{{version}}"},
   { file="CHANGELOG.md", search="## master", replace="## master\n\n- No changes yet\n\n## [[{{version}}] - {{date}}](https://github.com/LegNeato/aws-lambda-events/releases/tag/v{{version}})"},
 ]
