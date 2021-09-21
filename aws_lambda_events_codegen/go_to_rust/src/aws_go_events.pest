@@ -17,8 +17,8 @@ ident_list = _{ !digit ~ ident ~ (" " ~ ident)+ }
 // Primitives
 boolean = { "bool" }
 byte = { "byte" }
-int = ${ "int" ~ ("32" | "64")* }
-uint = ${ "uint" ~ ("32" | "64")* }
+int = ${ "int" ~ ("8" | "16" | "32" | "64")* }
+uint = ${ "uint" ~ ("8" | "16"| "32" | "64")* }
 float = ${ "float" ~ ("32" | "64")* }
 string = { "string" }
 primitive = { boolean | byte | int | uint | float | string }

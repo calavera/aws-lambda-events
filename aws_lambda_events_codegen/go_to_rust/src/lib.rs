@@ -550,8 +550,8 @@ fn parse_json_mapping(pairs: Pairs<'_, Rule>) -> Result<JsonMapping, Error> {
 #[derive(Debug, Clone)]
 enum GoType {
     StringType,
-    IntType,
-    UnsignedIntType,
+    IntType(usize),
+    UnsignedIntType(usize),
     FloatType,
     BoolType,
     ByteType,
@@ -678,8 +678,14 @@ fn parse_go_type_pointer(pairs: Pairs<'_, Rule>) -> Result<GoType, Error> {
 fn parse_go_type_primitive(t: &str) -> Result<GoType, Error> {
     match t {
         "string" => Ok(GoType::StringType),
-        "int" | "int32" | "int64" => Ok(GoType::IntType),
-        "uint" | "uint32" | "uint64" => Ok(GoType::UnsignedIntType),
+        "int8" => Ok(GoType::IntType(8)),
+        "int16" => Ok(GoType::IntType(16)),
+        "int32" => Ok(GoType::IntType(32)),
+        "int" | "int64" => Ok(GoType::IntType(64)),
+        "uint8" => Ok(GoType::UnsignedIntType(8)),
+        "uint16" => Ok(GoType::UnsignedIntType(16)),
+        "uint32" => Ok(GoType::UnsignedIntType(32)),
+        "uint" | "uint64" => Ok(GoType::UnsignedIntType(64)),
         "float" | "float32" | "float64" => Ok(GoType::FloatType),
         "bool" => Ok(GoType::BoolType),
         "byte" => Ok(GoType::ByteType),
@@ -771,8 +777,20 @@ fn translate_go_type_to_rust_type<'a>(
         GoType::StringType => make_rust_type_with_no_libraries("String"),
         GoType::BoolType => make_rust_type_with_no_libraries("bool"),
         GoType::ByteType => make_rust_type_with_no_libraries("u8"),
-        GoType::IntType => make_rust_type_with_no_libraries("i64"),
-        GoType::UnsignedIntType => make_rust_type_with_no_libraries("u64"),
+        GoType::IntType(bits) => match bits {
+            8 => make_rust_type_with_no_libraries("i8"),
+            16 => make_rust_type_with_no_libraries("i16"),
+            32 => make_rust_type_with_no_libraries("i32"),
+            64 => make_rust_type_with_no_libraries("i64"),
+            _ => unimplemented!("unable to generate int of size {}", bits),
+        },
+        GoType::UnsignedIntType(bits) => match bits {
+            8 => make_rust_type_with_no_libraries("u8"),
+            16 => make_rust_type_with_no_libraries("u16"),
+            32 => make_rust_type_with_no_libraries("u32"),
+            64 => make_rust_type_with_no_libraries("u64"),
+            _ => unimplemented!("unable to generate unsigned int of size {}", bits),
+        },
         GoType::FloatType => make_rust_type_with_no_libraries("f64"),
         GoType::UserDefined(x) => {
             let rust_name = x.to_camel_case();
