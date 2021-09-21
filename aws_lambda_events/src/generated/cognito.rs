@@ -1,4 +1,7 @@
 use crate::custom_serde::*;
+use serde::de::DeserializeOwned;
+use serde::ser::Serialize;
+use serde_json::Value;
 use std::collections::HashMap;
 
 /// `CognitoEvent` contains data from an event sent from AWS Cognito Sync
@@ -332,6 +335,186 @@ pub struct CognitoEventUserPoolsChallengeResult {
     #[serde(default)]
     #[serde(rename = "challengeMetadata")]
     pub challenge_metadata: Option<String>,
+}
+
+/// `CognitoEventUserPoolsDefineAuthChallengeRequest` defines auth challenge request parameters
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsDefineAuthChallengeRequest {
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "userAttributes")]
+    pub user_attributes: HashMap<String, String>,
+    pub session: Vec<Option<CognitoEventUserPoolsChallengeResult>>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
+    #[serde(rename = "userNotFound")]
+    pub user_not_found: bool,
+}
+
+/// `CognitoEventUserPoolsDefineAuthChallengeResponse` defines auth challenge response parameters
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsDefineAuthChallengeResponse {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "challengeName")]
+    pub challenge_name: Option<String>,
+    #[serde(rename = "issueTokens")]
+    pub issue_tokens: bool,
+    #[serde(rename = "failAuthentication")]
+    pub fail_authentication: bool,
+}
+
+/// `CognitoEventUserPoolsDefineAuthChallenge` sent by AWS Cognito User Pools to initiate custom authentication flow
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsDefineAuthChallenge {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
+    pub request: CognitoEventUserPoolsDefineAuthChallengeRequest,
+    pub response: CognitoEventUserPoolsDefineAuthChallengeResponse,
+}
+
+/// `CognitoEventUserPoolsCreateAuthChallengeRequest` defines create auth challenge request parameters
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsCreateAuthChallengeRequest {
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "userAttributes")]
+    pub user_attributes: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "challengeName")]
+    pub challenge_name: Option<String>,
+    pub session: Vec<Option<CognitoEventUserPoolsChallengeResult>>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
+}
+
+/// `CognitoEventUserPoolsCreateAuthChallengeResponse` defines create auth challenge response rarameters
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsCreateAuthChallengeResponse {
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "publicChallengeParameters")]
+    pub public_challenge_parameters: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "privateChallengeParameters")]
+    pub private_challenge_parameters: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "challengeMetadata")]
+    pub challenge_metadata: Option<String>,
+}
+
+/// `CognitoEventUserPoolsCreateAuthChallenge` sent by AWS Cognito User Pools to create a challenge to present to the user
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsCreateAuthChallenge {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
+    pub request: CognitoEventUserPoolsCreateAuthChallengeRequest,
+    pub response: CognitoEventUserPoolsCreateAuthChallengeResponse,
+}
+
+/// `CognitoEventUserPoolsVerifyAuthChallengeRequest` defines verify auth challenge request parameters
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsVerifyAuthChallengeRequest<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "userAttributes")]
+    pub user_attributes: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "privateChallengeParameters")]
+    pub private_challenge_parameters: HashMap<String, String>,
+    #[serde(bound = "")]
+    #[serde(rename = "challengeAnswer")]
+    pub challenge_answer: Option<T1>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
+}
+
+/// `CognitoEventUserPoolsVerifyAuthChallengeResponse` defines verify auth challenge response parameters
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsVerifyAuthChallengeResponse {
+    #[serde(rename = "answerCorrect")]
+    pub answer_correct: bool,
+}
+
+/// `CognitoEventUserPoolsVerifyAuthChallenge` sent by AWS Cognito User Pools to verify if the response from the end user
+/// for a custom Auth Challenge is valid or not
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsVerifyAuthChallenge {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
+    pub request: CognitoEventUserPoolsVerifyAuthChallengeRequest,
+    pub response: CognitoEventUserPoolsVerifyAuthChallengeResponse,
+}
+
+/// `CognitoEventUserPoolsCustomMessage` is sent by AWS Cognito User Pools before a verification or MFA message is sent,
+/// allowing a user to customize the message dynamically.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsCustomMessage {
+    #[serde(rename = "CognitoEventUserPoolsHeader")]
+    #[serde(flatten)]
+    pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
+    pub request: CognitoEventUserPoolsCustomMessageRequest,
+    pub response: CognitoEventUserPoolsCustomMessageResponse,
+}
+
+/// `CognitoEventUserPoolsCustomMessageRequest` contains the request portion of a CustomMessage event
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsCustomMessageRequest<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(bound = "")]
+    #[serde(rename = "userAttributes")]
+    pub user_attributes: HashMap<String, T1>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "codeParameter")]
+    pub code_parameter: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "usernameParameter")]
+    pub username_parameter: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "clientMetadata")]
+    pub client_metadata: HashMap<String, String>,
+}
+
+/// `CognitoEventUserPoolsCustomMessageResponse` contains the response portion of a CustomMessage event
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsCustomMessageResponse {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "smsMessage")]
+    pub sms_message: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "emailMessage")]
+    pub email_message: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "emailSubject")]
+    pub email_subject: Option<String>,
 }
 
 #[cfg(test)]
