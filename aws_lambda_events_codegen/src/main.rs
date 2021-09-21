@@ -1,7 +1,5 @@
-use go_to_rust;
 #[macro_use]
 extern crate quicli;
-use codegen;
 
 use quicli::prelude::*;
 use std::collections::{HashMap, HashSet};
@@ -22,6 +20,7 @@ struct ExampleEvent {
 struct ParsedEventFile {
     service_name: String,
     path: PathBuf,
+    #[allow(dead_code)]
     go: go_to_rust::GoCode,
     rust: go_to_rust::RustCode,
     example_events: Vec<ExampleEvent>,
@@ -58,7 +57,7 @@ fn get_blacklist() -> HashSet<String> {
     blacklist
 }
 
-fn overwrite_warning(path: &PathBuf, overwrite: bool) -> Option<()> {
+fn overwrite_warning(path: &Path, overwrite: bool) -> Option<()> {
     if path.exists() && !overwrite {
         error!(
             "File already exists and `--overwrite` not specified. Skipping: {}",
@@ -70,11 +69,11 @@ fn overwrite_warning(path: &PathBuf, overwrite: bool) -> Option<()> {
 }
 
 fn write_mod_index(
-    mod_path: &PathBuf,
+    mod_path: &Path,
     parsed_files: &[ParsedEventFile],
     overwrite: bool,
 ) -> Result<()> {
-    if overwrite_warning(&mod_path, overwrite).is_none() {
+    if overwrite_warning(mod_path, overwrite).is_none() {
         let mut mod_content: Vec<String> = Vec::new();
         for parsed in parsed_files {
             mod_content.push(format!(
@@ -97,18 +96,19 @@ fn write_mod_index(
     Ok(())
 }
 
-fn write_readme(readme_path: &PathBuf, git_hash: &str, overwrite: bool) -> Result<()> {
-    if overwrite_warning(&readme_path, overwrite).is_none() {
+fn write_readme(readme_path: &Path, git_hash: &str, overwrite: bool) -> Result<()> {
+    if overwrite_warning(readme_path, overwrite).is_none() {
         let version_text = format!(
             "Generated from commit [{}](https://github.com/aws/aws-lambda-go/commit/{}).",
             git_hash, git_hash,
         );
-        let mut content: Vec<&str> = Vec::new();
-        content.push("# AWS lambda event types.");
-        content.push("");
-        content.push("These types are automatically generated from the");
-        content.push("[official Go SDK](https://github.com/aws/aws-lambda-go/tree/master/events).");
-        content.push("");
+        let mut content: Vec<&str> = vec![
+            "# AWS lambda event types.",
+            "",
+            "These types are automatically generated from the",
+            "[official Go SDK](https://github.com/aws/aws-lambda-go/tree/master/events).",
+            "",
+        ];
         content.push(&version_text);
         let mut f = File::create(readme_path)?;
         f.write_all(content.join("\n").as_bytes())?;
@@ -268,7 +268,7 @@ fn find_custom_examples(
     }
 }
 
-fn read_example_event(test_fixture: &PathBuf) -> String {
+fn read_example_event(test_fixture: &Path) -> String {
     let mut f = File::open(test_fixture).expect("fixture not found");
     let mut contents = String::new();
     f.read_to_string(&mut contents)
@@ -277,7 +277,7 @@ fn read_example_event(test_fixture: &PathBuf) -> String {
     contents
 }
 
-fn write_fixture(example_event: &ExampleEvent, out_dir: &PathBuf, overwrite: bool) -> Result<()> {
+fn write_fixture(example_event: &ExampleEvent, out_dir: &Path, overwrite: bool) -> Result<()> {
     // Write the example event to the output location.
     let full = out_dir.join("fixtures").join(&example_event.name);
     {
@@ -352,7 +352,7 @@ main!(|args: Cli, log_level: verbosity| {
     // Some files we don't properly handle yet.
     let blacklist = get_blacklist();
 
-    let example_event_path = args.sdk_location.clone().join("events/testdata");
+    let example_event_path = args.sdk_location.join("events/testdata");
     let fuzzy_example_events = get_fuzzy_file_listing(&example_event_path)?;
 
     // Loop over matched files.
@@ -407,7 +407,7 @@ main!(|args: Cli, log_level: verbosity| {
             for example_event in &parsed.example_events {
                 // Write the example event to a test fixture.
                 trace!("Writing fixure for: {:?}", parsed.service_name);
-                let _ = write_fixture(&example_event, &out_dir, args.overwrite)?;
+                let _ = write_fixture(example_event, &out_dir, args.overwrite)?;
             }
 
             trace!("Generating test module for: {:?}", parsed.service_name);
@@ -423,7 +423,7 @@ main!(|args: Cli, log_level: verbosity| {
     }
 
     // Write the crate index.
-    let mod_path = args.output_location.clone().join("mod.rs");
+    let mod_path = args.output_location.join("mod.rs");
     write_mod_index(&mod_path, &parsed_files, args.overwrite)?;
 
     // Write the crate readme.
@@ -439,6 +439,6 @@ main!(|args: Cli, log_level: verbosity| {
         .expect("failed to execute git")
         .stdout;
     let git_hash = String::from_utf8_lossy(&output);
-    let readme_path = args.output_location.clone().join("README.md");
+    let readme_path = args.output_location.join("README.md");
     write_readme(&readme_path, git_hash.trim(), args.overwrite)?;
 });

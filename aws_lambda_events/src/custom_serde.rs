@@ -98,7 +98,7 @@ where
     decode(&s).map_err(DeError::custom)
 }
 
-pub(crate) fn serialize_base64<S>(value: &Vec<u8>, serializer: S) -> Result<S::Ok, S::Error>
+pub(crate) fn serialize_base64<S>(value: &[u8], serializer: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
@@ -112,7 +112,9 @@ where
     D: Deserializer<'de>,
 {
     match Option::deserialize(deserializer)? {
-        Some(s) => {
+        Some(s) =>
+        {
+            #[allow(clippy::comparison_to_empty)]
             if s == "" {
                 Ok(None)
             } else {
@@ -136,7 +138,7 @@ where
 {
     // https://github.com/serde-rs/serde/issues/1098
     let opt = Option::deserialize(deserializer)?;
-    Ok(opt.unwrap_or(HashMap::default()))
+    Ok(opt.unwrap_or_default())
 }
 
 pub(crate) fn serialize_duration_seconds<S>(
