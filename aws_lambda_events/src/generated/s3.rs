@@ -78,6 +78,7 @@ pub struct S3Bucket {
     pub name: Option<String>,
     #[serde(rename = "ownerIdentity")]
     pub owner_identity: S3UserIdentity,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub arn: Option<String>,

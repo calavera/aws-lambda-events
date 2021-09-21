@@ -35,6 +35,7 @@ pub struct CodeCommitRecord {
     #[serde(default)]
     #[serde(rename = "eventName")]
     pub event_name: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eventTriggerConfigId")]

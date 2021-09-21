@@ -1,5 +1,6 @@
 use super::super::encodings::{Base64Data, MillisecondTimestamp};
 use crate::custom_serde::*;
+use std::collections::HashMap;
 
 /// `KinesisFirehoseEvent` represents the input event from Amazon Kinesis Firehose. It is used as the input parameter.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -8,10 +9,12 @@ pub struct KinesisFirehoseEvent {
     #[serde(default)]
     #[serde(rename = "invocationId")]
     pub invocation_id: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "deliveryStreamArn")]
     pub delivery_stream_arn: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "sourceKinesisStreamArn")]
@@ -51,6 +54,15 @@ pub struct KinesisFirehoseResponseRecord {
     #[serde(default)]
     pub result: Option<String>,
     pub data: Base64Data,
+    pub metadata: KinesisFirehoseResponseRecordMetadata,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct KinesisFirehoseResponseRecordMetadata {
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(rename = "partitionKeys")]
+    pub partition_keys: HashMap<String, String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]

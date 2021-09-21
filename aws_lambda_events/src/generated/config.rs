@@ -9,10 +9,13 @@ pub struct ConfigEvent {
     #[serde(rename = "accountId")]
     pub account_id: Option<String>,
     /// The ARN that AWS Config assigned to the rule
+    ///
+    /// nolint:stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "configRuleArn")]
     pub config_rule_arn: Option<String>,
+    /// nolint:stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "configRuleId")]
@@ -25,6 +28,7 @@ pub struct ConfigEvent {
     /// A boolean value that indicates whether the AWS resource to be evaluated has been removed from the rule's scope
     #[serde(rename = "eventLeftScope")]
     pub event_left_scope: bool,
+    /// nolint:stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "executionRoleArn")]
