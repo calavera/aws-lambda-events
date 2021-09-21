@@ -1,0 +1,12 @@
+type Foo struct {
+	a   int
+	b   int8 
+	c   int16
+	d   int32
+	e   int64
+	ua    uint 
+	ub    uint8 
+	uc    uint16 
+	ud    uint32
+	ue    uint64
+}
