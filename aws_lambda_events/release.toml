@@ -1,7 +1,6 @@
 dev-version-ext = "pre"
 pre-release-commit-message = "Release {{version}}"
 post-release-commit-message = "Bump version to {{next_version}}"
-tag-prefix = "v"
 tag-message = "Release {{prefix}}{{version}}"
 pre-release-replacements = [
   {file="README.md", search="0.5.0", replace="{{version}}"},
