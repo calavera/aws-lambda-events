@@ -985,7 +985,12 @@ fn translate_go_type_to_rust_type<'a>(
 
 fn is_http_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
     match def {
-        Some(s) => s.member_name == "headers" || s.member_name == "multi_value_headers",
+        Some(s) => match s.struct_name {
+            // Structs that should not have http headers.
+            "RabbitMqBasicProperties" => dbg!(false),
+            // Use heuristics for any structs not on the deny list.
+            _ => (s.member_name == "headers" || is_http_multivalue_headers(def)),
+        },
         _ => false,
     }
 }
@@ -997,14 +1002,10 @@ fn is_http_multivalue_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
 
 fn is_http_method<'a>(def: Option<&'a StructureFieldDef>) -> bool {
     match def {
-        Some(&StructureFieldDef {
-            member_name,
-            struct_name,
-            ..
-        }) => {
-            member_name == "http_method"
-                || (struct_name == "ApiGatewayV2httpRequestContextHttpDescription"
-                    && member_name == "method")
+        Some(s) => {
+            s.member_name == "http_method"
+                || (s.struct_name == "ApiGatewayV2httpRequestContextHttpDescription"
+                    && s.member_name == "method")
         }
         _ => false,
     }
@@ -1016,15 +1017,11 @@ fn is_optional_type(rust_type: &str) -> bool {
 
 fn is_http_body<'a>(def: Option<&'a StructureFieldDef>) -> bool {
     match def {
-        Some(&StructureFieldDef {
-            member_name,
-            struct_name,
-            ..
-        }) => {
-            member_name == "body"
-                && (struct_name == "ApiGatewayProxyResponse"
-                    || struct_name == "ApiGatewayV2httpResponse"
-                    || struct_name == "AlbTargetGroupResponse")
+        Some(s) => {
+            s.member_name == "body"
+                && (s.struct_name == "ApiGatewayProxyResponse"
+                    || s.struct_name == "ApiGatewayV2httpResponse"
+                    || s.struct_name == "AlbTargetGroupResponse")
         }
         _ => false,
     }
