@@ -22,6 +22,8 @@ pub mod code_commit;
 pub mod codebuild;
 /// AWS Lambda event definitions for codedeploy.
 pub mod codedeploy;
+/// AWS Lambda event definitions for codepipeline.
+pub mod codepipeline;
 /// AWS Lambda event definitions for codepipeline_job.
 pub mod codepipeline_job;
 /// AWS Lambda event definitions for cognito.
@@ -30,6 +32,8 @@ pub mod cognito;
 pub mod config;
 /// AWS Lambda event definitions for connect.
 pub mod connect;
+/// AWS Lambda event definitions for ecr_scan.
+pub mod ecr_scan;
 /// AWS Lambda event definitions for firehose.
 pub mod firehose;
 /// AWS Lambda event definitions for iot_1_click.

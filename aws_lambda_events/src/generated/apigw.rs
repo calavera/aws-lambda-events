@@ -214,6 +214,7 @@ pub struct ApiGatewayV2httpRequestContext {
     #[serde(rename = "timeEpoch")]
     pub time_epoch: i64,
     pub http: ApiGatewayV2httpRequestContextHttpDescription,
+    pub authentication: ApiGatewayV2httpRequestContextAuthentication,
 }
 
 /// `ApiGatewayV2httpRequestContextAuthorizerDescription` contains authorizer information for the request context.
@@ -519,7 +520,7 @@ where
     pub status: Option<String>,
 }
 
-/// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentity` contains identity information for the request caller.
+/// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentity` contains identity information for the request caller including certificate information if using mTLS.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -530,6 +531,85 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
     #[serde(default)]
     #[serde(rename = "sourceIp")]
     pub source_ip: Option<String>,
+    #[serde(rename = "clientCert")]
+    pub client_cert: ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert,
+}
+
+/// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert` contains certificate information for the request caller if using mTLS.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "clientCertPem")]
+    pub client_cert_pem: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "issuerDN")]
+    pub issuer_dn: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "serialNumber")]
+    pub serial_number: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "subjectDN")]
+    pub subject_dn: Option<String>,
+    pub validity: ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity,
+}
+
+/// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity` contains certificate validity information for the request caller if using mTLS.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "notAfter")]
+    pub not_after: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "notBefore")]
+    pub not_before: Option<String>,
+}
+
+/// `ApiGatewayV2httpRequestContextAuthentication` contains authentication context information for the request caller including client certificate information if using mTLS.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpRequestContextAuthentication {
+    #[serde(rename = "clientCert")]
+    pub client_cert: ApiGatewayV2httpRequestContextAuthenticationClientCert,
+}
+
+/// `ApiGatewayV2httpRequestContextAuthenticationClientCert` contains client certificate information for the request caller if using mTLS.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpRequestContextAuthenticationClientCert {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "clientCertPem")]
+    pub client_cert_pem: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "issuerDN")]
+    pub issuer_dn: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "serialNumber")]
+    pub serial_number: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "subjectDN")]
+    pub subject_dn: Option<String>,
+    pub validity: ApiGatewayV2httpRequestContextAuthenticationClientCertValidity,
+}
+
+/// `ApiGatewayV2httpRequestContextAuthenticationClientCertValidity` contains client certificate validity information for the request caller if using mTLS.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2httpRequestContextAuthenticationClientCertValidity {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "notAfter")]
+    pub not_after: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "notBefore")]
+    pub not_before: Option<String>,
 }
 
 /// `ApiGatewayCustomAuthorizerContext` represents the expected format of an API Gateway custom authorizer response.
@@ -665,6 +745,21 @@ where
     pub context: HashMap<String, T1>,
     #[serde(rename = "usageIdentifierKey")]
     pub usage_identifier_key: Option<String>,
+}
+
+/// `ApiGatewayV2CustomAuthorizerSimpleResponse` represents the simple format of an API Gateway V2 authorization response.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct ApiGatewayV2CustomAuthorizerSimpleResponse<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
+    #[serde(rename = "isAuthorized")]
+    pub is_authorized: bool,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(bound = "")]
+    pub context: HashMap<String, T1>,
 }
 
 /// `ApiGatewayCustomAuthorizerPolicy` represents an IAM policy
