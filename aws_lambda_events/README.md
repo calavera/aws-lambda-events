@@ -20,8 +20,7 @@ The crate itself has no AWS Lambda handler logic and instead exists to serialize
 and deserialize AWS Lambda events into strongly-typed Rust structs.
 
 The types
-defined in this crate are usually used with handlers / runtimes provided by the [official Rust runtime](https://github.com/awslabs/aws-lambda-rust-runtime) or community projects such as [`rust-aws-lambda`](https://github.com/srijs/rust-aws-lambda),
-[`rust-crowbar`](https://github.com/ilianaw/rust-crowbar), and [`serverless_rust`](https://github.com/softprops/serverless-rust).
+defined in this crate are usually used with handlers / runtimes provided by the [official Rust runtime](https://github.com/awslabs/aws-lambda-rust-runtime).
 
 For a list of supported AWS Lambda events and services, see [the crate reference documentation](https://docs.rs/aws_lambda_events/0.4.0).
 
