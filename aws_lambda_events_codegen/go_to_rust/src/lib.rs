@@ -7,7 +7,6 @@ extern crate pest;
 extern crate pest;
 #[macro_use]
 extern crate pest_derive;
-use codegen;
 
 #[macro_use]
 extern crate lazy_static;
@@ -23,7 +22,7 @@ use std::collections::HashSet;
 use std::fmt;
 use std::fs::File;
 use std::io::prelude::*;
-use std::path::PathBuf;
+use std::path::Path;
 
 lazy_static! {
     static ref HASHMAP_RE: Regex = Regex::new("^HashMap<.+>$").expect("regex to compile");
@@ -65,7 +64,7 @@ impl PartialEq for RustCode {
     }
 }
 
-pub fn parse_go_file(path: &PathBuf) -> Result<(GoCode, RustCode), Error> {
+pub fn parse_go_file(path: &Path) -> Result<(GoCode, RustCode), Error> {
     debug!("Parsing path: {:?}", &path.display());
 
     // Read the go code.
@@ -74,8 +73,8 @@ pub fn parse_go_file(path: &PathBuf) -> Result<(GoCode, RustCode), Error> {
     f.read_to_string(&mut go_code)?;
     debug!("\n{}\n", go_code);
 
-    // parse the go code into rust code.
-    Ok(parse_go_string(go_code)?)
+    // Parse the go code into rust code.
+    parse_go_string(go_code)
 }
 
 fn add_sorted_imports(scope: &mut Scope, libraries: &HashSet<String>) {
@@ -94,7 +93,7 @@ fn add_sorted_imports(scope: &mut Scope, libraries: &HashSet<String>) {
 pub fn parse_go_string(go_source: String) -> Result<(GoCode, RustCode), Error> {
     let source = go_source.clone();
 
-    let pairs = AwsGoEventsParser::parse(Rule::aws_go_events, &source.trim())
+    let pairs = AwsGoEventsParser::parse(Rule::aws_go_events, source.trim())
         .unwrap_or_else(|e| panic!("{}", e));
 
     let mut scope = Scope::new();
@@ -156,6 +155,7 @@ struct FieldDef {
 struct StructureFieldDef<'a> {
     struct_name: &'a str,
     member_name: &'a str,
+    #[allow(dead_code)]
     omit_empty: bool,
 }
 
@@ -983,7 +983,7 @@ fn translate_go_type_to_rust_type<'a>(
     Ok(rust_type)
 }
 
-fn is_http_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
+fn is_http_headers(def: Option<&StructureFieldDef>) -> bool {
     match def {
         Some(s) => match s.struct_name {
             // Structs that should not have http headers.
@@ -995,12 +995,12 @@ fn is_http_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
     }
 }
 
-fn is_http_multivalue_headers<'a>(def: Option<&'a StructureFieldDef>) -> bool {
+fn is_http_multivalue_headers(def: Option<&StructureFieldDef>) -> bool {
     def.map(|s| s.member_name == "multi_value_headers")
         .unwrap_or_default()
 }
 
-fn is_http_method<'a>(def: Option<&'a StructureFieldDef>) -> bool {
+fn is_http_method(def: Option<&StructureFieldDef>) -> bool {
     match def {
         Some(s) => {
             s.member_name == "http_method"
@@ -1015,7 +1015,7 @@ fn is_optional_type(rust_type: &str) -> bool {
     !(HASHMAP_RE.is_match(rust_type) || rust_type == "HeaderMap")
 }
 
-fn is_http_body<'a>(def: Option<&'a StructureFieldDef>) -> bool {
+fn is_http_body(def: Option<&StructureFieldDef>) -> bool {
     match def {
         Some(s) => {
             s.member_name == "body"
