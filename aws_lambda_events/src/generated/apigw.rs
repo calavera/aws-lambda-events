@@ -369,6 +369,7 @@ pub struct ApiGatewayRequestIdentity {
     #[serde(default)]
     #[serde(rename = "cognitoAuthenticationProvider")]
     pub cognito_authentication_provider: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "userArn")]
@@ -673,6 +674,7 @@ pub struct ApiGatewayCustomAuthorizerRequest {
     #[serde(default)]
     #[serde(rename = "authorizationToken")]
     pub authorization_token: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "methodArn")]
@@ -686,6 +688,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     #[serde(default)]
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "methodArn")]

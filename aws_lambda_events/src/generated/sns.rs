@@ -17,6 +17,7 @@ pub struct SnsEventRecord {
     #[serde(default)]
     #[serde(rename = "EventVersion")]
     pub event_version: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "EventSubscriptionArn")]
@@ -47,6 +48,7 @@ where
     #[serde(default)]
     #[serde(rename = "Type")]
     pub type_: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "TopicArn")]

@@ -9,6 +9,7 @@ pub struct KinesisEvent {
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct KinesisEventRecord {
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "awsRegion")]
@@ -25,6 +26,7 @@ pub struct KinesisEventRecord {
     #[serde(default)]
     #[serde(rename = "eventSource")]
     pub event_source: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eventSourceARN")]
@@ -33,6 +35,7 @@ pub struct KinesisEventRecord {
     #[serde(default)]
     #[serde(rename = "eventVersion")]
     pub event_version: Option<String>,
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "invokeIdentityArn")]

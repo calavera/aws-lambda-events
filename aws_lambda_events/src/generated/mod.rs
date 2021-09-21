@@ -24,6 +24,8 @@ pub mod codebuild;
 pub mod codedeploy;
 /// AWS Lambda event definitions for codepipeline.
 pub mod codepipeline;
+/// AWS Lambda event definitions for codepipeline_cloudwatch.
+pub mod codepipeline_cloudwatch;
 /// AWS Lambda event definitions for codepipeline_job.
 pub mod codepipeline_job;
 /// AWS Lambda event definitions for cognito.
@@ -36,6 +38,8 @@ pub mod connect;
 pub mod ecr_scan;
 /// AWS Lambda event definitions for firehose.
 pub mod firehose;
+/// AWS Lambda event definitions for iot.
+pub mod iot;
 /// AWS Lambda event definitions for iot_1_click.
 pub mod iot_1_click;
 /// AWS Lambda event definitions for iot_button.
@@ -48,6 +52,8 @@ pub mod kinesis;
 pub mod kinesis_analytics;
 /// AWS Lambda event definitions for lex.
 pub mod lex;
+/// AWS Lambda event definitions for rabbitmq.
+pub mod rabbitmq;
 /// AWS Lambda event definitions for s3.
 pub mod s3;
 /// AWS Lambda event definitions for s3_batch_job.

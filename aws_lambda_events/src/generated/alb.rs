@@ -45,6 +45,7 @@ pub struct AlbTargetGroupRequestContext {
 /// `ElbContext` contains the information to identify the ARN invoking the lambda
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ElbContext {
+    /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "targetGroupArn")]

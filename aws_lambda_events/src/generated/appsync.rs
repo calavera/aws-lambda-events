@@ -74,3 +74,68 @@ where
 }
 
 pub type AppSyncOperation = String;
+
+/// `AppSyncLambdaAuthorizerRequest` contains an authorization request from AppSync.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct AppSyncLambdaAuthorizerRequest {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "authorizationToken")]
+    pub authorization_token: Option<String>,
+    #[serde(rename = "requestContext")]
+    pub request_context: AppSyncLambdaAuthorizerRequestContext,
+}
+
+/// `AppSyncLambdaAuthorizerRequestContext` contains the parameters of the AppSync invocation which triggered
+/// this authorization request.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct AppSyncLambdaAuthorizerRequestContext<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "apiId")]
+    pub apiid: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "accountId")]
+    pub account_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "requestId")]
+    pub request_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "queryString")]
+    pub query_string: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "operationName")]
+    pub operation_name: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(bound = "")]
+    pub variables: HashMap<String, T1>,
+}
+
+/// `AppSyncLambdaAuthorizerResponse` represents the expected format of an authorization response to AppSync.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct AppSyncLambdaAuthorizerResponse<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
+    #[serde(rename = "isAuthorized")]
+    pub is_authorized: bool,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(bound = "")]
+    #[serde(rename = "resolverContext")]
+    pub resolver_context: HashMap<String, T1>,
+    #[serde(rename = "deniedFields")]
+    pub denied_fields: Option<Vec<String>>,
+    #[serde(rename = "ttlOverride")]
+    pub ttl_override: Option<i64>,
+}
