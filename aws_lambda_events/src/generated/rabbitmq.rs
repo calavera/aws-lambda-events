@@ -1,4 +1,5 @@
 use crate::custom_serde::*;
+use http::HeaderMap;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -25,6 +26,47 @@ pub struct RabbitMqMessage {
     #[serde(default)]
     pub data: Option<String>,
     pub redelivered: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct RabbitMqBasicProperties {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "contentType")]
+    pub content_type: Option<String>,
+    #[serde(rename = "contentEncoding")]
+    pub content_encoding: Option<String>,
+    /// Application or header exchange table
+    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(serialize_with = "serialize_headers")]
+    pub headers: HeaderMap,
+    #[serde(rename = "deliveryMode")]
+    pub delivery_mode: u8,
+    pub priority: u8,
+    #[serde(rename = "correlationId")]
+    pub correlation_id: Option<String>,
+    #[serde(rename = "replyTo")]
+    pub reply_to: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub expiration: Option<String>,
+    #[serde(rename = "messageId")]
+    pub message_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub timestamp: Option<String>,
+    #[serde(rename = "type")]
+    pub type_: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "userId")]
+    pub user_id: Option<String>,
+    #[serde(rename = "appId")]
+    pub app_id: Option<String>,
+    #[serde(rename = "clusterId")]
+    pub cluster_id: Option<String>,
+    #[serde(rename = "bodySize")]
+    pub body_size: u64,
 }
 
 #[cfg(test)]
