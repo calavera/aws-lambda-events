@@ -62,9 +62,9 @@ pub struct IoTCustomAuthorizerResponse {
     #[serde(rename = "principalId")]
     pub principal_id: Option<String>,
     #[serde(rename = "disconnectAfterInSeconds")]
-    pub disconnect_after_in_seconds: i64,
+    pub disconnect_after_in_seconds: i32,
     #[serde(rename = "refreshAfterInSeconds")]
-    pub refresh_after_in_seconds: i64,
+    pub refresh_after_in_seconds: i32,
     #[serde(rename = "policyDocuments")]
     pub policy_documents: Vec<String>,
 }
