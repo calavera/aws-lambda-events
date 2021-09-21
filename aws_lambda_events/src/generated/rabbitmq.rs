@@ -1,5 +1,7 @@
 use crate::custom_serde::*;
-use http::HeaderMap;
+use serde::de::DeserializeOwned;
+use serde::ser::Serialize;
+use serde_json::Value;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -29,7 +31,11 @@ pub struct RabbitMqMessage {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct RabbitMqBasicProperties {
+pub struct RabbitMqBasicProperties<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "contentType")]
@@ -37,9 +43,10 @@ pub struct RabbitMqBasicProperties {
     #[serde(rename = "contentEncoding")]
     pub content_encoding: Option<String>,
     /// Application or header exchange table
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
-    #[serde(serialize_with = "serialize_headers")]
-    pub headers: HeaderMap,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    #[serde(bound = "")]
+    pub headers: HashMap<String, T1>,
     #[serde(rename = "deliveryMode")]
     pub delivery_mode: u8,
     pub priority: u8,
