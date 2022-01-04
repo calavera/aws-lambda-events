@@ -13,7 +13,7 @@ pub struct Event {
     pub start_time: String,
     pub end_time: String,
     pub event_description: Vec<EventDescription>,
-    pub affected_entities: Option<Vec<>>,
+    pub affected_entities: Option<Vec<Entity>>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
