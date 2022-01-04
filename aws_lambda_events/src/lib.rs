@@ -20,4 +20,7 @@ mod custom_serde;
 pub mod encodings;
 /// AWS Lambda event definitions.
 pub mod event;
+/// CloudWatch Events payload
+pub mod cloudwatch_events;
+
 mod generated;
