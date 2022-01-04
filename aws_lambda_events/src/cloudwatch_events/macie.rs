@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
@@ -90,7 +92,7 @@ pub struct Location {
 pub struct ActionInfo {
     pub count: i64,
     #[serde(rename = "ISP")]
-    pub isp: Isp,
+    pub isp: HashMap<String, i64>,
     pub error_code: Option<HashMap<String, i64>>,
 }
 
@@ -178,7 +180,7 @@ pub struct BucketContainsHighRiskObjectSummary {
     #[serde(rename = "Owner")]
     pub owner: HashMap<String, i64>,
     #[serde(rename = "Timestamps")]
-    pub timestamps: Timestamps,
+    pub timestamps: HashMap<String, i64>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -196,12 +198,12 @@ pub struct AlertUpdated {
     #[serde(rename = "created-at")]
     pub created_at: String,
     pub actor: String,
-    pub trigger: Trigger,
+    pub trigger: UpdatedTrigger,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Trigger {
+pub struct UpdatedTrigger {
     #[serde(rename = "alert-type")]
     pub alert_type: String,
     pub features: HashMap<String, FeatureInfo>,

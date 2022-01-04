@@ -14,7 +14,7 @@ pub struct StateChangeNotification {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct InstanceStateChangeNotification {
+pub struct DeploymentStateChangeNotification {
     pub instance_id: String,
     pub region: String,
     pub state: String,
