@@ -4,7 +4,7 @@ use serde_json::Value;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct AWSAPICall<T = Value> {
+pub struct AWSAPICall<I = Value, O = Value> {
     pub event_version: String,
     pub user_identity: UserIdentity,
     pub event_time: String,
@@ -14,8 +14,8 @@ pub struct AWSAPICall<T = Value> {
     #[serde(rename = "sourceIPAddress")]
     pub source_ipaddress: String,
     pub user_agent: String,
-    pub request_parameters: T,
-    pub response_elements: Value,
+    pub request_parameters: I,
+    pub response_elements: O,
     #[serde(rename = "requestID")]
     pub request_id: String,
     #[serde(rename = "eventID")]
