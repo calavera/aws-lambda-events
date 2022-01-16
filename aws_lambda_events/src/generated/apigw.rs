@@ -467,9 +467,11 @@ where
     pub resource_path: Option<String>,
     #[serde(bound = "")]
     pub authorizer: Option<T1>,
-    #[serde(with = "http_method")]
+    #[serde(deserialize_with = "http_method::deserialize_optional")]
+    #[serde(serialize_with = "http_method::serialize_optional")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "httpMethod")]
-    pub http_method: Method,
+    pub http_method: Option<Method>,
     /// The API Gateway rest API Id
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
