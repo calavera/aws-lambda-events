@@ -60,6 +60,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "config")]
     fn example_config_event() {
         let data = include_bytes!("fixtures/example-config-event.json");
         let parsed: ConfigEvent = serde_json::from_slice(data).unwrap();

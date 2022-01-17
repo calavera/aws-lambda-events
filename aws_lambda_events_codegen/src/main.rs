@@ -14,6 +14,7 @@ struct ExampleEvent {
     name: String,
     content: String,
     event_type: String,
+    service_name: String,
 }
 
 #[derive(Debug)]
@@ -80,6 +81,7 @@ fn write_mod_index(
                 "/// AWS Lambda event definitions for {}.",
                 parsed.service_name
             ));
+            mod_content.push(format!("#[cfg(feature = \"{}\")]", parsed.service_name));
             mod_content.push(format!(
                 "pub mod {};",
                 parsed
@@ -92,6 +94,32 @@ fn write_mod_index(
         let mut f = File::create(mod_path)?;
         f.write_all(mod_content.join("\n").as_bytes())?;
         f.write_all(b"\n")?;
+    }
+    Ok(())
+}
+
+fn write_cargo_features(
+    cargo_path: &Path,
+    parsed_files: &[ParsedEventFile],
+    overwrite: bool,
+) -> Result<()> {
+    if overwrite_warning(cargo_path, overwrite).is_none() {
+        let buf = std::fs::read_to_string(cargo_path)?;
+        let mut doc = buf.parse::<toml_edit::Document>()?;
+
+        let mut all = toml_edit::Array::new();
+        if !doc.contains_key("features") {
+            doc["features"] = toml_edit::table();
+        }
+
+        for parsed in parsed_files {
+            let feat = &parsed.service_name;
+            all.push(feat);
+            doc["features"][feat] = toml_edit::value(toml_edit::Array::default());
+        }
+        doc["features"]["default"] = toml_edit::value(all);
+
+        std::fs::write(cargo_path, &doc.to_string())?;
     }
     Ok(())
 }
@@ -182,6 +210,7 @@ fn find_example_events(
                 name: format!("example-{}-event.json", &service_name),
                 content,
                 event_type: event_type.clone(),
+                service_name: service_name.into(),
             });
         }
     };
@@ -257,6 +286,12 @@ fn find_custom_examples(
                 name: name.to_string(),
                 content,
                 event_type: event_type.to_string(),
+                service_name: name
+                    .split('-')
+                    .into_iter()
+                    .next()
+                    .map(String::from)
+                    .unwrap(),
             });
         }
     }
@@ -304,7 +339,7 @@ fn generate_test_module(example_events: &[ExampleEvent]) -> Result<codegen::Modu
     for e in example_events {
         let name = e.name.trim_end_matches(".json").replace("-", "_");
         let path = PathBuf::from("fixtures").join(&e.name);
-        let test_function = generate_test_function(&name, &e.event_type, path);
+        let test_function = generate_test_function(&name, &e.event_type, &e.service_name, path);
 
         test_module.scope().push_fn(test_function);
     }
@@ -315,10 +350,14 @@ fn generate_test_module(example_events: &[ExampleEvent]) -> Result<codegen::Modu
 fn generate_test_function(
     fn_name: &str,
     toplevel_type: &str,
+    service_name: &str,
     relative: PathBuf,
 ) -> codegen::Function {
     let mut test_function = codegen::Function::new(fn_name);
-    test_function.annotation(vec!["test"]);
+    test_function.annotation(vec![
+        "test",
+        &format!("cfg(feature = \"{}\")", service_name),
+    ]);
     // Include the fixture content.
     test_function.line(format!(
         r#"let data = include_bytes!("{}");"#,
@@ -441,4 +480,21 @@ main!(|args: Cli, log_level: verbosity| {
     let git_hash = String::from_utf8_lossy(&output);
     let readme_path = args.output_location.join("README.md");
     write_readme(&readme_path, git_hash.trim(), args.overwrite)?;
+
+    // Write the features in Cargo.toml
+    if let Some(cargo_path) = find_cargo_file(&args.output_location) {
+        write_cargo_features(&cargo_path, &parsed_files, args.overwrite)?;
+    }
 });
+
+fn find_cargo_file(base: &Path) -> Option<PathBuf> {
+    if let Some(path) = base.parent() {
+        let guess = path.join("Cargo.toml");
+        if guess.is_file() {
+            return Some(guess);
+        } else {
+            return find_cargo_file(path);
+        }
+    }
+    None
+}

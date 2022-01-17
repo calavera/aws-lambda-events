@@ -524,6 +524,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "cognito")]
     fn example_cognito_event() {
         let data = include_bytes!("fixtures/example-cognito-event.json");
         let parsed: CognitoEvent = serde_json::from_slice(data).unwrap();

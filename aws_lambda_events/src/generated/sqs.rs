@@ -74,6 +74,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "sqs")]
     fn example_sqs_event() {
         let data = include_bytes!("fixtures/example-sqs-event.json");
         let parsed: SqsEvent = serde_json::from_slice(data).unwrap();

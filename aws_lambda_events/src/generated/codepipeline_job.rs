@@ -135,6 +135,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "codepipeline_job")]
     fn example_codepipeline_job_event() {
         let data = include_bytes!("fixtures/example-codepipeline_job-event.json");
         let parsed: CodePipelineJobEvent = serde_json::from_slice(data).unwrap();

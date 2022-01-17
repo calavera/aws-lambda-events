@@ -66,6 +66,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "activemq")]
     fn example_activemq_event() {
         let data = include_bytes!("fixtures/example-activemq-event.json");
         let parsed: ActiveMqEvent = serde_json::from_slice(data).unwrap();

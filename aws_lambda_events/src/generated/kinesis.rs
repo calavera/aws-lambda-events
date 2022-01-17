@@ -71,6 +71,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "kinesis")]
     fn example_kinesis_event() {
         let data = include_bytes!("fixtures/example-kinesis-event.json");
         let parsed: KinesisEvent = serde_json::from_slice(data).unwrap();

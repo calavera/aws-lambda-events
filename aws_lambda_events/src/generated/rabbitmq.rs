@@ -83,6 +83,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "rabbitmq")]
     fn example_rabbitmq_event() {
         let data = include_bytes!("fixtures/example-rabbitmq-event.json");
         let parsed: RabbitMqEvent = serde_json::from_slice(data).unwrap();

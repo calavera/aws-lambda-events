@@ -128,6 +128,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "lex")]
     fn example_lex_event() {
         let data = include_bytes!("fixtures/example-lex-event.json");
         let parsed: LexEvent = serde_json::from_slice(data).unwrap();

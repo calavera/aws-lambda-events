@@ -114,6 +114,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "s3")]
     fn example_s3_event() {
         let data = include_bytes!("fixtures/example-s3-event.json");
         let parsed: S3Event = serde_json::from_slice(data).unwrap();

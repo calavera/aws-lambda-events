@@ -73,6 +73,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "iot_1_click")]
     fn example_iot_1_click_event() {
         let data = include_bytes!("fixtures/example-iot_1_click-event.json");
         let parsed: IoTOneClickEvent = serde_json::from_slice(data).unwrap();

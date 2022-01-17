@@ -11,3 +11,4 @@ glob = "0.3"
 go_to_rust = { path = "./go_to_rust" }
 # Needed to pick up a bunch of changes.
 codegen = { git = "https://github.com/LegNeato/codegen.git", branch = "issue-3-and-4-field-documentation-annotation"}
+toml_edit = "0.13.0"

@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 use base64::{decode, encode};
 use chrono::{DateTime, Duration, TimeZone, Utc};
 use http::HeaderMap;
