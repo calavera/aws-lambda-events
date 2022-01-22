@@ -3,6 +3,7 @@ use serde::ser::Serialize;
 use serde_json::Value;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct InterfaceMessage<T1=Value>
 where T1: DeserializeOwned,
       T1: Serialize,

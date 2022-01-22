@@ -13,7 +13,7 @@ extern crate lazy_static;
 
 use codegen::{Field, Scope, Struct};
 use failure::Error;
-use heck::{CamelCase, SnakeCase};
+use heck::{CamelCase, MixedCase, SnakeCase};
 use pest::iterators::Pairs;
 use pest::Parser;
 use regex::Regex;
@@ -267,6 +267,9 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
     rust_struct.derive("PartialEq");
     rust_struct.derive("Deserialize");
     rust_struct.derive("Serialize");
+    if !fields.is_empty() {
+        rust_struct.attr("serde(rename_all = \"camelCase\")");
+    }
     if is_default_http_context(&camel_cased_struct_name) {
         rust_struct.derive("Default");
     }
@@ -332,7 +335,7 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
         }
 
         if let Some(rename) = f.json_name.clone() {
-            if rename != member_name {
+            if rename != member_name.to_mixed_case() {
                 rust_data
                     .annotations
                     .push(format!("#[serde(rename = \"{}\")]", rename));

@@ -1,19 +1,19 @@
 use crate::custom_serde::*;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ActiveMqEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventSource")]
     pub event_source: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventSourceArn")]
     pub event_source_arn: Option<String>,
     pub messages: Vec<ActiveMqMessage>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ActiveMqMessage {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -21,10 +21,8 @@ pub struct ActiveMqMessage {
     pub message_id: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "messageType")]
     pub message_type: Option<String>,
     pub timestamp: i64,
-    #[serde(rename = "deliveryMode")]
     pub delivery_mode: i64,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -32,30 +30,26 @@ pub struct ActiveMqMessage {
     pub correlation_id: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "replyTo")]
     pub reply_to: Option<String>,
     pub destination: ActiveMqDestination,
     pub redelivered: bool,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "type")]
     pub type_: Option<String>,
     pub expiration: i64,
     pub priority: i64,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub data: Option<String>,
-    #[serde(rename = "brokerInTime")]
     pub broker_in_time: i64,
-    #[serde(rename = "brokerOutTime")]
     pub broker_out_time: i64,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ActiveMqDestination {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "physicalName")]
     pub physical_name: Option<String>,
 }
 

@@ -1,6 +1,7 @@
 use crate::custom_serde::*;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ClientVpnConnectionHandlerRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -40,6 +41,7 @@ pub struct ClientVpnConnectionHandlerRequest {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ClientVpnConnectionHandlerResponse {
     pub allow: bool,
     #[serde(deserialize_with = "deserialize_lambda_string")]

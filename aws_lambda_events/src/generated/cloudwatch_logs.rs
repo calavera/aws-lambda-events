@@ -2,6 +2,7 @@ use crate::custom_serde::*;
 
 /// `CloudwatchLogsEvent` represents raw data from a cloudwatch logs event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudwatchLogsEvent {
     #[serde(rename = "awslogs")]
     pub aws_logs: CloudwatchLogsRawData,
@@ -10,6 +11,7 @@ pub struct CloudwatchLogsEvent {
 /// `CloudwatchLogsRawData` contains gzipped base64 json representing the bulk
 /// of a cloudwatch logs event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudwatchLogsRawData {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -18,30 +20,27 @@ pub struct CloudwatchLogsRawData {
 
 /// `CloudwatchLogsData` is an unmarshal'd, ungzip'd, cloudwatch logs event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudwatchLogsData {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub owner: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "logGroup")]
     pub log_group: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "logStream")]
     pub log_stream: Option<String>,
-    #[serde(rename = "subscriptionFilters")]
     pub subscription_filters: Vec<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "messageType")]
     pub message_type: Option<String>,
-    #[serde(rename = "logEvents")]
     pub log_events: Vec<CloudwatchLogsLogEvent>,
 }
 
 /// `CloudwatchLogsLogEvent` represents a log entry from cloudwatch logs
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudwatchLogsLogEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]

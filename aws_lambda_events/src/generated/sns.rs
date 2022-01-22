@@ -6,12 +6,14 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SnsEvent {
     #[serde(rename = "Records")]
     pub records: Vec<SnsEventRecord>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SnsEventRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -31,6 +33,7 @@ pub struct SnsEventRecord {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SnsEntity<T1 = Value>
 where
     T1: DeserializeOwned,
@@ -83,6 +86,7 @@ where
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudWatchAlarmSnsPayload {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -125,6 +129,7 @@ pub struct CloudWatchAlarmSnsPayload {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudWatchAlarmTrigger {
     #[serde(rename = "Period")]
     pub period: i64,
@@ -161,6 +166,7 @@ pub struct CloudWatchAlarmTrigger {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudWatchMetricDataQuery {
     #[serde(rename = "Expression")]
     pub expression: Option<String>,
@@ -180,6 +186,7 @@ pub struct CloudWatchMetricDataQuery {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudWatchMetricStat {
     #[serde(rename = "Metric")]
     pub metric: CloudWatchMetric,
@@ -194,6 +201,7 @@ pub struct CloudWatchMetricStat {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudWatchMetric {
     #[serde(rename = "Dimensions")]
     pub dimensions: Option<Vec<CloudWatchDimension>>,
@@ -204,6 +212,7 @@ pub struct CloudWatchMetric {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CloudWatchDimension {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]

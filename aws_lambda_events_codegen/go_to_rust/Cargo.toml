@@ -15,7 +15,7 @@ log = "0.4"
 pest = "^1.0"
 pest_derive = "^1.0"
 # Needed to pick up this PR: https://github.com/carllerche/codegen/pull/6
-codegen = { git = "https://github.com/LegNeato/codegen.git", branch = "issue-3-and-4-field-documentation-annotation"}
+codegen = { git = "https://github.com/calavera/codegen.git", branch = "structure_attributes"}
 failure = "0.1"
 heck = "0.3"
 regex = "^1.0"

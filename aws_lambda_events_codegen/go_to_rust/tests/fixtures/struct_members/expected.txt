@@ -7,13 +7,13 @@ use std::collections::HashMap;
 use super::super::encodings::{Base64Data, MillisecondTimestamp, SecondTimestamp};
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SimpleEmailMessage<T1=Value, T2=Value>
 where T1: DeserializeOwned,
       T1: Serialize,
       T2: DeserializeOwned,
       T2: Serialize,
 {
-    #[serde(rename = "commonHeaders")]
     pub common_headers: SimpleEmailCommonHeaders,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -24,11 +24,9 @@ where T1: DeserializeOwned,
     pub raw: Option<T1>,
     pub destination: Vec<String>,
     pub headers: Vec<SimpleEmailHeader>,
-    #[serde(rename = "headersTruncated")]
     pub headers_truncated: bool,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "messageId")]
     pub message_id: Option<String>,
     pub resolutions: Vec<HashMap<String, String>>,
     pub blah: u64,

@@ -1,6 +1,7 @@
 use crate::custom_serde::*;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct EcrScanEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -29,6 +30,7 @@ pub struct EcrScanEvent {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct EcrScanEventDetailType {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -49,6 +51,7 @@ pub struct EcrScanEventDetailType {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct EcrScanEventFindingSeverityCounts {
     #[serde(rename = "CRITICAL")]
     pub critical: i64,

@@ -2,17 +2,18 @@ use super::super::encodings::{Base64Data, SecondTimestamp};
 use crate::custom_serde::*;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct KinesisEvent {
     #[serde(rename = "Records")]
     pub records: Vec<KinesisEventRecord>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct KinesisEventRecord {
     /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "awsRegion")]
     pub aws_region: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -20,11 +21,9 @@ pub struct KinesisEventRecord {
     pub event_id: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventName")]
     pub event_name: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventSource")]
     pub event_source: Option<String>,
     /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -33,34 +32,28 @@ pub struct KinesisEventRecord {
     pub event_source_arn: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventVersion")]
     pub event_version: Option<String>,
     /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "invokeIdentityArn")]
     pub invoke_identity_arn: Option<String>,
     pub kinesis: KinesisRecord,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct KinesisRecord {
-    #[serde(rename = "approximateArrivalTimestamp")]
     pub approximate_arrival_timestamp: SecondTimestamp,
     pub data: Base64Data,
-    #[serde(rename = "encryptionType")]
     pub encryption_type: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "partitionKey")]
     pub partition_key: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "sequenceNumber")]
     pub sequence_number: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "kinesisSchemaVersion")]
     pub kinesis_schema_version: Option<String>,
 }
 

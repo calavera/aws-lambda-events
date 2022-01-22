@@ -10,6 +10,7 @@ pub type CodePipelineActionState = String;
 /// CodePipelineEvent is documented at:
 /// https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html#codepipeline_event_type
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodePipelineCloudWatchEvent {
     /// Version is the version of the event's schema.
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -50,6 +51,7 @@ pub struct CodePipelineCloudWatchEvent {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodePipelineEventDetail {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -70,11 +72,11 @@ pub struct CodePipelineEventDetail {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
-    #[serde(rename = "type")]
     pub type_: CodePipelineEventDetailType,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodePipelineEventDetailType {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]

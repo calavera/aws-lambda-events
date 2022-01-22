@@ -1,7 +1,7 @@
 use super::super::encodings::Base64Data;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SqsMessageAttribute {
-    #[serde(rename = "binaryListValues")]
     pub binary_list_values: Vec<Base64Data>,
 }

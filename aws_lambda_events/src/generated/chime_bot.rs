@@ -2,6 +2,7 @@ use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ChimeBotEvent {
     #[serde(rename = "Sender")]
     pub sender: ChimeBotEventSender,
@@ -20,6 +21,7 @@ pub struct ChimeBotEvent {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ChimeBotEventSender {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -32,6 +34,7 @@ pub struct ChimeBotEventSender {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ChimeBotEventDiscussion {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -44,6 +47,7 @@ pub struct ChimeBotEventDiscussion {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ChimeBotEventInboundHttpsEndpoint {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
