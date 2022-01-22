@@ -552,7 +552,7 @@ enum GoType {
     StringType,
     IntType(usize),
     UnsignedIntType(usize),
-    FloatType,
+    FloatType(usize),
     BoolType,
     ByteType,
     UserDefined(String),
@@ -686,7 +686,8 @@ fn parse_go_type_primitive(t: &str) -> Result<GoType, Error> {
         "uint16" => Ok(GoType::UnsignedIntType(16)),
         "uint32" => Ok(GoType::UnsignedIntType(32)),
         "uint" | "uint64" => Ok(GoType::UnsignedIntType(64)),
-        "float" | "float32" | "float64" => Ok(GoType::FloatType),
+        "float" | "float64" => Ok(GoType::FloatType(64)),
+        "float32" => Ok(GoType::FloatType(32)),
         "bool" => Ok(GoType::BoolType),
         "byte" => Ok(GoType::ByteType),
         _ => unimplemented!("missing go type primitive: {}", t),
@@ -791,7 +792,11 @@ fn translate_go_type_to_rust_type<'a>(
             64 => make_rust_type_with_no_libraries("u64"),
             _ => unimplemented!("unable to generate unsigned int of size {}", bits),
         },
-        GoType::FloatType => make_rust_type_with_no_libraries("f64"),
+        GoType::FloatType(bits) => match bits {
+            32 => make_rust_type_with_no_libraries("f32"),
+            64 => make_rust_type_with_no_libraries("f64"),
+            _ => unimplemented!("unable to generate float of size {}", bits),
+        },
         GoType::UserDefined(x) => {
             let rust_name = x.to_camel_case();
             let mut rust_type = make_rust_type_with_no_libraries(&rust_name);

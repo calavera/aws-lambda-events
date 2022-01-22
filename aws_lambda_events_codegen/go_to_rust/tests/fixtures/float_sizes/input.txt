@@ -1,0 +1,5 @@
+type Foo struct {
+	a   float
+	b   float32 
+	c   float64
+}

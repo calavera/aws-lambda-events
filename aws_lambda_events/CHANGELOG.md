@@ -1,6 +1,6 @@
 ## master
 
-- No changes yet
+- Specific `float` sizes (such as `float32`) are preserved rather than defaulting to 64 bits.
 
 ## [[0.5.0] - 2021-09-20](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.5.0)
 
