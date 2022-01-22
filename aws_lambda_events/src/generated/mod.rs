@@ -64,3 +64,5 @@ pub mod ses;
 pub mod sns;
 /// AWS Lambda event definitions for sqs.
 pub mod sqs;
+/// AWS Lambda event definitions for streams.
+pub mod streams;

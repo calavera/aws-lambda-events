@@ -31,8 +31,6 @@ pub struct AlbTargetGroupRequest {
     pub request_context: AlbTargetGroupRequestContext,
     #[serde(rename = "isBase64Encoded")]
     pub is_base64_encoded: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
-    #[serde(default)]
     pub body: Option<String>,
 }
 

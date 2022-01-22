@@ -1,6 +1,7 @@
 ## master
 
 - Specific `float` sizes (such as `float32`) are preserved rather than defaulting to 64 bits.
+- Generate events from the latest `aws-lambda-go`.
 
 ## [[0.5.0] - 2021-09-20](https://github.com/LegNeato/aws-lambda-events/releases/tag/v0.5.0)
 
