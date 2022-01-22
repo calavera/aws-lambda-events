@@ -798,6 +798,10 @@ fn translate_go_type_to_rust_type<'a>(
             if is_default_http_context(&rust_name) {
                 rust_type.annotations.push("#[serde(default)]".to_string());
             }
+            if is_optional_authentication(member_def) {
+                rust_type.annotations.push("#[serde(default)]".to_string());
+                rust_type.value = format!("Option<{}>", rust_type.value);
+            }
             rust_type
         }
         GoType::ArrayType(x) => {
@@ -1029,6 +1033,15 @@ fn is_http_body(def: Option<&StructureFieldDef>) -> bool {
 
 fn is_default_http_context(rust_type: &str) -> bool {
     rust_type == "ApiGatewayProxyRequestContext" || rust_type == "ApiGatewayRequestIdentity"
+}
+
+fn is_optional_authentication(def: Option<&StructureFieldDef>) -> bool {
+    match def {
+        Some(s) => {
+            s.struct_name == "ApiGatewayV2httpRequestContext" && s.member_name == "authentication"
+        }
+        _ => false,
+    }
 }
 
 #[cfg(test)]
