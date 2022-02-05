@@ -112,6 +112,10 @@ fn write_cargo_features(
             doc["features"] = toml_edit::table();
         }
 
+        doc["features"]
+            .as_table_mut()
+            .and_then(|t| t.remove("default"));
+
         for parsed in parsed_files {
             let feat = &parsed.service_name;
             all.push(feat);
