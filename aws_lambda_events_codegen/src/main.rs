@@ -229,7 +229,7 @@ fn find_custom_examples(
     fuzzy_files: &HashMap<String, PathBuf>,
     example_event_path: &Path,
 ) -> Option<Vec<ExampleEvent>> {
-    let files = match service_name {
+    let files: &[(&str, &str)] = match service_name {
         "apigw" => &[
             (
                 "apigw-custom-auth-request-type-request.json",
@@ -266,6 +266,17 @@ fn find_custom_examples(
                 "apigw-websocket-request.json",
                 "ApiGatewayWebsocketProxyRequest",
             ),
+        ],
+        "alb" => &[
+            (
+                "alb-lambda-target-request-headers-only.json",
+                "AlbTargetGroupRequest",
+            ),
+            (
+                "alb-lambda-target-request-multivalue-headers.json",
+                "AlbTargetGroupRequest",
+            ),
+            ("alb-lambda-target-response.json", "AlbTargetGroupResponse"),
         ],
         _ => return None,
     };

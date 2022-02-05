@@ -741,9 +741,13 @@ fn translate_go_type_to_rust_type<'a>(
             libraries.insert("crate::custom_serde::*".to_string());
             libraries.insert("http::Method".to_string());
 
+            let mut value = "Method";
             let mut annotations = vec!["#[serde(with = \"http_method\")]".to_string()];
             if let Some(def) = member_def {
-                if def.struct_name == "ApiGatewayWebsocketProxyRequest" {
+                if def
+                    .struct_name
+                    .starts_with("ApiGatewayWebsocketProxyRequest")
+                {
                     annotations = vec![
                         "#[serde(deserialize_with = \"http_method::deserialize_optional\")]"
                             .to_string(),
@@ -752,10 +756,17 @@ fn translate_go_type_to_rust_type<'a>(
                         "#[serde(skip_serializing_if = \"Option::is_none\")]".to_string(),
                     ];
                 }
+
+                // Make this method optional in the context explicitly because the Go
+                // bindings don't mark it as omitempty, but it might not appear in the payload.
+                // See: https://github.com/LegNeato/aws-lambda-events/issues/33#issuecomment-792050434
+                if def.struct_name == "ApiGatewayWebsocketProxyRequestContext" {
+                    value = "Option<Method>";
+                }
             }
 
             RustType {
-                value: "Method".into(),
+                value: value.into(),
                 annotations,
                 libraries,
                 generics: vec![],
