@@ -79,6 +79,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "alb")]
     fn alb_lambda_target_request_headers_only() {
         let data = include_bytes!("fixtures/alb-lambda-target-request-headers-only.json");
         let parsed: AlbTargetGroupRequest = serde_json::from_slice(data).unwrap();
@@ -88,6 +89,7 @@ mod test {
     }
 
     #[test]
+    #[cfg(feature = "alb")]
     fn alb_lambda_target_request_multivalue_headers() {
         let data = include_bytes!("fixtures/alb-lambda-target-request-multivalue-headers.json");
         let parsed: AlbTargetGroupRequest = serde_json::from_slice(data).unwrap();
@@ -97,6 +99,7 @@ mod test {
     }
 
     #[test]
+    #[cfg(feature = "alb")]
     fn alb_lambda_target_response() {
         let data = include_bytes!("fixtures/alb-lambda-target-response.json");
         let parsed: AlbTargetGroupResponse = serde_json::from_slice(data).unwrap();
