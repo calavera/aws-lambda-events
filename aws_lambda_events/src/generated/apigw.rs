@@ -214,7 +214,8 @@ pub struct ApiGatewayV2httpRequestContext {
     #[serde(rename = "timeEpoch")]
     pub time_epoch: i64,
     pub http: ApiGatewayV2httpRequestContextHttpDescription,
-    pub authentication: ApiGatewayV2httpRequestContextAuthentication,
+    #[serde(default)]
+    pub authentication: Option<ApiGatewayV2httpRequestContextAuthentication>,
 }
 
 /// `ApiGatewayV2httpRequestContextAuthorizerDescription` contains authorizer information for the request context.
