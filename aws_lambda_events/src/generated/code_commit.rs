@@ -89,6 +89,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "code_commit")]
     fn example_code_commit_event() {
         let data = include_bytes!("fixtures/example-code_commit-event.json");
         let parsed: CodeCommitEvent = serde_json::from_slice(data).unwrap();

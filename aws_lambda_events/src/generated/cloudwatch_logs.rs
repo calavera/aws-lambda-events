@@ -59,6 +59,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "cloudwatch_logs")]
     fn example_cloudwatch_logs_event() {
         let data = include_bytes!("fixtures/example-cloudwatch_logs-event.json");
         let parsed: CloudwatchLogsEvent = serde_json::from_slice(data).unwrap();

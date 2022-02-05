@@ -220,6 +220,7 @@ mod test {
     extern crate serde_json;
 
     #[test]
+    #[cfg(feature = "sns")]
     fn example_sns_event() {
         let data = include_bytes!("fixtures/example-sns-event.json");
         let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
