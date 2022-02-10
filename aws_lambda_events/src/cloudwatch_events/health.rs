@@ -23,7 +23,6 @@ pub struct EventDescription {
     pub latest_description: String,
 }
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Entity {

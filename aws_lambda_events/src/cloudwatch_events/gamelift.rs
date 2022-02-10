@@ -33,7 +33,6 @@ pub struct GameSessionInfo {
     pub players: Vec<Player>,
 }
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PotentialMatchCreated {
@@ -54,7 +53,6 @@ pub struct RuleEvaluationMetric {
     pub failed_count: i64,
 }
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AcceptMatch {
@@ -66,7 +64,7 @@ pub struct AcceptMatch {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct AcceptMatchCompleted  {
+pub struct AcceptMatchCompleted {
     pub tickets: Vec<Ticket>,
     pub acceptance: String,
     pub r#type: String,
