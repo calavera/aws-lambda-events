@@ -15,9 +15,12 @@ extern crate http_serde;
 #[cfg(not(test))]
 extern crate serde_json;
 
+/// CloudWatch Events payload
+pub mod cloudwatch_events;
 mod custom_serde;
 /// Encodings used in AWS Lambda json event values.
 pub mod encodings;
 /// AWS Lambda event definitions.
 pub mod event;
+
 mod generated;

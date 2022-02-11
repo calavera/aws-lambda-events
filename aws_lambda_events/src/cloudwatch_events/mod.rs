@@ -1,0 +1,16 @@
+pub mod cloudtrail;
+pub mod codedeploy;
+pub mod codepipeline;
+pub mod ec2;
+pub mod emr;
+pub mod gamelift;
+pub mod glue;
+pub mod health;
+pub mod kms;
+pub mod macie;
+pub mod opsworks;
+pub mod signin;
+pub mod sms;
+pub mod ssm;
+pub mod tag;
+pub mod trustedadvisor;
