@@ -1,4 +1,3 @@
-#[allow(dead_code)]
 use base64::{decode, encode};
 use chrono::{DateTime, Duration, TimeZone, Utc};
 use http::{HeaderMap, Method};
@@ -272,7 +271,7 @@ pub mod http_method {
 }
 
 // Jan 2, 2006 3:04:05 PM
-const CODEBUILD_TIME_FORMAT: &'static str = "%b %e, %Y %l:%M:%S %p";
+const CODEBUILD_TIME_FORMAT: &str = "%b %e, %Y %l:%M:%S %p";
 
 pub mod codebuild_time {
     use super::*;
@@ -438,7 +437,7 @@ mod test {
 
         // Make sure milliseconds are included.
         let instance = Test {
-            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 1234_000_000),
+            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 1_234_000_000),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683600.1234"}"#));

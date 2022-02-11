@@ -344,7 +344,7 @@ mod tests {
     fn from_str() {
         match Body::from(String::from("foo").as_str()) {
             Body::Text(_) => (),
-            not => assert!(false, "expected Body::Text(...) got {:?}", not),
+            not => panic!("expected Body::Text(...) got {:?}", not),
         }
     }
 
@@ -352,7 +352,7 @@ mod tests {
     fn from_string() {
         match Body::from(String::from("foo")) {
             Body::Text(_) => (),
-            not => assert!(false, "expected Body::Text(...) got {:?}", not),
+            not => panic!("expected Body::Text(...) got {:?}", not),
         }
     }
 
@@ -360,7 +360,7 @@ mod tests {
     fn from_cow_str() {
         match Body::from(Cow::from("foo")) {
             Body::Text(_) => (),
-            not => assert!(false, "expected Body::Text(...) got {:?}", not),
+            not => panic!("expected Body::Text(...) got {:?}", not),
         }
     }
 
@@ -368,7 +368,7 @@ mod tests {
     fn from_cow_bytes() {
         match Body::from(Cow::from("foo".as_bytes())) {
             Body::Binary(_) => (),
-            not => assert!(false, "expected Body::Binary(...) got {:?}", not),
+            not => panic!("expected Body::Binary(...) got {:?}", not),
         }
     }
 
@@ -376,7 +376,7 @@ mod tests {
     fn from_bytes() {
         match Body::from("foo".as_bytes()) {
             Body::Binary(_) => (),
-            not => assert!(false, "expected Body::Binary(...) got {:?}", not),
+            not => panic!("expected Body::Binary(...) got {:?}", not),
         }
     }
 
@@ -405,12 +405,12 @@ mod tests {
     fn serialize_from_maybe_encoded() {
         match Body::from_maybe_encoded(false, "foo") {
             Body::Text(_) => (),
-            not => assert!(false, "expected Body::Text(...) got {:?}", not),
+            not => panic!("expected Body::Text(...) got {:?}", not),
         }
 
         match Body::from_maybe_encoded(true, "Zm9v") {
             Body::Binary(b) => assert_eq!(&[102, 111, 111], b.as_slice()),
-            not => assert!(false, "expected Body::Text(...) got {:?}", not),
+            not => panic!("expected Body::Text(...) got {:?}", not),
         }
     }
 }

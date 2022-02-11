@@ -1,4 +1,4 @@
-use go_to_rust;
+
 extern crate rustc_test as test;
 
 use crate::test::{DynTestFn, DynTestName, TestDesc, TestDescAndFn};
@@ -17,7 +17,7 @@ fn mk_test(desc: &str, input: String, expect: String, expected_path: PathBuf) ->
             let (_, output) = go_to_rust::parse_go_string(input.clone()).expect("parser parses");
 
             // Add support for recording fixtures.
-            if let Ok(_) = env::var("GO_TO_RUST_FIXTURE_RECORD") {
+            if env::var("GO_TO_RUST_FIXTURE_RECORD").is_ok() {
                 let mut f = File::create(expected_path.clone()).expect("fixture to be opened");
                 f.write_all(output.to_string().as_bytes())
                     .expect("fixture to be written");
