@@ -5,14 +5,13 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RabbitMqEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventSource")]
     pub event_source: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventSourceArn")]
     pub event_source_arn: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -21,8 +20,8 @@ pub struct RabbitMqEvent {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RabbitMqMessage {
-    #[serde(rename = "basicProperties")]
     pub basic_properties: RabbitMqBasicProperties,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -31,6 +30,7 @@ pub struct RabbitMqMessage {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RabbitMqBasicProperties<T1 = Value>
 where
     T1: DeserializeOwned,
@@ -38,41 +38,30 @@ where
 {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "contentType")]
     pub content_type: Option<String>,
-    #[serde(rename = "contentEncoding")]
     pub content_encoding: Option<String>,
     /// Application or header exchange table
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     #[serde(bound = "")]
     pub headers: HashMap<String, T1>,
-    #[serde(rename = "deliveryMode")]
     pub delivery_mode: u8,
     pub priority: u8,
-    #[serde(rename = "correlationId")]
     pub correlation_id: Option<String>,
-    #[serde(rename = "replyTo")]
     pub reply_to: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub expiration: Option<String>,
-    #[serde(rename = "messageId")]
     pub message_id: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub timestamp: Option<String>,
-    #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "userId")]
     pub user_id: Option<String>,
-    #[serde(rename = "appId")]
     pub app_id: Option<String>,
-    #[serde(rename = "clusterId")]
     pub cluster_id: Option<String>,
-    #[serde(rename = "bodySize")]
     pub body_size: u64,
 }
 

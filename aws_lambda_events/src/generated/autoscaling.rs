@@ -7,6 +7,7 @@ use std::collections::HashMap;
 
 /// `AutoScalingEvent` struct is used to parse the json for auto scaling event types //
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AutoScalingEvent<T1 = Value>
 where
     T1: DeserializeOwned,

@@ -6,6 +6,7 @@ pub type CodeDeployDeploymentState = String;
 /// `CodeDeployEvent` is documented at:
 /// https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html#acd_event_types
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeDeployEvent {
     /// AccountID is the id of the AWS account from which the event originated.
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -46,15 +47,14 @@ pub struct CodeDeployEvent {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeDeployEventDetail {
     /// InstanceGroupID is the ID of the instance group.
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "instanceGroupId")]
     pub instance_group_id: Option<String>,
     /// InstanceID is the id of the instance. This field is non-empty only if
     /// the DetailType of the complete event is CodeDeployInstanceEventDetailType.
-    #[serde(rename = "instanceId")]
     pub instance_id: Option<String>,
     /// Region is the AWS region that the event originated from.
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -67,13 +67,11 @@ pub struct CodeDeployEventDetail {
     /// DeploymentID is the id of the deployment.
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "deploymentId")]
     pub deployment_id: Option<String>,
     /// State is the new state of the deployment.
     pub state: CodeDeployDeploymentState,
     /// DeploymentGroup is the name of the deployment group.
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "deploymentGroup")]
     pub deployment_group: Option<String>,
 }

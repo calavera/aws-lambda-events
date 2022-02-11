@@ -12,6 +12,7 @@ pub type CodeBuildPhaseType = String;
 /// `CodeBuildEvent` is documented at:
 /// https://docs.aws.amazon.com/codebuild/latest/userguide/sample-build-notifications.html#sample-build-notifications-ref
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildEvent {
     /// AccountID is the id of the AWS account from which the event originated.
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -52,6 +53,7 @@ pub struct CodeBuildEvent {
 
 /// `CodeBuildEventDetail` represents the all details related to the code build event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildEventDetail {
     #[serde(rename = "build-status")]
     pub build_status: CodeBuildPhaseStatus,
@@ -92,6 +94,7 @@ pub struct CodeBuildEventDetail {
 
 /// `CodeBuildEventAdditionalInformation` represents additional information to the code build event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildEventAdditionalInformation {
     pub artifact: CodeBuildArtifact,
     pub environment: CodeBuildEnvironment,
@@ -111,6 +114,7 @@ pub struct CodeBuildEventAdditionalInformation {
 
 /// `CodeBuildArtifact` represents the artifact provided to build
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildArtifact {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -127,6 +131,7 @@ pub struct CodeBuildArtifact {
 
 /// `CodeBuildEnvironment` represents the environment for a build
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildEnvironment {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -139,7 +144,6 @@ pub struct CodeBuildEnvironment {
     pub compute_type: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(rename = "environment-variables")]
     pub environment_variables: Vec<CodeBuildEnvironmentVariable>,
@@ -147,6 +151,7 @@ pub struct CodeBuildEnvironment {
 
 /// `CodeBuildEnvironmentVariable` encapsulate environment variables for the code build
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildEnvironmentVariable {
     /// Name is the name of the environment variable.
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -155,7 +160,6 @@ pub struct CodeBuildEnvironmentVariable {
     /// Type is PLAINTEXT or PARAMETER_STORE.
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "type")]
     pub type_: Option<String>,
     /// Value is the value of the environment variable.
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -165,18 +169,19 @@ pub struct CodeBuildEnvironmentVariable {
 
 /// `CodeBuildSource` represent the code source will be build
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildSource {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub location: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "type")]
     pub type_: Option<String>,
 }
 
 /// `CodeBuildLogs` gives the log details of a code build
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildLogs {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -194,6 +199,7 @@ pub struct CodeBuildLogs {
 
 /// `CodeBuildPhase` represents the phase of a build and its details
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CodeBuildPhase<T1 = Value>
 where
     T1: DeserializeOwned,

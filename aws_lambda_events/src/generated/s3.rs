@@ -4,6 +4,7 @@ use std::collections::HashMap;
 
 /// `S3Event` which wrap an array of `S3Event`Record
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct S3Event {
     #[serde(rename = "Records")]
     pub records: Vec<S3EventRecord>,
@@ -11,45 +12,40 @@ pub struct S3Event {
 
 /// `S3EventRecord` which wrap record data
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct S3EventRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventVersion")]
     pub event_version: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventSource")]
     pub event_source: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "awsRegion")]
     pub aws_region: Option<String>,
-    #[serde(rename = "eventTime")]
     pub event_time: DateTime<Utc>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eventName")]
     pub event_name: Option<String>,
     #[serde(rename = "userIdentity")]
     pub principal_id: S3UserIdentity,
-    #[serde(rename = "requestParameters")]
     pub request_parameters: S3RequestParameters,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    #[serde(rename = "responseElements")]
     pub response_elements: HashMap<String, String>,
     pub s3: S3Entity,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct S3UserIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "principalId")]
     pub principal_id: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct S3RequestParameters {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -58,6 +54,7 @@ pub struct S3RequestParameters {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct S3Entity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -65,18 +62,17 @@ pub struct S3Entity {
     pub schema_version: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "configurationId")]
     pub configuration_id: Option<String>,
     pub bucket: S3Bucket,
     pub object: S3Object,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct S3Bucket {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub name: Option<String>,
-    #[serde(rename = "ownerIdentity")]
     pub owner_identity: S3UserIdentity,
     /// nolint: stylecheck
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -85,6 +81,7 @@ pub struct S3Bucket {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct S3Object {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -92,15 +89,12 @@ pub struct S3Object {
     pub size: Option<i64>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "urlDecodedKey")]
     pub url_decoded_key: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "versionId")]
     pub version_id: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
-    #[serde(rename = "eTag")]
     pub e_tag: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
