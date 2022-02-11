@@ -107,21 +107,31 @@ fn write_cargo_features(
         let buf = std::fs::read_to_string(cargo_path)?;
         let mut doc = buf.parse::<toml_edit::Document>()?;
 
-        let mut all = toml_edit::Array::new();
+        let mut generated = toml_edit::Array::new();
         if !doc.contains_key("features") {
             doc["features"] = toml_edit::table();
         }
 
         doc["features"]
             .as_table_mut()
-            .and_then(|t| t.remove("default"));
+            .and_then(|t| t.remove("generated"));
+
+        let mut set = std::collections::HashSet::new();
+        let static_feat = doc["features"]["static"].as_array().unwrap().clone();
+        for feat in static_feat.iter() {
+            if let Some(s) = feat.as_str() {
+                set.insert(s);
+            }
+        }
 
         for parsed in parsed_files {
             let feat = &parsed.service_name;
-            all.push(feat);
+            if !set.contains(feat.as_str()) {
+                generated.push(feat);
+            }
             doc["features"][feat] = toml_edit::value(toml_edit::Array::default());
         }
-        doc["features"]["default"] = toml_edit::value(all);
+        doc["features"]["generated"] = toml_edit::value(generated);
 
         std::fs::write(cargo_path, &doc.to_string())?;
     }
