@@ -257,6 +257,13 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
     let camel_cased_struct_name = struct_name.to_camel_case();
 
     let mut rust_struct = Struct::new(&camel_cased_struct_name);
+    if &camel_cased_struct_name == "CognitoEventUserPoolsPreAuthenticationResponse"
+        || &camel_cased_struct_name == "CognitoEventUserPoolsPostConfirmationResponse"
+        || &camel_cased_struct_name == "CognitoEventUserPoolsPostAuthenticationResponse"
+    {
+        rust_struct = Struct::zero(&camel_cased_struct_name);
+        rust_struct.derive("Default");
+    }
 
     // Make it public.
     rust_struct.vis("pub");
@@ -346,7 +353,7 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
                 .push(format!("#[serde(rename = \"{}\")]", go_member_name));
         }
 
-        if f.embedded {
+        if f.embedded && !is_cognito_migration_types(&rust_type) {
             rust_data.annotations.push("#[serde(flatten)]".to_string());
         }
 
@@ -382,6 +389,24 @@ fn parse_struct(pairs: Pairs<'_, Rule>) -> Result<(codegen::Struct, HashSet<Stri
         } else if bounded_generic {
             let optional_interface = format!("Option<{}>", rust_type);
             field_defs = vec![Field::new(&member_name, &optional_interface)];
+        } else if is_optional_codebuild_time(&member_name, &rust_type) {
+            libraries.insert("crate::custom_serde::*".to_string());
+
+            rust_data.annotations.push("#[serde(default)]".to_string());
+            rust_data
+                .annotations
+                .push("#[serde(with = \"codebuild_time::optional_time\")]".to_string());
+            field_defs = vec![Field::new(&member_name, "Option<CodeBuildTime>")];
+        } else if rust_type == "CodeBuildTime" {
+            libraries.insert("crate::custom_serde::*".to_string());
+
+            rust_data
+                .annotations
+                .push("#[serde(with = \"codebuild_time::str_time\")]".to_string());
+
+            field_defs = vec![Field::new(&member_name, &rust_type)];
+        } else if is_optional_codebuild_field(&member_name, &rust_type) {
+            field_defs = vec![Field::new(&member_name, &format!("Option<{}>", &rust_type))];
         } else {
             field_defs = vec![Field::new(&member_name, &rust_type)];
         }
@@ -817,10 +842,6 @@ fn translate_go_type_to_rust_type<'a>(
             if is_default_http_context(&rust_name) {
                 rust_type.annotations.push("#[serde(default)]".to_string());
             }
-            if is_optional_authentication(member_def) {
-                rust_type.annotations.push("#[serde(default)]".to_string());
-                rust_type.value = format!("Option<{}>", rust_type.value);
-            }
             rust_type
         }
         GoType::ArrayType(x) => {
@@ -1054,13 +1075,23 @@ fn is_default_http_context(rust_type: &str) -> bool {
     rust_type == "ApiGatewayProxyRequestContext" || rust_type == "ApiGatewayRequestIdentity"
 }
 
-fn is_optional_authentication(def: Option<&StructureFieldDef>) -> bool {
-    match def {
-        Some(s) => {
-            s.struct_name == "ApiGatewayV2httpRequestContext" && s.member_name == "authentication"
-        }
-        _ => false,
-    }
+fn is_cognito_migration_types(rust_type: &str) -> bool {
+    rust_type == "CognitoEventUserPoolsMigrateUserRequest"
+        || rust_type == "CognitoEventUserPoolsMigrateUserResponse"
+}
+
+fn is_optional_codebuild_time(field_name: &str, rust_type: &str) -> bool {
+    rust_type == "Option<CodeBuildTime>"
+        || field_name == "completed_phase_start"
+        || field_name == "completed_phase_end"
+}
+
+fn is_optional_codebuild_field(member_name: &str, rust_type: &str) -> bool {
+    rust_type == "CodeBuildStatus"
+        || rust_type == "CodeBuildPhaseStatus"
+        || member_name == "completed_phase_duration"
+        || (rust_type == "CodeBuildPhaseType"
+            && (member_name == "current_phase" || member_name == "completed_phase"))
 }
 
 #[cfg(test)]

@@ -292,6 +292,156 @@ fn find_custom_examples(
             ),
             ("alb-lambda-target-response.json", "AlbTargetGroupResponse"),
         ],
+        "cognito" => &[
+            (
+                "cognito-event-userpools-create-auth-challenge.json",
+                "CognitoEventUserPoolsCreateAuthChallenge",
+            ),
+            (
+                "cognito-event-userpools-custommessage.json",
+                "CognitoEventUserPoolsCustomMessage",
+            ),
+            (
+                "cognito-event-userpools-define-auth-challenge.json",
+                "CognitoEventUserPoolsDefineAuthChallenge",
+            ),
+            (
+                "cognito-event-userpools-migrateuser.json",
+                "CognitoEventUserPoolsMigrateUser",
+            ),
+            (
+                "cognito-event-userpools-postauthentication.json",
+                "CognitoEventUserPoolsPostAuthentication",
+            ),
+            (
+                "cognito-event-userpools-postconfirmation.json",
+                "CognitoEventUserPoolsPostConfirmation",
+            ),
+            (
+                "cognito-event-userpools-preauthentication.json",
+                "CognitoEventUserPoolsPreAuthentication",
+            ),
+            (
+                "cognito-event-userpools-presignup.json",
+                "CognitoEventUserPoolsPreSignup",
+            ),
+            (
+                "cognito-event-userpools-pretokengen.json",
+                "CognitoEventUserPoolsPreTokenGen",
+            ),
+            (
+                "cognito-event-userpools-verify-auth-challenge.json",
+                "CognitoEventUserPoolsVerifyAuthChallenge",
+            ),
+        ],
+
+        "appsync" => &[
+            ("appsync-batchinvoke.json", "AppSyncResolverTemplate"),
+            ("appsync-identity-cognito.json", "AppSyncCognitoIdentity"),
+            ("appsync-identity-iam.json", "AppSyncIamIdentity"),
+            ("appsync-invoke.json", "AppSyncResolverTemplate"),
+            (
+                "appsync-lambda-auth-request.json",
+                "AppSyncLambdaAuthorizerRequest",
+            ),
+            (
+                "appsync-lambda-auth-response.json",
+                "AppSyncLambdaAuthorizerResponse",
+            ),
+        ],
+        "autoscaling" => &[
+            (
+                "autoscaling-event-launch-successful.json",
+                "AutoScalingEvent",
+            ),
+            (
+                "autoscaling-event-launch-unsuccessful.json",
+                "AutoScalingEvent",
+            ),
+            (
+                "autoscaling-event-lifecycle-action.json",
+                "AutoScalingEvent",
+            ),
+            (
+                "autoscaling-event-terminate-action.json",
+                "AutoScalingEvent",
+            ),
+            (
+                "autoscaling-event-terminate-successful.json",
+                "AutoScalingEvent",
+            ),
+            (
+                "autoscaling-event-terminate-unsuccessful.json",
+                "AutoScalingEvent",
+            ),
+        ],
+        "clientvpn" => &[(
+            "clientvpn-connectionhandler-request.json",
+            "ClientVpnConnectionHandlerRequest",
+        )],
+        "code_comit" => &[("code-commit-event.json", "CodeCommitEvent")],
+        "codebuild" => &[
+            ("codebuild-phase-change.json", "CodeBuildEvent"),
+            ("codebuild-state-change.json", "CodeBuildEvent"),
+        ],
+        "codedeploy" => &[
+            ("codedeploy-deployment-event.json", "CodeDeployEvent"),
+            ("codedeploy-instance-event.json", "CodeDeployEvent"),
+        ],
+        "codepipeline_cloudwatch" => &[
+            (
+                "codepipeline-action-execution-stage-change-event.json",
+                "CodePipelineCloudWatchEvent",
+            ),
+            (
+                "codepipeline-execution-stage-change-event.json",
+                "CodePipelineCloudWatchEvent",
+            ),
+            (
+                "codepipeline-execution-state-change-event.json",
+                "CodePipelineCloudWatchEvent",
+            ),
+        ],
+        "ecr_scan" => &[("ecr-image-scan-event.json", "EcrScanEvent")],
+        "iot" => &[
+            ("iot-custom-auth-request.json", "IoTCustomAuthorizerRequest"),
+            (
+                "iot-custom-auth-response.json",
+                "IoTCustomAuthorizerResponse",
+            ),
+        ],
+        "kinesys_analytics" => &[
+            (
+                "kinesis-analytics-output-delivery-event.json",
+                "KinesisAnalyticsOutputDeliveryEvent",
+            ),
+            (
+                "kinesis-analytics-output-delivery-response.json",
+                "KinesisAnalyticsOutputDeliveryResponse",
+            ),
+        ],
+        "lex" => &[("lex-response.json", "LexEvent")],
+        "s3_batch" => &[
+            ("s3-batch-job-event-request.json", "S3BatchJobEvent"),
+            ("s3-batch-job-event-response.json", "S3BatchJobResponse"),
+        ],
+        "s3" => &[("s3-event-with-decoded.json", "S3Event")],
+        "ses" => &[
+            ("ses-lambda-event.json", "SimpleEmailEvent"),
+            ("ses-s3-event.json", "SimpleEmailEvent"),
+            ("ses-sns-event.json", "SimpleEmailEvent"),
+        ],
+        "sns" => &[
+            (
+                "cloudwatch-alarm-sns-payload-multiple-metrics.json",
+                "SnsEvent",
+            ),
+            (
+                "cloudwatch-alarm-sns-payload-single-metric.json",
+                "SnsEvent",
+            ),
+        ],
+
         _ => return None,
     };
 
@@ -308,15 +458,10 @@ fn find_custom_examples(
             );
             let content = read_example_event(&example_event_path.join(&file));
             examples.push(ExampleEvent {
-                name: name.to_string(),
+                name: format!("example-{}", name),
                 content,
                 event_type: event_type.to_string(),
-                service_name: name
-                    .split('-')
-                    .into_iter()
-                    .next()
-                    .map(String::from)
-                    .unwrap(),
+                service_name: service_name.to_string(),
             });
         }
     }

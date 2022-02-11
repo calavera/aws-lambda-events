@@ -113,10 +113,8 @@ pub struct CognitoEventUserPoolsMigrateUser {
     #[serde(flatten)]
     pub cognito_event_user_pools_header: CognitoEventUserPoolsHeader,
     #[serde(rename = "request")]
-    #[serde(flatten)]
     pub cognito_event_user_pools_migrate_user_request: CognitoEventUserPoolsMigrateUserRequest,
     #[serde(rename = "response")]
-    #[serde(flatten)]
     pub cognito_event_user_pools_migrate_user_response: CognitoEventUserPoolsMigrateUserResponse,
 }
 
@@ -192,9 +190,8 @@ pub struct CognitoEventUserPoolsPreAuthenticationRequest {
 }
 
 /// `CognitoEventUserPoolsPreAuthenticationResponse` contains the response portion of a PreAuthentication event
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct CognitoEventUserPoolsPreAuthenticationResponse;
-
+#[derive(Default, Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPreAuthenticationResponse {}
 /// `CognitoEventUserPoolsPostConfirmationRequest` contains the request portion of a PostConfirmation event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -208,9 +205,8 @@ pub struct CognitoEventUserPoolsPostConfirmationRequest {
 }
 
 /// `CognitoEventUserPoolsPostConfirmationResponse` contains the response portion of a PostConfirmation event
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct CognitoEventUserPoolsPostConfirmationResponse;
-
+#[derive(Default, Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPostConfirmationResponse {}
 /// `CognitoEventUserPoolsPreTokenGenRequest` contains request portion of PreTokenGen event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -245,9 +241,8 @@ pub struct CognitoEventUserPoolsPostAuthenticationRequest {
 }
 
 /// `CognitoEventUserPoolsPostAuthenticationResponse` contains the response portion of a PostAuthentication event
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-pub struct CognitoEventUserPoolsPostAuthenticationResponse;
-
+#[derive(Default, Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct CognitoEventUserPoolsPostAuthenticationResponse {}
 /// `CognitoEventUserPoolsMigrateUserRequest` contains the request portion of a MigrateUser event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -495,6 +490,124 @@ mod test {
         let parsed: CognitoEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_create_auth_challenge() {
+        let data =
+            include_bytes!("fixtures/example-cognito-event-userpools-create-auth-challenge.json");
+        let parsed: CognitoEventUserPoolsCreateAuthChallenge =
+            serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsCreateAuthChallenge =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_custommessage() {
+        let data = include_bytes!("fixtures/example-cognito-event-userpools-custommessage.json");
+        let parsed: CognitoEventUserPoolsCustomMessage = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsCustomMessage =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_define_auth_challenge() {
+        let data =
+            include_bytes!("fixtures/example-cognito-event-userpools-define-auth-challenge.json");
+        let parsed: CognitoEventUserPoolsDefineAuthChallenge =
+            serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsDefineAuthChallenge =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_migrateuser() {
+        let data = include_bytes!("fixtures/example-cognito-event-userpools-migrateuser.json");
+        let parsed: CognitoEventUserPoolsMigrateUser = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsMigrateUser =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_postauthentication() {
+        let data =
+            include_bytes!("fixtures/example-cognito-event-userpools-postauthentication.json");
+        let parsed: CognitoEventUserPoolsPostAuthentication = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsPostAuthentication =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_postconfirmation() {
+        let data = include_bytes!("fixtures/example-cognito-event-userpools-postconfirmation.json");
+        let parsed: CognitoEventUserPoolsPostConfirmation = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsPostConfirmation =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_preauthentication() {
+        let data =
+            include_bytes!("fixtures/example-cognito-event-userpools-preauthentication.json");
+        let parsed: CognitoEventUserPoolsPreAuthentication = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsPreAuthentication =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_presignup() {
+        let data = include_bytes!("fixtures/example-cognito-event-userpools-presignup.json");
+        let parsed: CognitoEventUserPoolsPreSignup = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsPreSignup =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_pretokengen() {
+        let data = include_bytes!("fixtures/example-cognito-event-userpools-pretokengen.json");
+        let parsed: CognitoEventUserPoolsPreTokenGen = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsPreTokenGen =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_verify_auth_challenge() {
+        let data =
+            include_bytes!("fixtures/example-cognito-event-userpools-verify-auth-challenge.json");
+        let parsed: CognitoEventUserPoolsVerifyAuthChallenge =
+            serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsVerifyAuthChallenge =
+            serde_json::from_slice(output.as_bytes()).unwrap();
         assert_eq!(parsed, reparsed);
     }
 }

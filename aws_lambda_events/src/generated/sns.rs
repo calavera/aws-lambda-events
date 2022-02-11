@@ -237,4 +237,26 @@ mod test {
         let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
         assert_eq!(parsed, reparsed);
     }
+
+    #[test]
+    #[cfg(feature = "sns")]
+    fn example_cloudwatch_alarm_sns_payload_multiple_metrics() {
+        let data =
+            include_bytes!("fixtures/example-cloudwatch-alarm-sns-payload-multiple-metrics.json");
+        let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "sns")]
+    fn example_cloudwatch_alarm_sns_payload_single_metric() {
+        let data =
+            include_bytes!("fixtures/example-cloudwatch-alarm-sns-payload-single-metric.json");
+        let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
 }
