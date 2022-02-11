@@ -159,7 +159,7 @@ pub struct EC2CommandStatusChange {
     pub document_name: String,
     #[serde(rename = "expire-after")]
     pub expire_after: String,
-    pub parameters: HashMap<String, (String)>,
+    pub parameters: HashMap<String, String>,
     #[serde(rename = "requested-date-time")]
     pub requested_date_time: String,
     pub status: String,
