@@ -1,4 +1,3 @@
-
 extern crate rustc_test as test;
 
 use crate::test::{DynTestFn, DynTestName, TestDesc, TestDescAndFn};
