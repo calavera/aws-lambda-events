@@ -61,3 +61,32 @@ pub struct IoTCustomAuthorizerResponse {
     pub refresh_after_in_seconds: i32,
     pub policy_documents: Vec<String>,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    extern crate serde_json;
+
+    #[test]
+    #[cfg(feature = "iot")]
+    fn example_iot_custom_auth_request() {
+        let data = include_bytes!("fixtures/example-iot-custom-auth-request.json");
+        let parsed: IoTCustomAuthorizerRequest = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: IoTCustomAuthorizerRequest =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "iot")]
+    fn example_iot_custom_auth_response() {
+        let data = include_bytes!("fixtures/example-iot-custom-auth-response.json");
+        let parsed: IoTCustomAuthorizerResponse = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: IoTCustomAuthorizerResponse =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+}

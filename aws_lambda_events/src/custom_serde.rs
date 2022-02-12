@@ -1,12 +1,11 @@
-#[allow(dead_code)]
 use base64::{decode, encode};
 use chrono::{DateTime, Duration, TimeZone, Utc};
-use http::HeaderMap;
+use http::{HeaderMap, Method};
 use serde;
-use serde::de::{Deserialize, Deserializer, Error as DeError};
+use serde::de::{Deserialize, Deserializer, Error as DeError, Unexpected, Visitor};
 use serde::ser::{Error as SerError, SerializeMap, Serializer};
-use std;
 use std::collections::HashMap;
+use std::fmt;
 
 fn normalize_timestamp<'de, D>(deserializer: D) -> Result<(u64, u64), D::Error>
 where
@@ -215,11 +214,7 @@ where
 }
 
 pub mod http_method {
-    use http::Method;
-    use serde::de;
-    use serde::de::{Deserialize, Unexpected, Visitor};
-    use serde::{Deserializer, Serializer};
-    use std::fmt;
+    use super::*;
 
     pub fn serialize<S: Serializer>(method: &Method, ser: S) -> Result<S::Ok, S::Error> {
         ser.serialize_str(method.as_str())
@@ -233,12 +228,12 @@ pub mod http_method {
             write!(formatter, "valid method name")
         }
 
-        fn visit_str<E: de::Error>(self, val: &str) -> Result<Self::Value, E> {
+        fn visit_str<E: DeError>(self, val: &str) -> Result<Self::Value, E> {
             if val.is_empty() {
                 Ok(Method::GET)
             } else {
                 val.parse()
-                    .map_err(|_| de::Error::invalid_value(Unexpected::Str(val), &self))
+                    .map_err(|_| DeError::invalid_value(Unexpected::Str(val), &self))
             }
         }
     }
@@ -272,6 +267,72 @@ pub mod http_method {
         }
 
         ser.serialize_none()
+    }
+}
+
+// Jan 2, 2006 3:04:05 PM
+const CODEBUILD_TIME_FORMAT: &str = "%b %e, %Y %l:%M:%S %p";
+
+pub mod codebuild_time {
+    use super::*;
+    struct TimeVisitor;
+    impl<'de> Visitor<'de> for TimeVisitor {
+        type Value = DateTime<Utc>;
+
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            write!(formatter, "valid codebuild time: {}", CODEBUILD_TIME_FORMAT)
+        }
+
+        fn visit_str<E: DeError>(self, val: &str) -> Result<Self::Value, E> {
+            Utc.datetime_from_str(val, CODEBUILD_TIME_FORMAT)
+                .map_err(|e| DeError::custom(format!("Parse error {} for {}", e, val)))
+        }
+    }
+
+    pub mod str_time {
+        use super::*;
+
+        pub(crate) fn deserialize<'de, D>(d: D) -> Result<DateTime<Utc>, D::Error>
+        where
+            D: Deserializer<'de>,
+        {
+            d.deserialize_str(TimeVisitor)
+        }
+
+        pub fn serialize<S: Serializer>(date: &DateTime<Utc>, ser: S) -> Result<S::Ok, S::Error> {
+            let s = format!("{}", date.format(CODEBUILD_TIME_FORMAT));
+            ser.serialize_str(&s)
+        }
+    }
+
+    pub mod optional_time {
+        use super::*;
+
+        pub(crate) fn deserialize<'de, D>(
+            deserializer: D,
+        ) -> Result<Option<DateTime<Utc>>, D::Error>
+        where
+            D: Deserializer<'de>,
+        {
+            let s: Option<String> = Option::deserialize(deserializer)?;
+            if let Some(val) = s {
+                let visitor = TimeVisitor {};
+                return visitor.visit_str(&val).map(Some);
+            }
+
+            Ok(None)
+        }
+
+        pub fn serialize<S: Serializer>(
+            date: &Option<DateTime<Utc>>,
+            ser: S,
+        ) -> Result<S::Ok, S::Error> {
+            if let Some(date) = date {
+                return str_time::serialize(date, ser);
+            }
+
+            ser.serialize_none()
+        }
     }
 }
 
@@ -376,7 +437,7 @@ mod test {
 
         // Make sure milliseconds are included.
         let instance = Test {
-            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 1234_000_000),
+            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 1_234_000_000),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683600.1234"}"#));
@@ -537,5 +598,43 @@ mod test {
 
         let decoded: Test = serde_json::from_value(data).unwrap();
         assert_eq!(expected, decoded.headers);
+    }
+
+    type TestTime = DateTime<Utc>;
+
+    #[test]
+    fn test_deserialize_codebuild_time() {
+        #[derive(Deserialize)]
+        struct Test {
+            #[serde(with = "codebuild_time::str_time")]
+            pub date: TestTime,
+        }
+        let data = json!({
+            "date": "Sep 1, 2017 4:12:29 PM"
+        });
+
+        let expected = Utc
+            .datetime_from_str("Sep 1, 2017 4:12:29 PM", CODEBUILD_TIME_FORMAT)
+            .unwrap();
+        let decoded: Test = serde_json::from_value(data).unwrap();
+        assert_eq!(expected, decoded.date);
+    }
+
+    #[test]
+    fn test_deserialize_codebuild_optional_time() {
+        #[derive(Deserialize)]
+        struct Test {
+            #[serde(with = "codebuild_time::optional_time")]
+            pub date: Option<TestTime>,
+        }
+        let data = json!({
+            "date": "Sep 1, 2017 4:12:29 PM"
+        });
+
+        let expected = Utc
+            .datetime_from_str("Sep 1, 2017 4:12:29 PM", CODEBUILD_TIME_FORMAT)
+            .unwrap();
+        let decoded: Test = serde_json::from_value(data).unwrap();
+        assert_eq!(Some(expected), decoded.date);
     }
 }

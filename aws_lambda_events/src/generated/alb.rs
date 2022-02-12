@@ -73,8 +73,8 @@ mod test {
 
     #[test]
     #[cfg(feature = "alb")]
-    fn alb_lambda_target_request_headers_only() {
-        let data = include_bytes!("fixtures/alb-lambda-target-request-headers-only.json");
+    fn example_alb_lambda_target_request_headers_only() {
+        let data = include_bytes!("fixtures/example-alb-lambda-target-request-headers-only.json");
         let parsed: AlbTargetGroupRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AlbTargetGroupRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -83,8 +83,9 @@ mod test {
 
     #[test]
     #[cfg(feature = "alb")]
-    fn alb_lambda_target_request_multivalue_headers() {
-        let data = include_bytes!("fixtures/alb-lambda-target-request-multivalue-headers.json");
+    fn example_alb_lambda_target_request_multivalue_headers() {
+        let data =
+            include_bytes!("fixtures/example-alb-lambda-target-request-multivalue-headers.json");
         let parsed: AlbTargetGroupRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AlbTargetGroupRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -93,8 +94,8 @@ mod test {
 
     #[test]
     #[cfg(feature = "alb")]
-    fn alb_lambda_target_response() {
-        let data = include_bytes!("fixtures/alb-lambda-target-response.json");
+    fn example_alb_lambda_target_response() {
+        let data = include_bytes!("fixtures/example-alb-lambda-target-response.json");
         let parsed: AlbTargetGroupResponse = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AlbTargetGroupResponse = serde_json::from_slice(output.as_bytes()).unwrap();

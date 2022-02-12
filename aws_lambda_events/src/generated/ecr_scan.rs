@@ -66,3 +66,20 @@ pub struct EcrScanEventFindingSeverityCounts {
     #[serde(rename = "UNDEFINED")]
     pub undefined: i64,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    extern crate serde_json;
+
+    #[test]
+    #[cfg(feature = "ecr_scan")]
+    fn example_ecr_image_scan_event() {
+        let data = include_bytes!("fixtures/example-ecr-image-scan-event.json");
+        let parsed: EcrScanEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: EcrScanEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+}

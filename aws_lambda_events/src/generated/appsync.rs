@@ -128,3 +128,72 @@ where
     pub denied_fields: Option<Vec<String>>,
     pub ttl_override: Option<i64>,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    extern crate serde_json;
+
+    #[test]
+    #[cfg(feature = "appsync")]
+    fn example_appsync_batchinvoke() {
+        let data = include_bytes!("fixtures/example-appsync-batchinvoke.json");
+        let parsed: AppSyncResolverTemplate = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: AppSyncResolverTemplate = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "appsync")]
+    fn example_appsync_identity_cognito() {
+        let data = include_bytes!("fixtures/example-appsync-identity-cognito.json");
+        let parsed: AppSyncCognitoIdentity = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: AppSyncCognitoIdentity = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "appsync")]
+    fn example_appsync_identity_iam() {
+        let data = include_bytes!("fixtures/example-appsync-identity-iam.json");
+        let parsed: AppSyncIamIdentity = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: AppSyncIamIdentity = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "appsync")]
+    fn example_appsync_invoke() {
+        let data = include_bytes!("fixtures/example-appsync-invoke.json");
+        let parsed: AppSyncResolverTemplate = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: AppSyncResolverTemplate = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "appsync")]
+    fn example_appsync_lambda_auth_request() {
+        let data = include_bytes!("fixtures/example-appsync-lambda-auth-request.json");
+        let parsed: AppSyncLambdaAuthorizerRequest = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: AppSyncLambdaAuthorizerRequest =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "appsync")]
+    fn example_appsync_lambda_auth_response() {
+        let data = include_bytes!("fixtures/example-appsync-lambda-auth-response.json");
+        let parsed: AppSyncLambdaAuthorizerResponse = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: AppSyncLambdaAuthorizerResponse =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+}

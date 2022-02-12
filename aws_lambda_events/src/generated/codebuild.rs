@@ -56,7 +56,7 @@ pub struct CodeBuildEvent {
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildEventDetail {
     #[serde(rename = "build-status")]
-    pub build_status: CodeBuildPhaseStatus,
+    pub build_status: Option<CodeBuildPhaseStatus>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "project-name")]
@@ -68,7 +68,7 @@ pub struct CodeBuildEventDetail {
     #[serde(rename = "additional-information")]
     pub additional_information: CodeBuildEventAdditionalInformation,
     #[serde(rename = "current-phase")]
-    pub current_phase: CodeBuildPhaseType,
+    pub current_phase: Option<CodeBuildPhaseType>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "current-phase-context")]
@@ -77,19 +77,23 @@ pub struct CodeBuildEventDetail {
     #[serde(default)]
     pub version: Option<String>,
     #[serde(rename = "completed-phase-status")]
-    pub completed_phase_status: CodeBuildPhaseStatus,
+    pub completed_phase_status: Option<CodeBuildPhaseStatus>,
     #[serde(rename = "completed-phase")]
-    pub completed_phase: CodeBuildPhaseType,
+    pub completed_phase: Option<CodeBuildPhaseType>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "completed-phase-context")]
     pub completed_phase_context: Option<String>,
     #[serde(rename = "completed-phase-duration-seconds")]
-    pub completed_phase_duration: SecondDuration,
+    pub completed_phase_duration: Option<SecondDuration>,
     #[serde(rename = "completed-phase-start")]
-    pub completed_phase_start: CodeBuildTime,
+    #[serde(default)]
+    #[serde(with = "codebuild_time::optional_time")]
+    pub completed_phase_start: Option<CodeBuildTime>,
     #[serde(rename = "completed-phase-end")]
-    pub completed_phase_end: CodeBuildTime,
+    #[serde(default)]
+    #[serde(with = "codebuild_time::optional_time")]
+    pub completed_phase_end: Option<CodeBuildTime>,
 }
 
 /// `CodeBuildEventAdditionalInformation` represents additional information to the code build event
@@ -106,6 +110,7 @@ pub struct CodeBuildEventAdditionalInformation {
     #[serde(default)]
     pub initiator: Option<String>,
     #[serde(rename = "build-start-time")]
+    #[serde(with = "codebuild_time::str_time")]
     pub build_start_time: CodeBuildTime,
     pub source: CodeBuildSource,
     pub logs: CodeBuildLogs,
@@ -207,17 +212,47 @@ where
 {
     #[serde(bound = "")]
     #[serde(rename = "phase-context")]
-    pub phase_context: Vec<T1>,
+    pub phase_context: Option<Vec<T1>>,
     #[serde(rename = "start-time")]
+    #[serde(with = "codebuild_time::str_time")]
     pub start_time: CodeBuildTime,
     #[serde(rename = "end-time")]
-    pub end_time: CodeBuildTime,
+    #[serde(default)]
+    #[serde(with = "codebuild_time::optional_time")]
+    pub end_time: Option<CodeBuildTime>,
     #[serde(rename = "duration-in-seconds")]
-    pub duration: SecondDuration,
+    pub duration: Option<SecondDuration>,
     #[serde(rename = "phase-type")]
     pub phase_type: CodeBuildPhaseType,
     #[serde(rename = "phase-status")]
-    pub phase_status: CodeBuildPhaseStatus,
+    pub phase_status: Option<CodeBuildPhaseStatus>,
 }
 
 pub type CodeBuildTime = DateTime<Utc>;
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    extern crate serde_json;
+
+    #[test]
+    #[cfg(feature = "codebuild")]
+    fn example_codebuild_phase_change() {
+        let data = include_bytes!("fixtures/example-codebuild-phase-change.json");
+        let parsed: CodeBuildEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CodeBuildEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "codebuild")]
+    fn example_codebuild_state_change() {
+        let data = include_bytes!("fixtures/example-codebuild-state-change.json");
+        let parsed: CodeBuildEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CodeBuildEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+}

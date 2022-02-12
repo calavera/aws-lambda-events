@@ -55,3 +55,21 @@ pub struct ClientVpnConnectionHandlerResponse {
     #[serde(rename = "schema-version")]
     pub schema_version: Option<String>,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    extern crate serde_json;
+
+    #[test]
+    #[cfg(feature = "clientvpn")]
+    fn example_clientvpn_connectionhandler_request() {
+        let data = include_bytes!("fixtures/example-clientvpn-connectionhandler-request.json");
+        let parsed: ClientVpnConnectionHandlerRequest = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: ClientVpnConnectionHandlerRequest =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+}
