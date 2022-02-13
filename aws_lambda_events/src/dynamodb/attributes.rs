@@ -1,10 +1,11 @@
 use serde::{
     de::{Error as DeError, MapAccess, Visitor},
-    Deserialize, Deserializer,
+    ser::SerializeMap,
+    Deserialize, Deserializer, Serialize, Serializer,
 };
 use std::{collections::HashMap, fmt};
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum AttributeValue {
     Null,
     String(String),
@@ -42,7 +43,12 @@ impl<'de> Deserialize<'de> for AttributeValue {
                 };
 
                 let value = match key.as_str() {
-                    "NULL" => AttributeValue::Null,
+                    "NULL" => {
+                        // consume the next value, even if we don't use it
+                        // Serde will fail because of trailing characters if we don't
+                        map.next_value::<bool>()?;
+                        AttributeValue::Null
+                    }
                     "S" => AttributeValue::String(map.next_value::<String>()?),
                     "N" => {
                         let value = map.next_value::<String>()?;
@@ -103,6 +109,37 @@ impl<'de> Deserialize<'de> for AttributeValue {
     }
 }
 
+impl Serialize for AttributeValue {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut map = serializer.serialize_map(Some(1))?;
+        match self {
+            AttributeValue::Null => map.serialize_entry("NULL", &true)?,
+            AttributeValue::String(s) => map.serialize_entry("S", s)?,
+            AttributeValue::Number(n) => map.serialize_entry("N", &n.to_string())?,
+            AttributeValue::Boolean(b) => map.serialize_entry("BOOL", b)?,
+            AttributeValue::Binary(b) => {
+                let value = base64::encode(b);
+                map.serialize_entry("B", &value)?
+            }
+            AttributeValue::StringSet(s) => map.serialize_entry("SS", s)?,
+            AttributeValue::NumberSet(s) => {
+                let value = s.iter().map(|n| n.to_string()).collect::<Vec<_>>();
+                map.serialize_entry("NS", &value)?
+            }
+            AttributeValue::BinarySet(s) => {
+                let value = s.iter().map(|b| base64::encode(b)).collect::<Vec<_>>();
+                map.serialize_entry("BS", &value)?
+            }
+            AttributeValue::AttributeList(l) => map.serialize_entry("L", l)?,
+            AttributeValue::AttributeMap(m) => map.serialize_entry("M", m)?,
+        }
+        map.end()
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -113,11 +150,14 @@ mod test {
             "NULL": true
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
             AttributeValue::Null => {}
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
@@ -126,11 +166,14 @@ mod test {
             "S": "value"
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
-            AttributeValue::String(s) => assert_eq!("value", &s),
+            AttributeValue::String(ref s) => assert_eq!("value", s.as_str()),
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
@@ -139,11 +182,14 @@ mod test {
             "N": "123.45"
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
             AttributeValue::Number(n) => assert_eq!(123.45, n),
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
@@ -152,14 +198,17 @@ mod test {
             "B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
-            AttributeValue::Binary(b) => {
+            AttributeValue::Binary(ref b) => {
                 let expected = base64::decode("dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk").unwrap();
-                assert_eq!(expected, b)
+                assert_eq!(&expected, b)
             }
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
@@ -168,11 +217,14 @@ mod test {
             "BOOL": true
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
             AttributeValue::Boolean(b) => assert_eq!(true, b),
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
@@ -181,14 +233,17 @@ mod test {
             "SS": ["Giraffe", "Hippo" ,"Zebra"]
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
-            AttributeValue::StringSet(s) => {
+            AttributeValue::StringSet(ref s) => {
                 let expected = vec!["Giraffe", "Hippo", "Zebra"];
                 assert_eq!(expected, s.iter().collect::<Vec<_>>());
             }
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
@@ -197,14 +252,17 @@ mod test {
             "NS": ["42.2", "-19", "7.5", "3.14"]
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
-            AttributeValue::NumberSet(s) => {
+            AttributeValue::NumberSet(ref s) => {
                 let expected = vec![42.2, -19.00, 7.5, 3.14];
-                assert_eq!(expected, s);
+                assert_eq!(&expected, s);
             }
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
@@ -213,17 +271,20 @@ mod test {
             "BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
-            AttributeValue::BinarySet(s) => {
+            AttributeValue::BinarySet(ref s) => {
                 let expected = vec!["U3Vubnk=", "UmFpbnk=", "U25vd3k="]
                     .into_iter()
                     .flat_map(|s| base64::decode(&s))
                     .collect::<Vec<_>>();
-                assert_eq!(expected, s);
+                assert_eq!(&expected, s);
             }
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
@@ -232,18 +293,21 @@ mod test {
             "L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N": "3.14159"}]
         });
 
-        let attr: AttributeValue = serde_json::from_value(value).unwrap();
+        let attr: AttributeValue = serde_json::from_value(value.clone()).unwrap();
         match attr {
-            AttributeValue::AttributeList(s) => {
+            AttributeValue::AttributeList(ref s) => {
                 let expected = vec![
                     AttributeValue::String("Cookies".into()),
                     AttributeValue::String("Coffee".into()),
                     AttributeValue::Number(3.14159),
                 ];
-                assert_eq!(expected, s);
+                assert_eq!(&expected, s);
             }
             other => panic!("unexpected value {:?}", other),
         }
+
+        let reparsed = serde_json::to_value(attr).unwrap();
+        assert_eq!(value, reparsed);
     }
 
     #[test]
