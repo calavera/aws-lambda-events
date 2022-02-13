@@ -19,6 +19,10 @@ extern crate serde_json;
 #[cfg(feature = "cloudwatch_events")]
 pub mod cloudwatch_events;
 
+/// AWS Lambda event definitions for dynamodb.
+#[cfg(feature = "dynamodb")]
+pub mod dynamodb;
+
 mod custom_serde;
 /// Encodings used in AWS Lambda json event values.
 pub mod encodings;
