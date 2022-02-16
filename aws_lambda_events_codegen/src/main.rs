@@ -47,6 +47,10 @@ struct Cli {
 
 fn get_blacklist() -> HashSet<String> {
     let mut blacklist = HashSet::new();
+    // ApiGW events are fully implemented statically
+    blacklist.insert("apigw".to_string());
+    // ALB events are fully implemented statically
+    blacklist.insert("alb".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/attributevalue.go
     blacklist.insert("attributevalue".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/duration.go

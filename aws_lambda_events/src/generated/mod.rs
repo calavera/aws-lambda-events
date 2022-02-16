@@ -1,12 +1,6 @@
 /// AWS Lambda event definitions for activemq.
 #[cfg(feature = "activemq")]
 pub mod activemq;
-/// AWS Lambda event definitions for alb.
-#[cfg(feature = "alb")]
-pub mod alb;
-/// AWS Lambda event definitions for apigw.
-#[cfg(feature = "apigw")]
-pub mod apigw;
 /// AWS Lambda event definitions for appsync.
 #[cfg(feature = "appsync")]
 pub mod appsync;
