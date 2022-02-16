@@ -14,6 +14,7 @@ extern crate http;
 extern crate http_serde;
 #[cfg(not(test))]
 extern crate serde_json;
+extern crate query_map;
 
 /// AWS Lambda event definitions for alb.
 #[cfg(feature = "alb")]

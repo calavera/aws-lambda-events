@@ -1,7 +1,7 @@
 use super::encodings::Body;
 use crate::custom_serde::*;
 use http::{HeaderMap, Method};
-use std::collections::HashMap;
+use query_map::QueryMap;
 
 /// `AlbTargetGroupRequest` contains data originating from the ALB Lambda target group integration
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -12,12 +12,10 @@ pub struct AlbTargetGroupRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    pub query_string_parameters: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
+    pub query_string_parameters: QueryMap,
     #[serde(default)]
-    pub multi_value_query_string_parameters: HashMap<String, Vec<String>>,
+    pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,

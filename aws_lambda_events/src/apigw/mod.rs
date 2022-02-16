@@ -5,6 +5,7 @@ use serde::de::DeserializeOwned;
 use serde::ser::Serialize;
 use serde_json::Value;
 use std::collections::HashMap;
+use query_map::QueryMap;
 
 /// `ApiGatewayProxyRequest` contains data coming from the API Gateway proxy
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -26,12 +27,10 @@ pub struct ApiGatewayProxyRequest {
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    pub query_string_parameters: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
+    pub query_string_parameters: QueryMap,
     #[serde(default)]
-    pub multi_value_query_string_parameters: HashMap<String, Vec<String>>,
+    pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub path_parameters: HashMap<String, String>,
@@ -137,9 +136,8 @@ pub struct ApiGatewayV2httpRequest {
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    pub query_string_parameters: HashMap<String, String>,
+    pub query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub path_parameters: HashMap<String, String>,
@@ -357,12 +355,10 @@ pub struct ApiGatewayWebsocketProxyRequest {
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    pub query_string_parameters: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
+    pub query_string_parameters: QueryMap,
     #[serde(default)]
-    pub multi_value_query_string_parameters: HashMap<String, Vec<String>>,
+    pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub path_parameters: HashMap<String, String>,
@@ -623,12 +619,10 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
-    pub query_string_parameters: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
+    pub query_string_parameters: QueryMap,
     #[serde(default)]
-    pub multi_value_query_string_parameters: HashMap<String, Vec<String>>,
+    pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub path_parameters: HashMap<String, String>,
