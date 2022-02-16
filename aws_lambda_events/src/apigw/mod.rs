@@ -1,11 +1,11 @@
 use super::encodings::Body;
 use crate::custom_serde::*;
 use http::{HeaderMap, Method};
+use query_map::QueryMap;
 use serde::de::DeserializeOwned;
 use serde::ser::Serialize;
 use serde_json::Value;
 use std::collections::HashMap;
-use query_map::QueryMap;
 
 /// `ApiGatewayProxyRequest` contains data coming from the API Gateway proxy
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]

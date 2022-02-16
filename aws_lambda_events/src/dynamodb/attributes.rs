@@ -101,7 +101,7 @@ impl<'de> Deserialize<'de> for AttributeValue {
                         )))
                     }
                 };
-                return Ok(value);
+                Ok(value)
             }
         }
 
@@ -130,7 +130,7 @@ impl Serialize for AttributeValue {
                 map.serialize_entry("NS", &value)?
             }
             AttributeValue::BinarySet(s) => {
-                let value = s.iter().map(|b| base64::encode(b)).collect::<Vec<_>>();
+                let value = s.iter().map(base64::encode).collect::<Vec<_>>();
                 map.serialize_entry("BS", &value)?
             }
             AttributeValue::AttributeList(l) => map.serialize_entry("L", l)?,

@@ -12,9 +12,9 @@ extern crate serde;
 extern crate serde_json;
 extern crate http;
 extern crate http_serde;
+extern crate query_map;
 #[cfg(not(test))]
 extern crate serde_json;
-extern crate query_map;
 
 /// AWS Lambda event definitions for alb.
 #[cfg(feature = "alb")]
