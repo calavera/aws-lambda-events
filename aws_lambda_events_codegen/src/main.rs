@@ -45,25 +45,27 @@ struct Cli {
     verbosity: u8,
 }
 
-fn get_blacklist() -> HashSet<String> {
-    let mut blacklist = HashSet::new();
+fn get_ignorelist() -> HashSet<String> {
+    let mut ignore = HashSet::new();
     // ApiGW events are fully implemented statically
-    blacklist.insert("apigw".to_string());
+    ignore.insert("apigw".to_string());
     // ALB events are fully implemented statically
-    blacklist.insert("alb".to_string());
+    ignore.insert("alb".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/attributevalue.go
-    blacklist.insert("attributevalue".to_string());
+    ignore.insert("attributevalue".to_string());
+    // codepipeline is just an alias for codepipeline_job
+    ignore.insert("codepipeline".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/duration.go
-    blacklist.insert("duration".to_string());
+    ignore.insert("duration".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/dynamodb.go
     // DynamoDB events are fully implemented statically
-    blacklist.insert("dynamodb".to_string());
+    ignore.insert("dynamodb".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/epoch_time.go
-    blacklist.insert("epoch_time".to_string());
+    ignore.insert("epoch_time".to_string());
     // Cloudwatch Events are fully implemented statically
-    blacklist.insert("cloudwatch_events".to_string());
+    ignore.insert("cloudwatch_events".to_string());
 
-    blacklist
+    ignore
 }
 
 fn overwrite_warning(path: &Path, overwrite: bool) -> Option<()> {
@@ -567,7 +569,7 @@ main!(|args: Cli, log_level: verbosity| {
     let pattern = format!("{}/events/*.go", args.sdk_location.to_string_lossy());
 
     // Some files we don't properly handle yet.
-    let blacklist = get_blacklist();
+    let ignore = get_ignorelist();
 
     let example_event_path = args.sdk_location.join("events/testdata");
     let fuzzy_example_events = get_fuzzy_file_listing(&example_event_path)?;
@@ -577,8 +579,8 @@ main!(|args: Cli, log_level: verbosity| {
         let x = path.clone();
         let file_name = x.file_stem().expect("file stem").to_string_lossy();
 
-        // Filter out tests and blacklisted files.
-        if !file_name.contains("_test") && !blacklist.contains(&*file_name) {
+        // Filter out tests and ignore files.
+        if !file_name.contains("_test") && !ignore.contains(&*file_name) {
             // Parse the code.
             info!("Parsing: {}", x.to_string_lossy());
             let (go, rust) = go_to_rust::parse_go_file(&path)?;

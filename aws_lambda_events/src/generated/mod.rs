@@ -25,9 +25,6 @@ pub mod codebuild;
 /// AWS Lambda event definitions for codedeploy.
 #[cfg(feature = "codedeploy")]
 pub mod codedeploy;
-/// AWS Lambda event definitions for codepipeline.
-#[cfg(feature = "codepipeline")]
-pub mod codepipeline;
 /// AWS Lambda event definitions for codepipeline_cloudwatch.
 #[cfg(feature = "codepipeline_cloudwatch")]
 pub mod codepipeline_cloudwatch;
