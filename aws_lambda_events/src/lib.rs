@@ -12,8 +12,16 @@ extern crate serde;
 extern crate serde_json;
 extern crate http;
 extern crate http_serde;
+extern crate query_map;
 #[cfg(not(test))]
 extern crate serde_json;
+
+/// AWS Lambda event definitions for alb.
+#[cfg(feature = "alb")]
+pub mod alb;
+/// AWS Lambda event definitions for apigw.
+#[cfg(feature = "apigw")]
+pub mod apigw;
 
 /// CloudWatch Events payload
 #[cfg(feature = "cloudwatch_events")]

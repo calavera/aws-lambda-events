@@ -249,10 +249,10 @@ pub mod http_method {
     where
         D: Deserializer<'de>,
     {
-        let s: Option<&str> = Option::deserialize(deserializer)?;
+        let s: Option<String> = Option::deserialize(deserializer)?;
         if let Some(val) = s {
             let visitor = MethodVisitor {};
-            return visitor.visit_str(val).map(Some);
+            return visitor.visit_str(&val).map(Some);
         }
 
         Ok(None)
@@ -636,5 +636,70 @@ mod test {
             .unwrap();
         let decoded: Test = serde_json::from_value(data).unwrap();
         assert_eq!(Some(expected), decoded.date);
+    }
+
+    #[test]
+    fn test_http_method_serializer() {
+        #[derive(Deserialize, Serialize)]
+        struct Test {
+            #[serde(with = "http_method")]
+            pub method: http::Method,
+        }
+        let data = json!({
+            "method": "DELETE"
+        });
+        let decoded: Test = serde_json::from_value(data.clone()).unwrap();
+        assert_eq!(http::Method::DELETE, decoded.method);
+
+        let recoded = serde_json::to_value(decoded).unwrap();
+        assert_eq!(data, recoded);
+    }
+
+    #[test]
+    fn test_http_optional_method_serializer() {
+        #[derive(Deserialize, Serialize)]
+        struct Test {
+            #[serde(deserialize_with = "http_method::deserialize_optional")]
+            #[serde(serialize_with = "http_method::serialize_optional")]
+            #[serde(default)]
+            pub method: Option<http::Method>,
+        }
+        let data = json!({
+            "method": "DELETE"
+        });
+        let decoded: Test = serde_json::from_value(data.clone()).unwrap();
+        assert_eq!(Some(http::Method::DELETE), decoded.method);
+
+        let recoded = serde_json::to_value(decoded).unwrap();
+        assert_eq!(data, recoded);
+
+        let data = json!({ "method": null });
+        let decoded: Test = serde_json::from_value(data.clone()).unwrap();
+        assert_eq!(None, decoded.method);
+
+        let data = json!({});
+        let decoded: Test = serde_json::from_value(data.clone()).unwrap();
+        assert_eq!(None, decoded.method);
+    }
+
+    #[test]
+    fn test_serialize_headers() {
+        #[derive(Deserialize, Serialize)]
+        struct Test {
+            #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+            #[serde(serialize_with = "serialize_multi_value_headers")]
+            headers: HeaderMap,
+        }
+        let data = json!({
+            "headers": {
+                "Accept": ["*/*"]
+            }
+        });
+        let decoded: Test = serde_json::from_value(data).unwrap();
+        assert_eq!(&"*/*", decoded.headers.get("Accept").unwrap());
+
+        let recoded = serde_json::to_value(decoded).unwrap();
+        let decoded: Test = serde_json::from_value(recoded).unwrap();
+        assert_eq!(&"*/*", decoded.headers.get("Accept").unwrap());
     }
 }
