@@ -517,7 +517,7 @@ fn generate_test_module(example_events: &[ExampleEvent]) -> Result<codegen::Modu
     test_module.scope().raw("extern crate serde_json;");
 
     for e in example_events {
-        let name = e.name.trim_end_matches(".json").replace("-", "_");
+        let name = e.name.trim_end_matches(".json").replace('-', "_");
         let path = PathBuf::from("fixtures").join(&e.name);
         let test_function = generate_test_function(&name, &e.event_type, &e.service_name, path);
 

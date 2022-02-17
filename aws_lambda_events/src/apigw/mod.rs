@@ -10,7 +10,11 @@ use std::collections::HashMap;
 /// `ApiGatewayProxyRequest` contains data coming from the API Gateway proxy
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ApiGatewayProxyRequest {
+pub struct ApiGatewayProxyRequest<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
     /// The resource path defined in API Gateway
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -38,7 +42,8 @@ pub struct ApiGatewayProxyRequest {
     #[serde(default)]
     pub stage_variables: HashMap<String, String>,
     #[serde(default)]
-    pub request_context: ApiGatewayProxyRequestContext,
+    #[serde(bound = "")]
+    pub request_context: ApiGatewayProxyRequestContext<T1>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
@@ -152,7 +157,11 @@ pub struct ApiGatewayV2httpRequest {
 /// `ApiGatewayV2httpRequestContext` contains the information to identify the AWS account and resources invoking the Lambda function.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ApiGatewayV2httpRequestContext {
+pub struct ApiGatewayV2httpRequestContext<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub route_key: Option<String>,
@@ -165,7 +174,8 @@ pub struct ApiGatewayV2httpRequestContext {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
-    pub authorizer: Option<ApiGatewayV2httpRequestContextAuthorizerDescription>,
+    #[serde(bound = "", default)]
+    pub authorizer: Option<ApiGatewayV2httpRequestContextAuthorizerDescription<T1>>,
     /// The API Gateway HTTP API Id
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -186,7 +196,7 @@ pub struct ApiGatewayV2httpRequestContext {
 }
 
 /// `ApiGatewayV2httpRequestContextAuthorizerDescription` contains authorizer information for the request context.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthorizerDescription<T1 = Value>
 where
@@ -336,7 +346,13 @@ pub struct ApiGatewayRequestIdentity {
 /// `ApiGatewayWebsocketProxyRequest` contains data coming from the API Gateway proxy
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ApiGatewayWebsocketProxyRequest {
+pub struct ApiGatewayWebsocketProxyRequest<T1 = Value, T2 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+    T2: DeserializeOwned,
+    T2: Serialize,
+{
     /// The resource path defined in API Gateway
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
@@ -365,7 +381,8 @@ pub struct ApiGatewayWebsocketProxyRequest {
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub stage_variables: HashMap<String, String>,
-    pub request_context: ApiGatewayWebsocketProxyRequestContext,
+    #[serde(bound = "", default)]
+    pub request_context: ApiGatewayWebsocketProxyRequestContext<T1, T2>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
@@ -376,7 +393,7 @@ pub struct ApiGatewayWebsocketProxyRequest {
 /// `ApiGatewayWebsocketProxyRequestContext` contains the information to identify
 /// the AWS account and resources invoking the Lambda function. It also includes
 /// Cognito identity information for the caller.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayWebsocketProxyRequestContext<T1 = Value, T2 = Value>
 where
@@ -644,10 +661,8 @@ where
     #[serde(default)]
     pub principal_id: Option<String>,
     pub policy_document: ApiGatewayCustomAuthorizerPolicy,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    #[serde(bound = "")]
-    pub context: HashMap<String, T1>,
+    #[serde(bound = "", default)]
+    pub context: T1,
     pub usage_identifier_key: Option<String>,
 }
 
@@ -660,10 +675,8 @@ where
     T1: Serialize,
 {
     pub is_authorized: bool,
-    #[serde(deserialize_with = "deserialize_lambda_map")]
-    #[serde(default)]
-    #[serde(bound = "")]
-    pub context: HashMap<String, T1>,
+    #[serde(bound = "", default)]
+    pub context: T1,
 }
 
 /// `ApiGatewayCustomAuthorizerPolicy` represents an IAM policy
