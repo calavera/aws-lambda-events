@@ -1,11 +1,14 @@
 use super::custom_serde::*;
 use chrono::{DateTime, Duration, Utc};
-use std::borrow::Cow;
-use std::ops::{Deref, DerefMut};
+use std::{borrow::Cow, mem::take, ops::Deref, ops::DerefMut, pin::Pin, task::Poll};
 
 use base64::display::Base64Display;
+use bytes::Bytes;
+use http_body::{Body as HttpBody, SizeHint};
 use serde::de::{Deserialize, Deserializer, Error as DeError, Visitor};
 use serde::ser::{Error as SerError, Serialize, Serializer};
+
+pub type Error = Box<dyn std::error::Error + Send + Sync>;
 
 /// Binary data encoded in base64.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -321,6 +324,45 @@ impl<'de> Deserialize<'de> for Body {
         }
 
         deserializer.deserialize_str(BodyVisitor)
+    }
+}
+
+impl HttpBody for Body {
+    type Data = Bytes;
+    type Error = Error;
+
+    fn poll_data(
+        self: Pin<&mut Self>,
+        _cx: &mut std::task::Context<'_>,
+    ) -> Poll<Option<Result<Self::Data, Self::Error>>> {
+        let body = take(self.get_mut());
+        Poll::Ready(match body {
+            Body::Empty => None,
+            Body::Text(s) => Some(Ok(s.into())),
+            Body::Binary(b) => Some(Ok(b.into())),
+        })
+    }
+
+    fn poll_trailers(
+        self: Pin<&mut Self>,
+        _cx: &mut std::task::Context<'_>,
+    ) -> Poll<Result<Option<http::HeaderMap>, Self::Error>> {
+        Poll::Ready(Ok(None))
+    }
+
+    fn is_end_stream(&self) -> bool {
+        match self {
+            Body::Empty => true,
+            _ => false,
+        }
+    }
+
+    fn size_hint(&self) -> SizeHint {
+        match self {
+            Body::Empty => SizeHint::default(),
+            Body::Text(ref s) => SizeHint::with_exact(s.len() as u64),
+            Body::Binary(ref b) => SizeHint::with_exact(b.len() as u64),
+        }
     }
 }
 

@@ -19,6 +19,7 @@ travis-ci = { repository = "LegNeato/aws-lambda-events" }
 [dependencies]
 base64 = "0.13"
 http = "0.2"
+http-body = "0.4"
 http-serde = "^1"
 serde = "^1"
 serde_derive = "^1"
