@@ -11,6 +11,7 @@ extern crate serde;
 #[macro_use]
 extern crate serde_json;
 extern crate http;
+extern crate http_body;
 extern crate http_serde;
 extern crate query_map;
 #[cfg(not(test))]
