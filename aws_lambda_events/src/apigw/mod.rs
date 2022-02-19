@@ -25,15 +25,15 @@ where
     pub path: Option<String>,
     #[serde(with = "http_method")]
     pub http_method: Method,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "query_map::deserialize_empty")]
     pub query_string_parameters: QueryMap,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "query_map::deserialize_empty")]
     pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -56,10 +56,10 @@ where
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayProxyResponse {
     pub status_code: i64,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -138,10 +138,10 @@ pub struct ApiGatewayV2httpRequest {
     #[serde(default)]
     pub raw_query_string: Option<String>,
     pub cookies: Option<Vec<String>>,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "query_map::deserialize_empty")]
     pub query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -284,10 +284,10 @@ pub struct ApiGatewayV2httpRequestContextHttpDescription {
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpResponse {
     pub status_code: i64,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -365,15 +365,15 @@ where
     #[serde(serialize_with = "http_method::serialize_optional")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub http_method: Option<Method>,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "query_map::deserialize_empty")]
     pub query_string_parameters: QueryMap,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "query_map::deserialize_empty")]
     pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -630,15 +630,15 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     pub path: Option<String>,
     #[serde(with = "http_method")]
     pub http_method: Method,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "query_map::deserialize_empty")]
     pub query_string_parameters: QueryMap,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "query_map::deserialize_empty")]
     pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -829,6 +829,16 @@ mod test {
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayWebsocketProxyRequest =
             serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "apigw")]
+    fn example_apigw_console_test_request() {
+        let data = include_bytes!("../generated/fixtures/example-apigw-console-test-request.json");
+        let parsed: ApiGatewayProxyRequest = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: ApiGatewayProxyRequest = serde_json::from_slice(output.as_bytes()).unwrap();
         assert_eq!(parsed, reparsed);
     }
 }
