@@ -1,5 +1,5 @@
 use crate::custom_serde::*;
-use chrono::{serde::ts_nanoseconds, DateTime, Utc};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, fmt};
 
@@ -178,7 +178,6 @@ pub struct StreamRecord {
     /// The approximate date and time when the stream record was created, in UNIX
     /// epoch time (http://www.epochconverter.com/) format.
     #[serde(rename = "ApproximateCreationDateTime")]
-    #[serde(with = "ts_nanoseconds")]
     pub approximate_creation_date_time: DateTime<Utc>,
     /// The primary key attribute(s) for the DynamoDB item that was modified.
     #[serde(deserialize_with = "deserialize_lambda_map")]
