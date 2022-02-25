@@ -10,6 +10,7 @@ pub(crate) mod codebuild_time;
 mod headers;
 pub(crate) use self::headers::*;
 
+pub(crate) mod float_unix_epoch;
 pub(crate) mod http_method;
 
 fn normalize_timestamp<'de, D>(deserializer: D) -> Result<(u64, u64), D::Error>
