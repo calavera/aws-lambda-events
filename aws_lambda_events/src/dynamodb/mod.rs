@@ -1,5 +1,5 @@
 use crate::custom_serde::*;
-use chrono::{serde::ts_nanoseconds, DateTime, Utc};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, fmt};
 
@@ -178,7 +178,7 @@ pub struct StreamRecord {
     /// The approximate date and time when the stream record was created, in UNIX
     /// epoch time (http://www.epochconverter.com/) format.
     #[serde(rename = "ApproximateCreationDateTime")]
-    #[serde(with = "ts_nanoseconds")]
+    #[serde(with = "float_unix_epoch")]
     pub approximate_creation_date_time: DateTime<Utc>,
     /// The primary key attribute(s) for the DynamoDB item that was modified.
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -213,6 +213,7 @@ pub struct StreamRecord {
 #[cfg(test)]
 mod test {
     use super::*;
+    use chrono::TimeZone;
 
     extern crate serde_json;
 
@@ -220,9 +221,13 @@ mod test {
     #[cfg(feature = "dynamodb")]
     fn example_dynamodb_event() {
         let data = include_bytes!("../generated/fixtures/example-dynamodb-event.json");
-        let parsed: Event = serde_json::from_slice(data).unwrap();
+        let mut parsed: Event = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: Event = serde_json::from_slice(output.as_bytes()).unwrap();
         assert_eq!(parsed, reparsed);
+
+        let event = parsed.records.pop().unwrap();
+        let date = Utc.ymd(2016, 12, 2).and_hms(1, 27, 0);
+        assert_eq!(date, event.change.approximate_creation_date_time);
     }
 }
