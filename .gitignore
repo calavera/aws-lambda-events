@@ -17,3 +17,6 @@ Cargo.lock
 
 .idea
 *.iml
+
+# Prevent MacOS ds_store files
+**/.DS_Store
