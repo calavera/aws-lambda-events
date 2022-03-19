@@ -20,7 +20,7 @@ jobs:
           profile: minimal
           toolchain: ${{ matrix.rust }}
           override: true
-          components: rustfmt, clippy
+          components: clippy
 
       - uses: actions-rs/cargo@v1
         with:
@@ -31,11 +31,6 @@ jobs:
         with:
           command: test
           args: --all-features
-
-      - uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
 
       - uses: actions-rs/cargo@v1
         with:
