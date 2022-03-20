@@ -16,3 +16,7 @@ pub use super::cloudwatch_events;
 /// AWS Lambda event definitions for dynamodb.
 #[cfg(feature = "dynamodb")]
 pub use super::dynamodb;
+
+/// AWS Lambda event definitions for SNS.
+#[cfg(feature = "sns")]
+pub use super::sns;

@@ -79,9 +79,6 @@ pub mod s3_batch_job;
 /// AWS Lambda event definitions for ses.
 #[cfg(feature = "ses")]
 pub mod ses;
-/// AWS Lambda event definitions for sns.
-#[cfg(feature = "sns")]
-pub mod sns;
 /// AWS Lambda event definitions for sqs.
 #[cfg(feature = "sqs")]
 pub mod sqs;

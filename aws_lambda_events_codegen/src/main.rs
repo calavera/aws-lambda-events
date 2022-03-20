@@ -60,6 +60,8 @@ fn get_ignorelist() -> HashSet<String> {
     // https://github.com/aws/aws-lambda-go/blob/master/events/dynamodb.go
     // DynamoDB events are fully implemented statically
     ignore.insert("dynamodb".to_string());
+    // Statically implements SNS
+    ignore.insert("sns".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/epoch_time.go
     ignore.insert("epoch_time".to_string());
     // Cloudwatch Events are fully implemented statically

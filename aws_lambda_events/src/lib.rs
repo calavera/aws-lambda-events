@@ -32,6 +32,10 @@ pub mod cloudwatch_events;
 #[cfg(feature = "dynamodb")]
 pub mod dynamodb;
 
+/// AWS Lambda event definitions for SNS.
+#[cfg(feature = "sns")]
+pub mod sns;
+
 mod custom_serde;
 /// Encodings used in AWS Lambda json event values.
 pub mod encodings;
