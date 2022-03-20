@@ -1,10 +1,10 @@
 use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap};
+use std::collections::HashMap;
 
 /// The `Event` notification event handled by Lambda
-/// 
+///
 /// [https://docs.aws.amazon.com/lambda/latest/dg/with-sns.html](https://docs.aws.amazon.com/lambda/latest/dg/with-sns.html)
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
@@ -44,9 +44,9 @@ pub struct SnsMessage {
     pub topic_arn: String,
 
     /// The Subject parameter specified when the notification was published to the topic.
-    /// 
+    ///
     /// The SNS Developer Guide states: *This is an optional parameter. If no Subject was specified, then this name-value pair does not appear in this JSON document.*
-    /// 
+    ///
     /// Preliminary tests show this appears in the lambda event JSON as `Subject: null`, marking as Option with need to test additional scenarios
     #[serde(deserialize_with = "deserialize_lambda_string")]
     pub subject: Option<String>,
@@ -75,13 +75,13 @@ pub struct SnsMessage {
 }
 
 /// Structured metadata items (such as timestamps, geospatial data, signatures, and identifiers) about the message.
-/// 
+///
 /// Message attributes are optional and separate from—but are sent together with—the message body. The receiver can use this information to decide how to handle the message without having to process the message body first.
-/// 
+///
 /// Additional details can be found in the [SNS Developer Guide](https://docs.aws.amazon.com/sns/latest/dg/sns-message-attributes.html)
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct MessageAttribute {
-    /// The data type of the attribute. Per the [SNS Developer Guide](https://docs.aws.amazon.com/sns/latest/dg/sns-message-attributes.html), lambda notifications, this will only be **String** or **Binary**. 
+    /// The data type of the attribute. Per the [SNS Developer Guide](https://docs.aws.amazon.com/sns/latest/dg/sns-message-attributes.html), lambda notifications, this will only be **String** or **Binary**.
     #[serde(rename = "Type")]
     pub data_type: String,
 
@@ -89,7 +89,6 @@ pub struct MessageAttribute {
     #[serde(rename = "Value")]
     pub value: String,
 }
-
 
 #[cfg(test)]
 mod test {
