@@ -478,6 +478,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source_ip: Option<String>,
+    #[serde(default)]
     pub client_cert: Option<ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert>,
 }
 
@@ -518,6 +519,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidit
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthentication {
+    #[serde(default)]
     pub client_cert: Option<ApiGatewayV2httpRequestContextAuthenticationClientCert>,
 }
 
