@@ -478,7 +478,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source_ip: Option<String>,
-    pub client_cert: ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert,
+    pub client_cert: Option<ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert>,
 }
 
 /// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert` contains certificate information for the request caller if using mTLS.
@@ -518,7 +518,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidit
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthentication {
-    pub client_cert: ApiGatewayV2httpRequestContextAuthenticationClientCert,
+    pub client_cert: Option<ApiGatewayV2httpRequestContextAuthenticationClientCert>,
 }
 
 /// `ApiGatewayV2httpRequestContextAuthenticationClientCert` contains client certificate information for the request caller if using mTLS.
