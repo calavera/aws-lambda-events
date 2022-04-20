@@ -469,7 +469,7 @@ where
 }
 
 /// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentity` contains identity information for the request caller including certificate information if using mTLS.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Default)]
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -588,7 +588,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
     #[serde(default)]
     pub request_id: Option<String>,
     #[serde(default)]
-    pub identity: ApiGatewayCustomAuthorizerRequestTypeRequestIdentity,
+    pub identity: Option<ApiGatewayCustomAuthorizerRequestTypeRequestIdentity>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_path: Option<String>,
