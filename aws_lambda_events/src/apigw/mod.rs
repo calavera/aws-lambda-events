@@ -587,7 +587,8 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
-    pub identity: ApiGatewayCustomAuthorizerRequestTypeRequestIdentity,
+    #[serde(default)]
+    pub identity: Option<ApiGatewayCustomAuthorizerRequestTypeRequestIdentity>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_path: Option<String>,
