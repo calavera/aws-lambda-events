@@ -137,17 +137,17 @@ pub struct EventRecord {
     pub event_name: String,
     /// The AWS service from which the stream record originated. For DynamoDB Streams,
     /// this is aws:dynamodb.
-    pub event_source: String,
+    pub event_source: Option<String>,
     /// The version number of the stream record format. This number is updated whenever
     /// the structure of Record is modified.
     ///
     /// Client applications must not assume that eventVersion will remain at a particular
     /// value, as this number is subject to change at any time. In general, eventVersion
     /// will only increase as the low-level DynamoDB Streams API evolves.
-    pub event_version: String,
+    pub event_version: Option<String>,
     /// The event source ARN of DynamoDB
     #[serde(rename = "eventSourceARN")]
-    pub event_source_arn: String,
+    pub event_source_arn: Option<String>,
     /// Items that are deleted by the Time to Live process after expiration have
     /// the following fields:
     ///
