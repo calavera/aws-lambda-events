@@ -159,6 +159,12 @@ pub struct EventRecord {
     ///
     /// "dynamodb.amazonaws.com"
     pub user_identity: Option<UserIdentity>,
+    /// Describes the record format and relevant mapping information that
+    /// should be applied to schematize the records on the stream. For
+    /// DynamoDB Streams, this is application/json.
+    pub record_format: Option<String>,
+    /// The DynamoDB table that this event was recorded for.
+    pub table_name: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
