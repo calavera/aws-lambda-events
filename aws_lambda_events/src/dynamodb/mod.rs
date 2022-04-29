@@ -137,6 +137,8 @@ pub struct EventRecord {
     pub event_name: String,
     /// The AWS service from which the stream record originated. For DynamoDB Streams,
     /// this is aws:dynamodb.
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     pub event_source: Option<String>,
     /// The version number of the stream record format. This number is updated whenever
     /// the structure of Record is modified.
@@ -144,9 +146,13 @@ pub struct EventRecord {
     /// Client applications must not assume that eventVersion will remain at a particular
     /// value, as this number is subject to change at any time. In general, eventVersion
     /// will only increase as the low-level DynamoDB Streams API evolves.
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     pub event_version: Option<String>,
     /// The event source ARN of DynamoDB
     #[serde(rename = "eventSourceARN")]
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     pub event_source_arn: Option<String>,
     /// Items that are deleted by the Time to Live process after expiration have
     /// the following fields:
@@ -158,12 +164,17 @@ pub struct EventRecord {
     /// * Records[].userIdentity.principalId
     ///
     /// "dynamodb.amazonaws.com"
+    #[serde(default)]
     pub user_identity: Option<UserIdentity>,
     /// Describes the record format and relevant mapping information that
     /// should be applied to schematize the records on the stream. For
     /// DynamoDB Streams, this is application/json.
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     pub record_format: Option<String>,
     /// The DynamoDB table that this event was recorded for.
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     pub table_name: Option<String>,
 }
 
@@ -235,5 +246,17 @@ mod test {
         let event = parsed.records.pop().unwrap();
         let date = Utc.ymd(2016, 12, 2).and_hms(1, 27, 0);
         assert_eq!(date, event.change.approximate_creation_date_time);
+    }
+
+    #[test]
+    #[cfg(feature = "dynamodb")]
+    fn example_dynamodb_event_with_optional_fields() {
+        let data = include_bytes!(
+            "../generated/fixtures/example-dynamodb-event-record-with-optional-fields.json"
+        );
+        let parsed: EventRecord = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: EventRecord = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
     }
 }
