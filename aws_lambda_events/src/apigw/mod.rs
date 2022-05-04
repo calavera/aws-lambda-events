@@ -31,9 +31,15 @@ where
     #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(default, deserialize_with = "query_map::serde::standard::deserialize_empty")]
+    #[serde(
+        default,
+        deserialize_with = "query_map::serde::standard::deserialize_empty"
+    )]
     pub query_string_parameters: QueryMap,
-    #[serde(default, deserialize_with = "query_map::serde::standard::deserialize_empty")]
+    #[serde(
+        default,
+        deserialize_with = "query_map::serde::standard::deserialize_empty"
+    )]
     pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -141,7 +147,10 @@ pub struct ApiGatewayV2httpRequest {
     #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(default, deserialize_with = "query_map::serde::aws_api_gateway_v2::deserialize_empty")]
+    #[serde(
+        default,
+        deserialize_with = "query_map::serde::aws_api_gateway_v2::deserialize_empty"
+    )]
     pub query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -372,9 +381,15 @@ where
     #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(default, deserialize_with = "query_map::serde::standard::deserialize_empty")]
+    #[serde(
+        default,
+        deserialize_with = "query_map::serde::standard::deserialize_empty"
+    )]
     pub query_string_parameters: QueryMap,
-    #[serde(default, deserialize_with = "query_map::serde::standard::deserialize_empty")]
+    #[serde(
+        default,
+        deserialize_with = "query_map::serde::standard::deserialize_empty"
+    )]
     pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
@@ -641,9 +656,15 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_multi_value_headers")]
     pub multi_value_headers: HeaderMap,
-    #[serde(default, deserialize_with = "query_map::serde::standard::deserialize_empty")]
+    #[serde(
+        default,
+        deserialize_with = "query_map::serde::standard::deserialize_empty"
+    )]
     pub query_string_parameters: QueryMap,
-    #[serde(default, deserialize_with = "query_map::serde::standard::deserialize_empty")]
+    #[serde(
+        default,
+        deserialize_with = "query_map::serde::standard::deserialize_empty"
+    )]
     pub multi_value_query_string_parameters: QueryMap,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
