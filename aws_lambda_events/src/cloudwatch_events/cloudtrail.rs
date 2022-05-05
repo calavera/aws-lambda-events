@@ -15,7 +15,7 @@ pub struct AWSAPICall<I = Value, O = Value> {
     pub source_ipaddress: String,
     pub user_agent: String,
     pub request_parameters: I,
-    pub response_elements: O,
+    pub response_elements: Option<O>,
     #[serde(default)]
     pub additional_event_data: Option<Value>,
     #[serde(rename = "requestID")]
