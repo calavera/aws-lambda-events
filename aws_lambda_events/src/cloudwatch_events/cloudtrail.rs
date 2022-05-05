@@ -32,7 +32,7 @@ pub struct UserIdentity {
     pub principal_id: String,
     pub arn: String,
     pub account_id: String,
-    pub session_context: SessionContext,
+    pub session_context: Option<SessionContext>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
