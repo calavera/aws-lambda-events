@@ -110,7 +110,7 @@ mod test {
     #[test]
     #[cfg(feature = "s3")]
     fn example_s3_event() {
-        let data = include_bytes!("fixtures/example-s3-event.json");
+        let data = include_bytes!("../generated/fixtures/example-s3-event.json");
         let parsed: S3Event = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3Event = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -120,7 +120,7 @@ mod test {
     #[test]
     #[cfg(feature = "s3")]
     fn example_s3_event_with_decoded() {
-        let data = include_bytes!("fixtures/example-s3-event-with-decoded.json");
+        let data = include_bytes!("../generated/fixtures/example-s3-event-with-decoded.json");
         let parsed: S3Event = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3Event = serde_json::from_slice(output.as_bytes()).unwrap();
