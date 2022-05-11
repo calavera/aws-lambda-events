@@ -70,12 +70,6 @@ pub mod lex;
 /// AWS Lambda event definitions for rabbitmq.
 #[cfg(feature = "rabbitmq")]
 pub mod rabbitmq;
-/// AWS Lambda event definitions for s3.
-#[cfg(feature = "s3")]
-pub mod s3;
-/// AWS Lambda event definitions for s3_batch_job.
-#[cfg(feature = "s3_batch_job")]
-pub mod s3_batch_job;
 /// AWS Lambda event definitions for ses.
 #[cfg(feature = "ses")]
 pub mod ses;

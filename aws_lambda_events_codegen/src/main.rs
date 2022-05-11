@@ -66,6 +66,9 @@ fn get_ignorelist() -> HashSet<String> {
     ignore.insert("epoch_time".to_string());
     // Cloudwatch Events are fully implemented statically
     ignore.insert("cloudwatch_events".to_string());
+    // S3 Events are fully implemented statically
+    ignore.insert("s3".to_string());
+    ignore.insert("s3_batch_job".to_string());
 
     ignore
 }

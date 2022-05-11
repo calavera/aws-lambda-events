@@ -17,6 +17,13 @@ pub use super::cloudwatch_events;
 #[cfg(feature = "dynamodb")]
 pub use super::dynamodb;
 
+/// AWS Lambda event definitions for s3.
+#[cfg(feature = "s3")]
+pub use super::s3;
+/// AWS Lambda event definitions for s3_batch_job.
+#[cfg(feature = "s3")]
+pub use super::s3::batch_job as s3_batch_job;
+
 /// AWS Lambda event definitions for SNS.
 #[cfg(feature = "sns")]
 pub use super::sns;
