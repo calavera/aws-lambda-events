@@ -31,9 +31,6 @@ pub mod codepipeline_cloudwatch;
 /// AWS Lambda event definitions for codepipeline_job.
 #[cfg(feature = "codepipeline_job")]
 pub mod codepipeline_job;
-/// AWS Lambda event definitions for cognito.
-#[cfg(feature = "cognito")]
-pub mod cognito;
 /// AWS Lambda event definitions for config.
 #[cfg(feature = "config")]
 pub mod config;

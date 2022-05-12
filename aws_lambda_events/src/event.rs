@@ -13,6 +13,10 @@ pub use super::apigw;
 #[cfg(feature = "cloudwatch_events")]
 pub use super::cloudwatch_events;
 
+/// AWS Lambda event definitions for cognito.
+#[cfg(feature = "cognito")]
+pub use super::cognito;
+
 /// AWS Lambda event definitions for dynamodb.
 #[cfg(feature = "dynamodb")]
 pub use super::dynamodb;
