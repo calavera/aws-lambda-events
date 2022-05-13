@@ -1,4 +1,6 @@
 use crate::custom_serde::*;
+use crate::event::streams::DynamoDbBatchItemFailure;
+use crate::time_window::*;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, fmt};
@@ -111,6 +113,29 @@ impl fmt::Display for KeyType {
 pub struct Event {
     #[serde(rename = "Records")]
     pub records: Vec<EventRecord>,
+}
+
+/// `TimeWindowEvent` represents an Amazon Dynamodb event when using time windows
+/// ref. https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html#services-ddb-windows
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TimeWindowEvent {
+    #[serde(rename = "DynamoDBEvent")]
+    #[serde(flatten)]
+    pub dynamo_db_event: Event,
+    #[serde(rename = "TimeWindowProperties")]
+    #[serde(flatten)]
+    pub time_window_properties: TimeWindowProperties,
+}
+
+/// `TimeWindowEventResponse` is the outer structure to report batch item failures for DynamoDBTimeWindowEvent.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TimeWindowEventResponse {
+    #[serde(rename = "TimeWindowEventResponseProperties")]
+    #[serde(flatten)]
+    pub time_window_event_response_properties: TimeWindowEventResponseProperties,
+    pub batch_item_failures: Vec<DynamoDbBatchItemFailure>,
 }
 
 /// EventRecord stores information about each record of a DynamoDb stream event

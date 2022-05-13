@@ -6,6 +6,7 @@ use serde::ser::Serializer;
 use std::collections::HashMap;
 
 pub(crate) mod codebuild_time;
+pub type CodeBuildNumber = f32;
 
 mod headers;
 pub(crate) use self::headers::*;

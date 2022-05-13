@@ -55,12 +55,9 @@ pub mod iot_button;
 /// AWS Lambda event definitions for kafka.
 #[cfg(feature = "kafka")]
 pub mod kafka;
-/// AWS Lambda event definitions for kinesis.
-#[cfg(feature = "kinesis")]
-pub mod kinesis;
-/// AWS Lambda event definitions for kinesis_analytics.
-#[cfg(feature = "kinesis_analytics")]
-pub mod kinesis_analytics;
+/// AWS Lambda event definitions for lambda_function_urls.
+#[cfg(feature = "lambda_function_urls")]
+pub mod lambda_function_urls;
 /// AWS Lambda event definitions for lex.
 #[cfg(feature = "lex")]
 pub mod lex;

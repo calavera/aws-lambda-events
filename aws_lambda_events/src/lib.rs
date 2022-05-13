@@ -36,6 +36,10 @@ pub mod cognito;
 #[cfg(feature = "dynamodb")]
 pub mod dynamodb;
 
+/// AWS Lambda event definitions for kinesis.
+#[cfg(feature = "kinesis")]
+pub mod kinesis;
+
 /// AWS Lambda event definitions for s3.
 #[cfg(feature = "s3")]
 pub mod s3;
@@ -55,3 +59,4 @@ pub mod encodings;
 pub mod event;
 
 mod generated;
+pub mod time_window;
