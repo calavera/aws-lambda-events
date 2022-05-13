@@ -69,6 +69,8 @@ fn get_ignorelist() -> HashSet<String> {
     // S3 Events are fully implemented statically
     ignore.insert("s3".to_string());
     ignore.insert("s3_batch_job".to_string());
+    // SQS Events are fully implemented statically
+    ignore.insert("sqs".to_string());
     // Cognito Events are fully implemented statically
     ignore.insert("cognito".to_string());
 

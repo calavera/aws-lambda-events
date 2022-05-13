@@ -1,5 +1,4 @@
-use super::super::encodings::Base64Data;
-use crate::custom_serde::*;
+use crate::{custom_serde::*, encodings::Base64Data};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -58,6 +57,18 @@ pub struct SqsMessageAttribute {
     pub data_type: Option<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SqsBatchResponse {
+    pub batch_item_failures: Vec<BatchItemFailure>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct BatchItemFailure {
+    item_identifier: String,
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -67,10 +78,22 @@ mod test {
     #[test]
     #[cfg(feature = "sqs")]
     fn example_sqs_event() {
-        let data = include_bytes!("fixtures/example-sqs-event.json");
+        let data = include_bytes!("../generated/fixtures/example-sqs-event.json");
         let parsed: SqsEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: SqsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "sqs")]
+    fn example_sqs_batch_response() {
+        // Example sqs batch response fetched 2022-05-13, from:
+        // https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html#services-sqs-batchfailurereporting
+        let data = include_bytes!("../generated/fixtures/example-sqs-batch-response.json");
+        let parsed: SqsBatchResponse = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: SqsBatchResponse = serde_json::from_slice(output.as_bytes()).unwrap();
         assert_eq!(parsed, reparsed);
     }
 }

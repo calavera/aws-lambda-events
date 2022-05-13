@@ -70,9 +70,6 @@ pub mod rabbitmq;
 /// AWS Lambda event definitions for ses.
 #[cfg(feature = "ses")]
 pub mod ses;
-/// AWS Lambda event definitions for sqs.
-#[cfg(feature = "sqs")]
-pub mod sqs;
 /// AWS Lambda event definitions for streams.
 #[cfg(feature = "streams")]
 pub mod streams;

@@ -31,3 +31,7 @@ pub use super::s3::batch_job as s3_batch_job;
 /// AWS Lambda event definitions for SNS.
 #[cfg(feature = "sns")]
 pub use super::sns;
+
+/// AWS Lambda event definitions for SQS.
+#[cfg(feature = "sqs")]
+pub use super::sqs;
