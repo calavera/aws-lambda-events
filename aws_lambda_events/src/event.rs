@@ -21,9 +21,18 @@ pub use super::cognito;
 #[cfg(feature = "dynamodb")]
 pub use super::dynamodb;
 
+/// AWS Lambda event definitions for kinesis.
+#[cfg(feature = "kinesis")]
+pub use super::kinesis;
+
+/// AWS Lambda event definitions for kinesis_analytics.
+#[cfg(feature = "kinesis_analytics")]
+pub use super::kinesis::analytics as kinesis_analytics;
+
 /// AWS Lambda event definitions for s3.
 #[cfg(feature = "s3")]
 pub use super::s3;
+
 /// AWS Lambda event definitions for s3_batch_job.
 #[cfg(feature = "s3")]
 pub use super::s3::batch_job as s3_batch_job;

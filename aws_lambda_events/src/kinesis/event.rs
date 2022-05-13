@@ -1,11 +1,35 @@
-use super::super::encodings::{Base64Data, SecondTimestamp};
 use crate::custom_serde::*;
+use crate::encodings::{Base64Data, SecondTimestamp};
+use crate::time_window::*;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisEvent {
     #[serde(rename = "Records")]
     pub records: Vec<KinesisEventRecord>,
+}
+
+/// `KinesisTimeWindowEvent` represents an Amazon Dynamodb event when using time windows
+/// ref. https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html#services-kinesis-windows
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct KinesisTimeWindowEvent {
+    #[serde(rename = "KinesisEvent")]
+    #[serde(flatten)]
+    pub kinesis_event: KinesisEvent,
+    #[serde(rename = "TimeWindowProperties")]
+    #[serde(flatten)]
+    pub time_window_properties: TimeWindowProperties,
+}
+
+/// `KinesisTimeWindowEventResponse` is the outer structure to report batch item failures for KinesisTimeWindowEvent.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct KinesisTimeWindowEventResponse {
+    #[serde(rename = "TimeWindowEventResponseProperties")]
+    #[serde(flatten)]
+    pub time_window_event_response_properties: TimeWindowEventResponseProperties,
+    // pub batch_item_failures: Vec<KinesisBatchItemFailure>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -66,7 +90,7 @@ mod test {
     #[test]
     #[cfg(feature = "kinesis")]
     fn example_kinesis_event() {
-        let data = include_bytes!("fixtures/example-kinesis-event.json");
+        let data = include_bytes!("../generated/fixtures/example-kinesis-event.json");
         let parsed: KinesisEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: KinesisEvent = serde_json::from_slice(output.as_bytes()).unwrap();

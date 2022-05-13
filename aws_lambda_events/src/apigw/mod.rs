@@ -53,7 +53,7 @@ where
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
     pub is_base64_encoded: Option<bool>,
 }
 
@@ -70,7 +70,7 @@ pub struct ApiGatewayProxyResponse {
     pub multi_value_headers: HeaderMap,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub body: Option<Body>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
     pub is_base64_encoded: Option<bool>,
 }
 
@@ -110,6 +110,9 @@ where
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_path: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub path: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     #[serde(bound = "")]
@@ -160,6 +163,7 @@ pub struct ApiGatewayV2httpRequest {
     #[serde(default)]
     pub stage_variables: HashMap<String, String>,
     pub body: Option<String>,
+    #[serde(default)]
     pub is_base64_encoded: bool,
 }
 
@@ -301,7 +305,7 @@ pub struct ApiGatewayV2httpResponse {
     pub multi_value_headers: HeaderMap,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub body: Option<Body>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
     pub is_base64_encoded: Option<bool>,
     pub cookies: Vec<String>,
 }
@@ -402,7 +406,7 @@ where
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
     pub is_base64_encoded: Option<bool>,
 }
 
@@ -571,6 +575,117 @@ pub struct ApiGatewayV2httpRequestContextAuthenticationClientCertValidity {
     pub not_before: Option<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ApiGatewayV2CustomAuthorizerV1RequestTypeRequestContext {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub path: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub account_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub resource_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub stage: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub request_id: Option<String>,
+    pub identity: ApiGatewayCustomAuthorizerRequestTypeRequestIdentity,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub resource_path: Option<String>,
+    #[serde(with = "http_method")]
+    pub http_method: Method,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "apiId")]
+    pub apiid: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ApiGatewayV2CustomAuthorizerV1Request {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub version: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub type_: Option<String>,
+    /// nolint: stylecheck
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub method_arn: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub identity_source: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub authorization_token: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub resource: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub path: Option<String>,
+    #[serde(with = "http_method")]
+    pub http_method: Method,
+    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(serialize_with = "serialize_headers")]
+    pub headers: HeaderMap,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub query_string_parameters: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub path_parameters: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub stage_variables: HashMap<String, String>,
+    pub request_context: ApiGatewayV2CustomAuthorizerV1RequestTypeRequestContext,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ApiGatewayV2CustomAuthorizerV2Request {
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub version: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub type_: Option<String>,
+    /// nolint: stylecheck
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub route_arn: Option<String>,
+    pub identity_source: Vec<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub route_key: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub raw_path: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub raw_query_string: Option<String>,
+    pub cookies: Vec<String>,
+    #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
+    #[serde(serialize_with = "serialize_headers")]
+    pub headers: HeaderMap,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub query_string_parameters: HashMap<String, String>,
+    pub request_context: ApiGatewayV2httpRequestContext,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub path_parameters: HashMap<String, String>,
+    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
+    pub stage_variables: HashMap<String, String>,
+}
+
 /// `ApiGatewayCustomAuthorizerContext` represents the expected format of an API Gateway custom authorizer response.
 /// Deprecated. Code should be updated to use the Authorizer map from APIGatewayRequestIdentity. Ex: Authorizer["principalId"]
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -701,6 +816,21 @@ where
     T1: Serialize,
 {
     pub is_authorized: bool,
+    #[serde(bound = "", default)]
+    pub context: T1,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ApiGatewayV2CustomAuthorizerIamPolicyResponse<T1 = Value>
+where
+    T1: DeserializeOwned,
+    T1: Serialize,
+{
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    pub principal_id: Option<String>,
+    pub policy_document: ApiGatewayCustomAuthorizerPolicy,
     #[serde(bound = "", default)]
     pub context: T1,
 }
@@ -878,6 +1008,26 @@ mod test {
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayWebsocketProxyRequest =
             serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "apigw")]
+    fn example_apigw_v2_custom_authorizer_v1_request() {
+        let data = include_bytes!("../generated/fixtures/example-apigw-v2-custom-authorizer-v1-request.json");
+        let parsed: ApiGatewayV2httpRequest = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: ApiGatewayV2httpRequest = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "apigw")]
+    fn example_apigw_v2_custom_authorizer_v2_request() {
+        let data = include_bytes!("../generated/fixtures/example-apigw-v2-custom-authorizer-v2-request.json");
+        let parsed: ApiGatewayV2httpRequest = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: ApiGatewayV2httpRequest = serde_json::from_slice(output.as_bytes()).unwrap();
         assert_eq!(parsed, reparsed);
     }
 }

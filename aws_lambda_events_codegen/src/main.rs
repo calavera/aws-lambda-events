@@ -74,6 +74,12 @@ fn get_ignorelist() -> HashSet<String> {
     // Cognito Events are fully implemented statically
     ignore.insert("cognito".to_string());
 
+    ignore.insert("time_window".to_string());
+
+    // Kinesis Events are fully implemented statically
+    ignore.insert("kinesis".to_string());
+    ignore.insert("kinesis_analytics".to_string());
+
     ignore
 }
 

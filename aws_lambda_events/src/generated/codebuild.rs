@@ -106,6 +106,8 @@ pub struct CodeBuildEventAdditionalInformation {
     pub timeout: MinuteDuration,
     #[serde(rename = "build-complete")]
     pub build_complete: bool,
+    #[serde(rename = "build-number")]
+    pub build_number: Option<CodeBuildNumber>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub initiator: Option<String>,
@@ -113,6 +115,10 @@ pub struct CodeBuildEventAdditionalInformation {
     #[serde(with = "codebuild_time::str_time")]
     pub build_start_time: CodeBuildTime,
     pub source: CodeBuildSource,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
+    #[serde(rename = "source-version")]
+    pub source_version: Option<String>,
     pub logs: CodeBuildLogs,
     pub phases: Vec<CodeBuildPhase>,
 }
