@@ -28,6 +28,10 @@ pub mod apigw;
 #[cfg(feature = "cloudwatch_events")]
 pub mod cloudwatch_events;
 
+/// AWS Lambda event definitions for cognito.
+#[cfg(feature = "cognito")]
+pub mod cognito;
+
 /// AWS Lambda event definitions for dynamodb.
 #[cfg(feature = "dynamodb")]
 pub mod dynamodb;
