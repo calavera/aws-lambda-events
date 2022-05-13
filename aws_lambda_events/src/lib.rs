@@ -44,6 +44,10 @@ pub mod s3;
 #[cfg(feature = "sns")]
 pub mod sns;
 
+/// AWS Lambda event definitions for SQS.
+#[cfg(feature = "sqs")]
+pub mod sqs;
+
 mod custom_serde;
 /// Encodings used in AWS Lambda json event values.
 pub mod encodings;
