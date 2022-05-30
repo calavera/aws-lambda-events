@@ -49,6 +49,7 @@ pub struct SnsMessage {
     ///
     /// Preliminary tests show this appears in the lambda event JSON as `Subject: null`, marking as Option with need to test additional scenarios
     #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     pub subject: Option<String>,
 
     /// The time (UTC) when the notification was published.
@@ -61,9 +62,11 @@ pub struct SnsMessage {
     pub signature: String,
 
     /// The URL to the certificate that was used to sign the message.
+    #[serde(rename = "SigningCertURL")]
     pub signing_cert_url: String,
 
     /// A URL that you can use to unsubscribe the endpoint from this topic. If you visit this URL, Amazon SNS unsubscribes the endpoint and stops sending notifications to this endpoint.
+    #[serde(rename = "UnsubscribeURL")]
     pub unsubscribe_url: String,
 
     /// The Message value specified when the notification was published to the topic.
@@ -71,6 +74,7 @@ pub struct SnsMessage {
 
     /// This is a HashMap of defined attributes for a message. Additional details can be found in the [SNS Developer Guide](https://docs.aws.amazon.com/sns/latest/dg/sns-message-attributes.html)
     #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(default)]
     pub message_attributes: HashMap<String, MessageAttribute>,
 }
 
