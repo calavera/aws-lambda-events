@@ -722,8 +722,11 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_path: Option<String>,
-    #[serde(with = "http_method")]
-    pub http_method: Method,
+    #[serde(deserialize_with = "http_method::deserialize_optional")]
+    #[serde(serialize_with = "http_method::serialize_optional")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    pub http_method: Option<Method>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
@@ -763,8 +766,11 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(with = "http_method")]
-    pub http_method: Method,
+    #[serde(deserialize_with = "http_method::deserialize_optional")]
+    #[serde(serialize_with = "http_method::serialize_optional")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    pub http_method: Option<Method>,
     #[serde(deserialize_with = "deserialize_headers", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
@@ -872,6 +878,20 @@ mod test {
     fn example_apigw_custom_auth_request_type_request() {
         let data = include_bytes!(
             "../generated/fixtures/example-apigw-custom-auth-request-type-request.json"
+        );
+        let parsed: ApiGatewayCustomAuthorizerRequestTypeRequest =
+            serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: ApiGatewayCustomAuthorizerRequestTypeRequest =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "apigw")]
+    fn example_apigw_custom_auth_request_type_request_websocket() {
+        let data = include_bytes!(
+            "../generated/fixtures/example-apigw-v2-custom-authorizer-websocket-request.json"
         );
         let parsed: ApiGatewayCustomAuthorizerRequestTypeRequest =
             serde_json::from_slice(data).unwrap();
