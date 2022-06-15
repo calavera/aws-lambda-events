@@ -13,9 +13,6 @@ pub mod chime_bot;
 /// AWS Lambda event definitions for clientvpn.
 #[cfg(feature = "clientvpn")]
 pub mod clientvpn;
-/// AWS Lambda event definitions for cloudwatch_logs.
-#[cfg(feature = "cloudwatch_logs")]
-pub mod cloudwatch_logs;
 /// AWS Lambda event definitions for code_commit.
 #[cfg(feature = "code_commit")]
 pub mod code_commit;
