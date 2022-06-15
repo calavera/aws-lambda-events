@@ -62,11 +62,9 @@ pub struct SnsMessage {
     pub signature: String,
 
     /// The URL to the certificate that was used to sign the message.
-    #[serde(rename = "SigningCertURL")]
     pub signing_cert_url: String,
 
     /// A URL that you can use to unsubscribe the endpoint from this topic. If you visit this URL, Amazon SNS unsubscribes the endpoint and stops sending notifications to this endpoint.
-    #[serde(rename = "UnsubscribeURL")]
     pub unsubscribe_url: String,
 
     /// The Message value specified when the notification was published to the topic.
@@ -105,7 +103,34 @@ mod test {
     fn my_example_sns_event() {
         let data = include_bytes!("../generated/fixtures/example-sns-event.json");
         let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
-        println!("{:?}", parsed);
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "sns")]
+    fn my_example_sns_event_cloudwatch_single_metric() {
+        let data = include_bytes!(
+            "../generated/fixtures/example-cloudwatch-alarm-sns-payload-single-metric.json"
+        );
+        let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
+        assert_eq!(1, parsed.records.len());
+
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "sns")]
+    fn my_example_sns_event_cloudwatch_multiple_metrics() {
+        let data = include_bytes!(
+            "../generated/fixtures/example-cloudwatch-alarm-sns-payload-multiple-metrics.json"
+        );
+        let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
+        assert_eq!(2, parsed.records.len());
+
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
         assert_eq!(parsed, reparsed);
