@@ -223,10 +223,10 @@ mod test {
     fn my_example_sns_obj_event() {
         let data = include_bytes!("../generated/fixtures/example-sns-event-obj.json");
 
-        #[derive(Debug,Serialize,Deserialize,PartialEq)]
+        #[derive(Debug, Serialize, Deserialize, PartialEq)]
         struct CustStruct {
             foo: String,
-            bar: i32
+            bar: i32,
         }
 
         let parsed: SnsEventObj<CustStruct> = serde_json::from_slice(data).unwrap();
