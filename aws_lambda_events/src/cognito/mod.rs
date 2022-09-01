@@ -620,6 +620,19 @@ mod test {
 
     #[test]
     #[cfg(feature = "cognito")]
+    fn example_cognito_event_userpools_pretokengen_incoming() {
+        let data = include_bytes!(
+            "../generated/fixtures/example-cognito-event-userpools-pretokengen-incoming.json"
+        );
+        let parsed: CognitoEventUserPoolsPreTokenGen = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: CognitoEventUserPoolsPreTokenGen =
+            serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_pretokengen() {
         let data = include_bytes!(
             "../generated/fixtures/example-cognito-event-userpools-pretokengen.json"
