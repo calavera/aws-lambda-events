@@ -224,7 +224,7 @@ pub struct CognitoEventUserPoolsPreTokenGenRequest {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsPreTokenGenResponse {
-    pub claims_override_details: ClaimsOverrideDetails,
+    pub claims_override_details: Option<ClaimsOverrideDetails>,
 }
 
 /// `CognitoEventUserPoolsPostAuthenticationRequest` contains the request portion of a PostAuthentication event
