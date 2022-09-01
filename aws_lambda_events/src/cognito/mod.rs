@@ -220,7 +220,7 @@ pub struct CognitoEventUserPoolsPreTokenGenRequest {
     pub client_metadata: HashMap<String, String>,
 }
 
-/// `CognitoEventUserPoolsPreTokenGenResponse` containst the response portion of  a PreTokenGen event
+/// `CognitoEventUserPoolsPreTokenGenResponse` contains the response portion of  a PreTokenGen event
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsPreTokenGenResponse {
@@ -286,7 +286,7 @@ pub struct ClaimsOverrideDetails {
     pub claims_to_suppress: Vec<String>,
 }
 
-/// `GroupConfiguration` allows lambda to override groups, roles and set a perferred role
+/// `GroupConfiguration` allows lambda to override groups, roles and set a preferred role
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GroupConfiguration {
@@ -363,7 +363,7 @@ pub struct CognitoEventUserPoolsCreateAuthChallengeRequest {
     pub client_metadata: HashMap<String, String>,
 }
 
-/// `CognitoEventUserPoolsCreateAuthChallengeResponse` defines create auth challenge response rarameters
+/// `CognitoEventUserPoolsCreateAuthChallengeResponse` defines create auth challenge response parameters
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsCreateAuthChallengeResponse {
