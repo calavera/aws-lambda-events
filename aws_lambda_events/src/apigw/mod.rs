@@ -493,6 +493,9 @@ where
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
+    pub api_key_id: Option<String>,
+    #[serde(deserialize_with = "deserialize_lambda_string")]
+    #[serde(default)]
     pub api_key: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
