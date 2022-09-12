@@ -1,10 +1,11 @@
 [package]
 name = "aws_lambda_events"
-version = "0.6.3"
+version = "0.7.0"
 description = "AWS Lambda event definitions"
 authors = [
   "Christian Legnitto <christian@legnitto.com>",
-  "Sam Rijs <srijs@airpost.net>"
+  "Sam Rijs <srijs@airpost.net>",
+  "David Calavera <dcalaver@amazon.com>"
 ]
 license = "MIT"
 homepage = "https://github.com/LegNeato/aws-lambda-events"
@@ -12,9 +13,6 @@ repository = "https://github.com/LegNeato/aws-lambda-events"
 readme = "README.md"
 keywords = ["lambda", "aws", "amazon", "events", "S3"]
 categories = ["api-bindings", "encoding", "web-programming"]
-
-[badges]
-travis-ci = { repository = "LegNeato/aws-lambda-events" }
 
 [dependencies]
 base64 = "0.13"
