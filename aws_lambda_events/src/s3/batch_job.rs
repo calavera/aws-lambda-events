@@ -1,7 +1,7 @@
 use crate::custom_serde::*;
 
 /// `S3BatchJobEvent` encapsulates the detail of a s3 batch job
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3BatchJobEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -15,7 +15,7 @@ pub struct S3BatchJobEvent {
 }
 
 /// `S3BatchJob` whichs have the job id
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3BatchJob {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -24,7 +24,7 @@ pub struct S3BatchJob {
 }
 
 /// `S3BatchJobTask` represents one task in the s3 batch job and have all task details
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3BatchJobTask {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -42,7 +42,7 @@ pub struct S3BatchJobTask {
 }
 
 /// `S3BatchJobResponse` is the response of a iven s3 batch job with the results
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3BatchJobResponse {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -58,7 +58,7 @@ pub struct S3BatchJobResponse {
 }
 
 /// `S3BatchJobResult` represents the result of a given task
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3BatchJobResult {
     #[serde(deserialize_with = "deserialize_lambda_string")]

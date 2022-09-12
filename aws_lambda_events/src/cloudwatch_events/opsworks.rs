@@ -1,7 +1,7 @@
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct InstanceStateChange {
     #[serde(rename = "initiated_by")]
@@ -18,7 +18,7 @@ pub struct InstanceStateChange {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CommandStateChange {
     #[serde(rename = "command-id")]
@@ -29,7 +29,7 @@ pub struct CommandStateChange {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DeploymentStateChange {
     pub duration: i64,
@@ -43,7 +43,7 @@ pub struct DeploymentStateChange {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Alert {
     #[serde(rename = "stack-id")]

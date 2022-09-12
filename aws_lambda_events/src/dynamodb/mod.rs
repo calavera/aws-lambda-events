@@ -109,7 +109,7 @@ impl fmt::Display for KeyType {
 
 /// The `Event` stream event handled to Lambda
 /// http://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-ddb-update
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Event {
     #[serde(rename = "Records")]
     pub records: Vec<EventRecord>,
@@ -117,7 +117,7 @@ pub struct Event {
 
 /// `TimeWindowEvent` represents an Amazon Dynamodb event when using time windows
 /// ref. https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html#services-ddb-windows
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimeWindowEvent {
     #[serde(rename = "DynamoDBEvent")]
@@ -129,7 +129,7 @@ pub struct TimeWindowEvent {
 }
 
 /// `TimeWindowEventResponse` is the outer structure to report batch item failures for DynamoDBTimeWindowEvent.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimeWindowEventResponse {
     #[serde(rename = "TimeWindowEventResponseProperties")]
@@ -139,7 +139,7 @@ pub struct TimeWindowEventResponse {
 }
 
 /// EventRecord stores information about each record of a DynamoDb stream event
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EventRecord {
     /// The region in which the GetRecords request was received.
@@ -203,7 +203,7 @@ pub struct EventRecord {
     pub table_name: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserIdentity {
     #[serde(default)]
@@ -214,7 +214,7 @@ pub struct UserIdentity {
 
 /// `DynamoDbStreamRecord` represents a description of a single data modification that was performed on an item
 /// in a DynamoDB table.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StreamRecord {
     /// The approximate date and time when the stream record was created, in UNIX

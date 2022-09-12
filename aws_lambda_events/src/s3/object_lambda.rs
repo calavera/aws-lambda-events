@@ -7,7 +7,7 @@ use std::collections::HashMap;
 
 /// `S3ObjectLambdaEvent` contains data coming from S3 object lambdas
 /// See: https://docs.aws.amazon.com/AmazonS3/latest/userguide/olap-writing-lambda.html
-#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3ObjectLambdaEvent<P = Value>
 where
@@ -25,7 +25,7 @@ where
 
 /// `GetObjectContext` contains the input and output details
 /// for connections to Amazon S3 and S3 Object Lambda
-#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetObjectContext {
     pub input_s3_url: String,
@@ -34,7 +34,7 @@ pub struct GetObjectContext {
 }
 
 /// `Configuration` contains information about the Object Lambda access point
-#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Configuration<P = Value>
 where
@@ -48,7 +48,7 @@ where
 }
 
 /// `UserRequest` contains information about the original call to S3 Object Lambda
-#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserRequest {
     pub url: String,
@@ -58,7 +58,7 @@ pub struct UserRequest {
 }
 
 /// `UserIdentity` contains details about the identity that made the call to S3 Object Lambda
-#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 
 pub struct UserIdentity {
@@ -70,13 +70,13 @@ pub struct UserIdentity {
     pub session_context: SessionContext,
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionContext {
     pub attributes: HashMap<String, String>,
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionIssuer {
     pub r#type: String,

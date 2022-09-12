@@ -1,7 +1,7 @@
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StateChangeNotification {
     pub instance_group_id: String,
@@ -12,7 +12,7 @@ pub struct StateChangeNotification {
     pub deployment_group: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DeploymentStateChangeNotification {
     pub instance_id: String,
@@ -24,7 +24,7 @@ pub struct DeploymentStateChangeNotification {
     pub deployment_group: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct InstanceStateChangeNotification {
     pub pipeline: String,

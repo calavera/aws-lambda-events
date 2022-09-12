@@ -2,7 +2,7 @@ use serde_derive::Deserialize;
 use serde_derive::Serialize;
 use serde_json::Value;
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SignIn {
     pub event_version: String,
@@ -22,7 +22,7 @@ pub struct SignIn {
     pub event_type: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserIdentity {
     pub r#type: String,
@@ -31,14 +31,14 @@ pub struct UserIdentity {
     pub account_id: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ResponseElements {
     #[serde(rename = "ConsoleLogin")]
     pub console_login: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AdditionalEventData {
     #[serde(rename = "LoginTo")]

@@ -1,7 +1,7 @@
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct JobRunStateChange {
     pub job_name: String,
@@ -11,7 +11,7 @@ pub struct JobRunStateChange {
     pub message: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlerStarted {
     pub account_id: String,
@@ -21,7 +21,7 @@ pub struct CrawlerStarted {
     pub message: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlerSucceeded {
     pub tables_created: String,
@@ -41,7 +41,7 @@ pub struct CrawlerSucceeded {
     pub cloud_watch_log_link: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlerFailed {
     pub crawler_name: String,
@@ -52,7 +52,7 @@ pub struct CrawlerFailed {
     pub message: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct JobRunStatus {
     pub job_name: String,
@@ -64,14 +64,14 @@ pub struct JobRunStatus {
     pub started_on: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct NotificationCondition {
     #[serde(rename = "NotifyDelayAfter")]
     pub notify_delay_after: f64,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DataCatalogTableStateChange {
     pub database_name: String,
@@ -80,7 +80,7 @@ pub struct DataCatalogTableStateChange {
     pub table_name: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DataCatalogDatabaseStateChange {
     pub database_name: String,

@@ -2,7 +2,7 @@ use crate::custom_serde::*;
 use crate::encodings::{Base64Data, SecondTimestamp};
 use crate::time_window::*;
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisEvent {
     #[serde(rename = "Records")]
@@ -11,7 +11,7 @@ pub struct KinesisEvent {
 
 /// `KinesisTimeWindowEvent` represents an Amazon Dynamodb event when using time windows
 /// ref. https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html#services-kinesis-windows
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisTimeWindowEvent {
     #[serde(rename = "KinesisEvent")]
@@ -23,7 +23,7 @@ pub struct KinesisTimeWindowEvent {
 }
 
 /// `KinesisTimeWindowEventResponse` is the outer structure to report batch item failures for KinesisTimeWindowEvent.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisTimeWindowEventResponse {
     #[serde(rename = "TimeWindowEventResponseProperties")]
@@ -32,7 +32,7 @@ pub struct KinesisTimeWindowEventResponse {
     // pub batch_item_failures: Vec<KinesisBatchItemFailure>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisEventRecord {
     /// nolint: stylecheck
@@ -64,7 +64,7 @@ pub struct KinesisEventRecord {
     pub kinesis: KinesisRecord,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisRecord {
     pub approximate_arrival_timestamp: SecondTimestamp,
