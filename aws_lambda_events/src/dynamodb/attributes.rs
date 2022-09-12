@@ -5,8 +5,9 @@ use serde::{
 };
 use std::{collections::HashMap, fmt};
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub enum AttributeValue {
+    #[default]
     Null,
     String(String),
     Number(f64),

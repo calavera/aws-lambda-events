@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EC2AutomationStepStatusChange {
     #[serde(rename = "ExecutionId")]
@@ -26,7 +26,7 @@ pub struct EC2AutomationStepStatusChange {
     pub action: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EC2AutomationExecutionStatusChange {
     #[serde(rename = "ExecutionId")]
@@ -47,7 +47,7 @@ pub struct EC2AutomationExecutionStatusChange {
     pub executed_by: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StateChange {
     pub state: String,
@@ -55,7 +55,7 @@ pub struct StateChange {
     pub next_transition_time: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigurationComplianceStateChange {
     #[serde(rename = "last-runtime")]
@@ -73,7 +73,7 @@ pub struct ConfigurationComplianceStateChange {
     pub serverity: Option<String>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MaintenanceWindowTargetRegistration {
     #[serde(rename = "window-target-id")]
@@ -83,7 +83,7 @@ pub struct MaintenanceWindowTargetRegistration {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MaintenanceWindowExecutionStateChange {
     #[serde(rename = "start-time")]
@@ -97,7 +97,7 @@ pub struct MaintenanceWindowExecutionStateChange {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MaintenanceWindowTaskExecutionStateChange {
     #[serde(rename = "start-time")]
@@ -113,7 +113,7 @@ pub struct MaintenanceWindowTaskExecutionStateChange {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MaintenanceWindowTaskTargetInvocationStateChange {
     #[serde(rename = "start-time")]
@@ -133,7 +133,7 @@ pub struct MaintenanceWindowTaskTargetInvocationStateChange {
     pub owner_information: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MaintenanceWindowStateChange {
     #[serde(rename = "window-id")]
@@ -141,7 +141,7 @@ pub struct MaintenanceWindowStateChange {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ParameterStoreStateChange {
     pub operation: String,
@@ -150,7 +150,7 @@ pub struct ParameterStoreStateChange {
     pub description: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EC2CommandStatusChange {
     #[serde(rename = "command-id")]
@@ -165,7 +165,7 @@ pub struct EC2CommandStatusChange {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EC2CommandInvocationStatusChange {
     #[serde(rename = "command-id")]
@@ -179,7 +179,7 @@ pub struct EC2CommandInvocationStatusChange {
     pub status: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EC2StateManagerAssociationStateChange {
     #[serde(rename = "association-id")]
@@ -208,7 +208,7 @@ pub struct EC2StateManagerAssociationStateChange {
     pub association_cwe_version: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EC2StateManagerInstanceAssociationStateChange {
     #[serde(rename = "association-id")]

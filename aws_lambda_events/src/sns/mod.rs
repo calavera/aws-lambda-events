@@ -7,14 +7,14 @@ use std::collections::HashMap;
 /// The `Event` notification event handled by Lambda
 ///
 /// [https://docs.aws.amazon.com/lambda/latest/dg/with-sns.html](https://docs.aws.amazon.com/lambda/latest/dg/with-sns.html)
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SnsEvent {
     pub records: Vec<SnsRecord>,
 }
 
 /// SnsRecord stores information about each record of a SNS event
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SnsRecord {
     /// A string containing the event source.
@@ -31,7 +31,7 @@ pub struct SnsRecord {
 }
 
 /// SnsMessage stores information about each record of a SNS event
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SnsMessage {
     /// The type of SNS message. For a lambda event, this should always be **Notification**
@@ -80,7 +80,7 @@ pub struct SnsMessage {
 /// An alternate `Event` notification event to use alongside `SnsRecordObj<T>` and `SnsMessageObj<T>` if you want to deserialize an object inside your SNS messages rather than getting an `Option<String>` message
 ///
 /// [https://docs.aws.amazon.com/lambda/latest/dg/with-sns.html](https://docs.aws.amazon.com/lambda/latest/dg/with-sns.html)
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(bound(deserialize = "T: DeserializeOwned"))]
 pub struct SnsEventObj<T: Serialize> {
@@ -88,7 +88,7 @@ pub struct SnsEventObj<T: Serialize> {
 }
 
 /// Alternative to `SnsRecord`, used alongside `SnsEventObj<T>` and `SnsMessageObj<T>` when deserializing nested objects from within SNS messages)
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(bound(deserialize = "T: DeserializeOwned"))]
 pub struct SnsRecordObj<T: Serialize> {
@@ -107,7 +107,7 @@ pub struct SnsRecordObj<T: Serialize> {
 
 /// Alternate version of `SnsMessage` to use in conjunction with `SnsEventObj<T>` and `SnsRecordObj<T>` for deserializing the message into a struct of type `T`
 #[serde_with::serde_as]
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(bound(deserialize = "T: DeserializeOwned"))]
 pub struct SnsMessageObj<T: Serialize> {
@@ -163,7 +163,7 @@ pub struct SnsMessageObj<T: Serialize> {
 /// Message attributes are optional and separate from—but are sent together with—the message body. The receiver can use this information to decide how to handle the message without having to process the message body first.
 ///
 /// Additional details can be found in the [SNS Developer Guide](https://docs.aws.amazon.com/sns/latest/dg/sns-message-attributes.html)
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct MessageAttribute {
     /// The data type of the attribute. Per the [SNS Developer Guide](https://docs.aws.amazon.com/sns/latest/dg/sns-message-attributes.html), lambda notifications, this will only be **String** or **Binary**.
     #[serde(rename = "Type")]

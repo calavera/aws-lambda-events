@@ -1,7 +1,7 @@
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PipelineExecutionStateChange {
     pub pipeline: String,
@@ -11,7 +11,7 @@ pub struct PipelineExecutionStateChange {
     pub execution_id: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StageExecutionStateChange {
     pub pipeline: String,
@@ -22,7 +22,7 @@ pub struct StageExecutionStateChange {
     pub state: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActionExecutionStateChange {
     pub pipeline: String,
@@ -37,7 +37,7 @@ pub struct ActionExecutionStateChange {
     pub type_field: ActionExecutionStateChangeType,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActionExecutionStateChangeType {
     pub owner: String,
