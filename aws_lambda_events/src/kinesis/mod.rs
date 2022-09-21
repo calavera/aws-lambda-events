@@ -1,3 +1,3 @@
 pub mod analytics;
 mod event;
-pub use event::*;
+pub use self::event::*;
