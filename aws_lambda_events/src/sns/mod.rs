@@ -134,14 +134,14 @@ pub struct SnsMessageObj<T: Serialize> {
     pub timestamp: DateTime<Utc>,
 
     /// Version of the Amazon SNS signature used.
-    pub signature_version: String,
+    pub signature_version: Option<String>,
 
     /// Base64-encoded SHA1withRSA signature of the Message, MessageId, Subject (if present), Type, Timestamp, and TopicArn values.
-    pub signature: String,
+    pub signature: Option<String>,
 
     /// The URL to the certificate that was used to sign the message.
     #[serde(rename = "SigningCertURL")]
-    pub signing_cert_url: String,
+    pub signing_cert_url: Option<String>,
 
     /// A URL that you can use to unsubscribe the endpoint from this topic. If you visit this URL, Amazon SNS unsubscribes the endpoint and stops sending notifications to this endpoint.
     #[serde(rename = "UnsubscribeURL")]
