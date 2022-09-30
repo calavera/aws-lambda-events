@@ -239,4 +239,26 @@ mod test {
         let reparsed: SnsEventObj<CustStruct> = serde_json::from_slice(output.as_bytes()).unwrap();
         assert_eq!(parsed, reparsed);
     }
+
+    #[test]
+    #[cfg(feature = "sns")]
+    fn my_example_sns_obj_unsigned_event() {
+        let data = include_bytes!("../generated/fixtures/example-sns-event-obj-unsigned.json");
+
+        #[derive(Debug, Serialize, Deserialize, PartialEq)]
+        struct CustStruct {
+            foo: String,
+            bar: i32,
+        }
+
+        let parsed: SnsEventObj<CustStruct> = serde_json::from_slice(data).unwrap();
+        println!("{:?}", parsed);
+
+        assert_eq!(parsed.records[0].sns.message.foo, "Hello world!");
+        assert_eq!(parsed.records[0].sns.message.bar, 123);
+
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: SnsEventObj<CustStruct> = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
 }
