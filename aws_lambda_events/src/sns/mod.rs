@@ -134,14 +134,14 @@ pub struct SnsMessageObj<T: Serialize> {
     pub timestamp: DateTime<Utc>,
 
     /// Version of the Amazon SNS signature used.
-    pub signature_version: String,
+    pub signature_version: Option<String>,
 
     /// Base64-encoded SHA1withRSA signature of the Message, MessageId, Subject (if present), Type, Timestamp, and TopicArn values.
-    pub signature: String,
+    pub signature: Option<String>,
 
     /// The URL to the certificate that was used to sign the message.
     #[serde(rename = "SigningCertURL")]
-    pub signing_cert_url: String,
+    pub signing_cert_url: Option<String>,
 
     /// A URL that you can use to unsubscribe the endpoint from this topic. If you visit this URL, Amazon SNS unsubscribes the endpoint and stops sending notifications to this endpoint.
     #[serde(rename = "UnsubscribeURL")]
@@ -222,6 +222,28 @@ mod test {
     #[cfg(feature = "sns")]
     fn my_example_sns_obj_event() {
         let data = include_bytes!("../generated/fixtures/example-sns-event-obj.json");
+
+        #[derive(Debug, Serialize, Deserialize, PartialEq)]
+        struct CustStruct {
+            foo: String,
+            bar: i32,
+        }
+
+        let parsed: SnsEventObj<CustStruct> = serde_json::from_slice(data).unwrap();
+        println!("{:?}", parsed);
+
+        assert_eq!(parsed.records[0].sns.message.foo, "Hello world!");
+        assert_eq!(parsed.records[0].sns.message.bar, 123);
+
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: SnsEventObj<CustStruct> = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "sns")]
+    fn my_example_sns_obj_unsigned_event() {
+        let data = include_bytes!("../generated/fixtures/example-sns-event-obj-unsigned.json");
 
         #[derive(Debug, Serialize, Deserialize, PartialEq)]
         struct CustStruct {
