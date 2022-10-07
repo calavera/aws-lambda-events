@@ -4,10 +4,11 @@ extern crate quicli;
 use quicli::prelude::*;
 use std::collections::{HashMap, HashSet};
 use std::fs::{self, File};
-use std::io::prelude::*;
 use std::io::Write;
+use std::io::{self, prelude::*};
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use structopt::StructOpt;
 
 #[derive(Debug)]
 struct ExampleEvent {
@@ -40,9 +41,9 @@ struct Cli {
     /// Overwrite existing files
     #[structopt(long = "overwrite")]
     overwrite: bool,
-    /// Verbose output. Pass many times for more log output
-    #[structopt(long = "verbose", short = "v", parse(from_occurrences))]
-    verbosity: u8,
+
+    #[structopt(flatten)]
+    verbose: Verbosity,
 }
 
 fn get_ignorelist() -> HashSet<String> {
@@ -98,7 +99,7 @@ fn write_mod_index(
     mod_path: &Path,
     parsed_files: &[ParsedEventFile],
     overwrite: bool,
-) -> Result<()> {
+) -> io::Result<()> {
     if overwrite_warning(mod_path, overwrite).is_none() {
         let mut mod_content: Vec<String> = Vec::new();
         for parsed in parsed_files {
@@ -127,7 +128,7 @@ fn write_cargo_features(
     cargo_path: &Path,
     parsed_files: &[ParsedEventFile],
     overwrite: bool,
-) -> Result<()> {
+) -> Result<(), Error> {
     if overwrite_warning(cargo_path, overwrite).is_none() {
         let buf = std::fs::read_to_string(cargo_path)?;
         let mut doc = buf.parse::<toml_edit::Document>()?;
@@ -163,7 +164,7 @@ fn write_cargo_features(
     Ok(())
 }
 
-fn write_readme(readme_path: &Path, git_hash: &str, overwrite: bool) -> Result<()> {
+fn write_readme(readme_path: &Path, git_hash: &str, overwrite: bool) -> io::Result<()> {
     if overwrite_warning(readme_path, overwrite).is_none() {
         let version_text = format!(
             "Generated from commit [{}](https://github.com/aws/aws-lambda-go/commit/{}).",
@@ -188,7 +189,7 @@ fn fuzz(string: &mut String) {
     string.retain(|c| c != '_' && c != '-')
 }
 
-fn get_fuzzy_file_listing(dir_path: &Path) -> Result<HashMap<String, PathBuf>> {
+fn get_fuzzy_file_listing(dir_path: &Path) -> Result<HashMap<String, PathBuf>, Error> {
     let mut listing = HashMap::new();
     for entry in fs::read_dir(dir_path)? {
         let entry = entry?;
@@ -507,7 +508,7 @@ fn read_example_event(test_fixture: &Path) -> String {
     contents
 }
 
-fn write_fixture(example_event: &ExampleEvent, out_dir: &Path, overwrite: bool) -> Result<()> {
+fn write_fixture(example_event: &ExampleEvent, out_dir: &Path, overwrite: bool) -> io::Result<()> {
     // Write the example event to the output location.
     let full = out_dir.join("fixtures").join(&example_event.name);
     {
@@ -525,7 +526,7 @@ fn write_fixture(example_event: &ExampleEvent, out_dir: &Path, overwrite: bool) 
     Ok(())
 }
 
-fn generate_test_module(example_events: &[ExampleEvent]) -> Result<codegen::Module> {
+fn generate_test_module(example_events: &[ExampleEvent]) -> io::Result<codegen::Module> {
     let mut test_module = codegen::Module::new("test");
     test_module.annotation(vec!["cfg(test)"]);
     test_module.import("super", "*");
@@ -577,7 +578,10 @@ fn generate_test_function(
     test_function
 }
 
-main!(|args: Cli, log_level: verbosity| {
+fn main() -> CliResult {
+    let args = Cli::from_args();
+    args.verbose.setup_env_logger(env!("CARGO_PKG_NAME"))?;
+
     let mut parsed_files: Vec<ParsedEventFile> = Vec::new();
 
     // The glob pattern we are going to use to find the go files with event defs.
@@ -680,7 +684,9 @@ main!(|args: Cli, log_level: verbosity| {
     if let Some(cargo_path) = find_cargo_file(&args.output_location) {
         write_cargo_features(&cargo_path, &parsed_files, args.overwrite)?;
     }
-});
+
+    Ok(())
+}
 
 fn find_cargo_file(base: &Path) -> Option<PathBuf> {
     if let Some(path) = base.parent() {
