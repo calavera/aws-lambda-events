@@ -1,21 +1,23 @@
-#[macro_use]
-extern crate serde_derive;
 extern crate base64;
-extern crate bytes;
-extern crate chrono;
+extern crate http_serde;
 #[cfg(test)]
 #[macro_use]
 extern crate pretty_assertions;
-extern crate serde;
+#[macro_use]
+extern crate serde_derive;
 #[cfg(test)]
 #[macro_use]
 extern crate serde_json;
-extern crate http;
-extern crate http_body;
-extern crate http_serde;
-extern crate query_map;
+
+// Crates with types that we use publicly. Reexported for ease of interoperability.
+pub extern crate bytes;
+pub extern crate chrono;
+pub extern crate http;
+pub extern crate http_body;
+pub extern crate query_map;
+pub extern crate serde;
 #[cfg(not(test))]
-extern crate serde_json;
+pub extern crate serde_json;
 
 /// AWS Lambda event definitions for alb.
 #[cfg(feature = "alb")]
