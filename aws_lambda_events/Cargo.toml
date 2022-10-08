@@ -1,6 +1,6 @@
 [package]
 name = "aws_lambda_events"
-version = "0.7.0"
+version = "0.7.1"
 description = "AWS Lambda event definitions"
 authors = [
   "Christian Legnitto <christian@legnitto.com>",
@@ -42,7 +42,7 @@ apigw = []
 cloudwatch_events = []
 cloudwatch_logs = ["flate2"]
 cognito = []
-dynamodb = []
+dynamodb = ["streams"]
 kinesis = []
 kinesis_analytics = ["kinesis"]
 s3 = []
