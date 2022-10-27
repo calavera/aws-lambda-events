@@ -53,10 +53,7 @@ pub(crate) fn serialize_milliseconds<S>(
 where
     S: Serializer,
 {
-    let ts_with_millis = date.timestamp() * 1000
-        + date.timestamp_subsec_millis() as i64 * 10
-        + date.timestamp_subsec_nanos() as i64;
-
+    let ts_with_millis = date.timestamp_millis();
     serializer.serialize_str(&ts_with_millis.to_string())
 }
 
@@ -66,7 +63,7 @@ where
 {
     let (whole, frac) = normalize_timestamp(deserializer)?;
     assert_eq!(frac, 0);
-    let seconds: f64 = (whole / 1000) as f64;
+    let seconds: f64 = (whole as f64 / 1000.0) as f64;
     let milliseconds: u32 = (seconds.fract() * 1000f64) as u32;
     let nanos = milliseconds * 1_000_000;
     Ok(Utc.timestamp(seconds as i64, nanos as u32))
@@ -232,7 +229,7 @@ mod test {
             #[serde(deserialize_with = "deserialize_milliseconds")]
             v: DateTime<Utc>,
         }
-        let expected = Utc.ymd(2017, 10, 05).and_hms_nano(15, 33, 44, 0);
+        let expected = Utc.ymd(2017, 10, 05).and_hms_nano(15, 33, 44, 302_000_000);
 
         // Test parsing strings.
         let data = json!({
@@ -259,7 +256,7 @@ mod test {
             v: DateTime<Utc>,
         }
         let instance = Test {
-            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 99),
+            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 99_888_777),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683600099"}"#));
