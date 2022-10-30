@@ -53,10 +53,7 @@ pub(crate) fn serialize_milliseconds<S>(
 where
     S: Serializer,
 {
-    let ts_with_millis = date.timestamp() * 1000
-        + date.timestamp_subsec_millis() as i64 * 10
-        + date.timestamp_subsec_nanos() as i64;
-
+    let ts_with_millis = date.timestamp_millis();
     serializer.serialize_str(&ts_with_millis.to_string())
 }
 
@@ -66,7 +63,7 @@ where
 {
     let (whole, frac) = normalize_timestamp(deserializer)?;
     assert_eq!(frac, 0);
-    let seconds: f64 = (whole / 1000) as f64;
+    let seconds: f64 = (whole as f64 / 1000.0) as f64;
     let milliseconds: u32 = (seconds.fract() * 1000f64) as u32;
     let nanos = milliseconds * 1_000_000;
     Ok(Utc.timestamp(seconds as i64, nanos as u32))
@@ -78,11 +75,13 @@ where
 {
     let seconds = date.timestamp();
     let milliseconds = date.timestamp_subsec_millis();
-    let combined = format!("{}.{}", seconds, milliseconds);
+    let whole_seconds = seconds + (milliseconds as i64 / 1000);
+    let subsec_millis = milliseconds % 1000;
     if milliseconds > 0 {
+        let combined = format!("{}.{:03}", whole_seconds, subsec_millis);
         serializer.serialize_str(&combined)
     } else {
-        serializer.serialize_str(&seconds.to_string())
+        serializer.serialize_str(&whole_seconds.to_string())
     }
 }
 
@@ -232,7 +231,7 @@ mod test {
             #[serde(deserialize_with = "deserialize_milliseconds")]
             v: DateTime<Utc>,
         }
-        let expected = Utc.ymd(2017, 10, 05).and_hms_nano(15, 33, 44, 0);
+        let expected = Utc.ymd(2017, 10, 05).and_hms_nano(15, 33, 44, 302_000_000);
 
         // Test parsing strings.
         let data = json!({
@@ -259,7 +258,7 @@ mod test {
             v: DateTime<Utc>,
         }
         let instance = Test {
-            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 99),
+            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 99_888_777),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683600099"}"#));
@@ -285,14 +284,14 @@ mod test {
             v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 2_000_000),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
-        assert_eq!(encoded, String::from(r#"{"v":"427683600.2"}"#));
+        assert_eq!(encoded, String::from(r#"{"v":"427683600.002"}"#));
 
         // Make sure milliseconds are included.
         let instance = Test {
             v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 1_234_000_000),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
-        assert_eq!(encoded, String::from(r#"{"v":"427683600.1234"}"#));
+        assert_eq!(encoded, String::from(r#"{"v":"427683601.234"}"#));
     }
 
     #[cfg(feature = "string-null-empty")]
