@@ -75,11 +75,13 @@ where
 {
     let seconds = date.timestamp();
     let milliseconds = date.timestamp_subsec_millis();
-    let combined = format!("{}.{}", seconds, milliseconds);
+    let whole_seconds = seconds + (milliseconds as i64 / 1000);
+    let subsec_millis = milliseconds % 1000;
     if milliseconds > 0 {
+        let combined = format!("{}.{:03}", whole_seconds, subsec_millis);
         serializer.serialize_str(&combined)
     } else {
-        serializer.serialize_str(&seconds.to_string())
+        serializer.serialize_str(&whole_seconds.to_string())
     }
 }
 
@@ -282,14 +284,14 @@ mod test {
             v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 2_000_000),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
-        assert_eq!(encoded, String::from(r#"{"v":"427683600.2"}"#));
+        assert_eq!(encoded, String::from(r#"{"v":"427683600.002"}"#));
 
         // Make sure milliseconds are included.
         let instance = Test {
             v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 1_234_000_000),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
-        assert_eq!(encoded, String::from(r#"{"v":"427683600.1234"}"#));
+        assert_eq!(encoded, String::from(r#"{"v":"427683601.234"}"#));
     }
 
     #[cfg(feature = "string-null-empty")]
