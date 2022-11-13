@@ -122,7 +122,7 @@ pub struct SqsBatchResponse {
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BatchItemFailure {
-    item_identifier: String,
+    pub item_identifier: String,
 }
 
 #[cfg(test)]
