@@ -15,7 +15,10 @@ where
     P: Serialize,
 {
     pub x_amz_request_id: String,
-    pub get_object_context: GetObjectContext,
+    pub get_object_context: Option<GetObjectContext>,
+    pub head_object_context: Option<HeadObjectContext>,
+    pub list_objects_context: Option<ListObjectsContext>,
+    pub list_objects_v2_context: Option<ListObjectsV2Context>,
     #[serde(default, bound = "")]
     pub configuration: Configuration<P>,
     pub user_request: UserRequest,
@@ -31,6 +34,30 @@ pub struct GetObjectContext {
     pub input_s3_url: String,
     pub output_route: String,
     pub output_token: String,
+}
+
+/// `HeadObjectContext`
+/// for connections to Amazon S3 and S3 Object Lambda
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct HeadObjectContext {
+    pub input_s3_url: String,
+}
+
+/// `ListObjectsContext`
+/// for connections to Amazon S3 and S3 Object Lambda
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ListObjectsContext {
+    pub input_s3_url: String,
+}
+
+/// `ListObjectsV2Context`
+/// for connections to Amazon S3 and S3 Object Lambda
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ListObjectsV2Context {
+    pub input_s3_url: String,
 }
 
 /// `Configuration` contains information about the Object Lambda access point
@@ -67,7 +94,7 @@ pub struct UserIdentity {
     pub arn: String,
     pub account_id: String,
     pub access_key_id: String,
-    pub session_context: SessionContext,
+    pub session_context: Option<SessionContext>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
