@@ -121,8 +121,48 @@ mod test {
 
     #[test]
     #[cfg(feature = "s3")]
-    fn example_object_lambda_event() {
-        let data = include_bytes!("../generated/fixtures/example-s3-object-lambda-event.json");
+    fn example_object_lambda_event_get_object_assumed_role() {
+        let data = include_bytes!("../generated/fixtures/example-s3-object-lambda-event-get-object-assumed-role.json");
+        let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "s3")]
+    fn example_object_lambda_event_get_object_iam() {
+        let data = include_bytes!("../generated/fixtures/example-s3-object-lambda-event-get-object-iam.json");
+        let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "s3")]
+    fn example_object_lambda_event_head_object_iam() {
+        let data = include_bytes!("../generated/fixtures/example-s3-object-lambda-event-head-object-iam.json");
+        let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "s3")]
+    fn example_object_lambda_event_list_objects_iam() {
+        let data = include_bytes!("../generated/fixtures/example-s3-object-lambda-event-list-objects-iam.json");
+        let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "s3")]
+    fn example_object_lambda_event_list_objects_v2_iam() {
+        let data = include_bytes!("../generated/fixtures/example-s3-object-lambda-event-list-objects-v2-iam.json");
         let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();
