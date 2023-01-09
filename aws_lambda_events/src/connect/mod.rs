@@ -59,8 +59,8 @@ pub struct ConnectContactData {
     #[serde(default)]
     #[serde(rename = "PreviousContactId")]
     pub previous_contact_id: Option<String>,
-    #[serde(rename = "Queue")]
-    pub queue: ConnectQueue,
+    #[serde(rename = "Queue", default)]
+    pub queue: Option<ConnectQueue>,
     #[serde(rename = "SystemEndpoint")]
     pub system_endpoint: ConnectEndpoint,
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -109,6 +109,16 @@ mod test {
     #[cfg(feature = "connect")]
     fn example_connect_event() {
         let data = include_bytes!("../fixtures/example-connect-event.json");
+        let parsed: ConnectEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: ConnectEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "connect")]
+    fn example_connect_event_without_queue() {
+        let data = include_bytes!("../fixtures/example-connect-event-without-queue.json");
         let parsed: ConnectEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ConnectEvent = serde_json::from_slice(output.as_bytes()).unwrap();
