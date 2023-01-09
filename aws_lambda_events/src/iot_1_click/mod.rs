@@ -11,13 +11,13 @@ pub struct IoTOneClickEvent {
     pub placement_info: IoTOneClickPlacementInfo,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTOneClickDeviceEvent {
     pub button_clicked: IoTOneClickButtonClicked,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTOneClickButtonClicked {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -43,7 +43,7 @@ pub struct IoTOneClickDeviceInfo {
     pub remaining_life: f64,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTOneClickPlacementInfo {
     #[serde(deserialize_with = "deserialize_lambda_string")]

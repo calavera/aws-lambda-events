@@ -1,7 +1,7 @@
 use crate::custom_serde::*;
 
 /// `ConfigEvent` contains data from an event sent from AWS Config
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigEvent {
     /// The ID of the AWS account that owns the rule

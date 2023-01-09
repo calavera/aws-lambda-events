@@ -1,7 +1,7 @@
 use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChimeBotEvent {
     #[serde(rename = "Sender")]
@@ -20,7 +20,7 @@ pub struct ChimeBotEvent {
     pub message: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChimeBotEventSender {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -33,7 +33,7 @@ pub struct ChimeBotEventSender {
     pub sender_id_type: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChimeBotEventDiscussion {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -46,7 +46,7 @@ pub struct ChimeBotEventDiscussion {
     pub discussion_type: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChimeBotEventInboundHttpsEndpoint {
     #[serde(deserialize_with = "deserialize_lambda_string")]

@@ -2,7 +2,7 @@ use crate::custom_serde::*;
 use crate::encodings::{Base64Data, MillisecondTimestamp};
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KafkaEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -19,7 +19,7 @@ pub struct KafkaEvent {
     pub bootstrap_servers: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KafkaRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]

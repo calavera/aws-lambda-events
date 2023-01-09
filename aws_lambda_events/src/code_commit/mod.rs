@@ -2,7 +2,7 @@ use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
 
 /// `CodeCommitEvent` represents a CodeCommit event
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeCommitEvent {
     #[serde(rename = "Records")]
@@ -12,7 +12,7 @@ pub struct CodeCommitEvent {
 pub type CodeCommitEventTime = DateTime<Utc>;
 
 /// `CodeCommitRecord` represents a CodeCommit record
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeCommitRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -54,14 +54,14 @@ pub struct CodeCommitRecord {
 }
 
 /// `CodeCommitCodeCommit` represents a CodeCommit object in a record
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeCommitCodeCommit {
     pub references: Vec<CodeCommitReference>,
 }
 
 /// `CodeCommitReference` represents a Reference object in a CodeCommit object
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeCommitReference {
     #[serde(deserialize_with = "deserialize_lambda_string")]

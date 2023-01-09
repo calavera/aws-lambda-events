@@ -3,7 +3,7 @@ use crate::encodings::{Base64Data, MillisecondTimestamp};
 use std::collections::HashMap;
 
 /// `KinesisFirehoseEvent` represents the input event from Amazon Kinesis Firehose. It is used as the input parameter.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -23,7 +23,7 @@ pub struct KinesisFirehoseEvent {
     pub records: Vec<KinesisFirehoseEventRecord>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseEventRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -35,13 +35,13 @@ pub struct KinesisFirehoseEventRecord {
     pub kinesis_firehose_record_metadata: KinesisFirehoseRecordMetadata,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseResponse {
     pub records: Vec<KinesisFirehoseResponseRecord>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseResponseRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -55,7 +55,7 @@ pub struct KinesisFirehoseResponseRecord {
     pub metadata: KinesisFirehoseResponseRecordMetadata,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseResponseRecordMetadata {
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -63,7 +63,7 @@ pub struct KinesisFirehoseResponseRecordMetadata {
     pub partition_keys: HashMap<String, String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseRecordMetadata {
     #[serde(deserialize_with = "deserialize_lambda_string")]

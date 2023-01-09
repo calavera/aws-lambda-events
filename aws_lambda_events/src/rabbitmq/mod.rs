@@ -4,7 +4,7 @@ use serde::ser::Serialize;
 use serde_json::Value;
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RabbitMqEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -19,7 +19,7 @@ pub struct RabbitMqEvent {
     pub messages_by_queue: HashMap<String, Vec<RabbitMqMessage>>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RabbitMqMessage {
     pub basic_properties: RabbitMqBasicProperties,
@@ -29,7 +29,7 @@ pub struct RabbitMqMessage {
     pub redelivered: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RabbitMqBasicProperties<T1 = Value>
 where

@@ -124,7 +124,7 @@ pub struct CodeBuildEventAdditionalInformation {
 }
 
 /// `CodeBuildArtifact` represents the artifact provided to build
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildArtifact {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -141,7 +141,7 @@ pub struct CodeBuildArtifact {
 }
 
 /// `CodeBuildEnvironment` represents the environment for a build
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildEnvironment {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -161,7 +161,7 @@ pub struct CodeBuildEnvironment {
 }
 
 /// `CodeBuildEnvironmentVariable` encapsulate environment variables for the code build
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildEnvironmentVariable {
     /// Name is the name of the environment variable.
@@ -179,7 +179,7 @@ pub struct CodeBuildEnvironmentVariable {
 }
 
 /// `CodeBuildSource` represent the code source will be build
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildSource {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -191,7 +191,7 @@ pub struct CodeBuildSource {
 }
 
 /// `CodeBuildLogs` gives the log details of a code build
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildLogs {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -209,7 +209,7 @@ pub struct CodeBuildLogs {
 }
 
 /// `CodeBuildPhase` represents the phase of a build and its details
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildPhase<T1 = Value>
 where

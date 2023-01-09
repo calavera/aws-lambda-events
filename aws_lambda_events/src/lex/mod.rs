@@ -20,7 +20,7 @@ pub struct LexEvent {
     pub dialog_action: Option<LexDialogAction>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LexBot {
     pub name: Option<String>,
@@ -52,14 +52,14 @@ pub struct LexAlternativeIntents {
     pub confirmation_status: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SlotDetail {
     pub resolutions: Option<Vec<HashMap<String, String>>>,
     pub original_value: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LexDialogAction {
     pub type_: Option<String>,
@@ -77,14 +77,14 @@ pub type SessionAttributes = HashMap<String, String>;
 
 pub type Slots = HashMap<String, Option<String>>;
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LexResponse {
     pub session_attributes: SessionAttributes,
     pub dialog_action: Option<LexDialogAction>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LexResponseCard {
     pub version: Option<i64>,
@@ -92,7 +92,7 @@ pub struct LexResponseCard {
     pub generic_attachments: Option<Vec<Attachment>>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Attachment {
     pub title: Option<String>,

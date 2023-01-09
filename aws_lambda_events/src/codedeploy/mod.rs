@@ -5,7 +5,7 @@ pub type CodeDeployDeploymentState = String;
 
 /// `CodeDeployEvent` is documented at:
 /// https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html#acd_event_types
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeDeployEvent {
     /// AccountID is the id of the AWS account from which the event originated.
@@ -46,7 +46,7 @@ pub struct CodeDeployEvent {
     pub detail: CodeDeployEventDetail,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeDeployEventDetail {
     /// InstanceGroupID is the ID of the instance group.

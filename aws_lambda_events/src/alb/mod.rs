@@ -28,14 +28,14 @@ pub struct AlbTargetGroupRequest {
 }
 
 /// `AlbTargetGroupRequestContext` contains the information to identify the load balancer invoking the lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AlbTargetGroupRequestContext {
     pub elb: ElbContext,
 }
 
 /// `ElbContext` contains the information to identify the ARN invoking the lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ElbContext {
     /// nolint: stylecheck
@@ -45,7 +45,7 @@ pub struct ElbContext {
 }
 
 /// `AlbTargetGroupResponse` configures the response to be returned by the ALB Lambda target group for the request
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AlbTargetGroupResponse {
     pub status_code: i64,

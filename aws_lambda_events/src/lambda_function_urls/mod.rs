@@ -3,7 +3,7 @@ use http::HeaderMap;
 use std::collections::HashMap;
 
 /// `LambdaFunctionUrlRequest` contains data coming from the HTTP request to a Lambda Function URL.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequest {
     /// Version is expected to be `"2.0"`
@@ -29,7 +29,7 @@ pub struct LambdaFunctionUrlRequest {
 }
 
 /// `LambdaFunctionUrlRequestContext` contains the information to identify the AWS account and resources invoking the Lambda function.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequestContext {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -60,14 +60,14 @@ pub struct LambdaFunctionUrlRequestContext {
 }
 
 /// `LambdaFunctionUrlRequestContextAuthorizerDescription` contains authorizer information for the request context.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequestContextAuthorizerDescription {
     pub iam: Option<LambdaFunctionUrlRequestContextAuthorizerIamDescription>,
 }
 
 /// `LambdaFunctionUrlRequestContextAuthorizerIamDescription` contains IAM information for the request context.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequestContextAuthorizerIamDescription {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -88,7 +88,7 @@ pub struct LambdaFunctionUrlRequestContextAuthorizerIamDescription {
 }
 
 /// `LambdaFunctionUrlRequestContextHttpDescription` contains HTTP information for the request context.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequestContextHttpDescription {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -109,7 +109,7 @@ pub struct LambdaFunctionUrlRequestContextHttpDescription {
 }
 
 /// `LambdaFunctionUrlResponse` configures the HTTP response to be returned by Lambda Function URL for the request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlResponse {
     pub status_code: i64,

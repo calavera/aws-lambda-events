@@ -6,7 +6,7 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 /// `AutoScalingEvent` struct is used to parse the json for auto scaling event types //
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AutoScalingEvent<T1 = Value>
 where

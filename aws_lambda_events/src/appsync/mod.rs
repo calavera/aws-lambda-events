@@ -5,7 +5,7 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 /// Deprecated: `AppSyncResolverTemplate` does not represent resolver events sent by AppSync. Instead directly model your input schema, or use map[string]string, json.RawMessage, interface{}, etc..
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSyncResolverTemplate<T1 = Value>
 where
@@ -21,7 +21,7 @@ where
 }
 
 /// `AppSyncIamIdentity` contains information about the caller authed via IAM.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSyncIamIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -49,7 +49,7 @@ pub struct AppSyncIamIdentity {
 }
 
 /// `AppSyncCognitoIdentity` contains information about the caller authed via Cognito.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSyncCognitoIdentity<T1 = Value>
 where
@@ -78,7 +78,7 @@ where
 pub type AppSyncOperation = String;
 
 /// `AppSyncLambdaAuthorizerRequest` contains an authorization request from AppSync.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSyncLambdaAuthorizerRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -89,7 +89,7 @@ pub struct AppSyncLambdaAuthorizerRequest {
 
 /// `AppSyncLambdaAuthorizerRequestContext` contains the parameters of the AppSync invocation which triggered
 /// this authorization request.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSyncLambdaAuthorizerRequestContext<T1 = Value>
 where
@@ -119,7 +119,7 @@ where
 }
 
 /// `AppSyncLambdaAuthorizerResponse` represents the expected format of an authorization response to AppSync.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSyncLambdaAuthorizerResponse<T1 = Value>
 where

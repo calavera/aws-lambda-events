@@ -1,7 +1,7 @@
 use crate::custom_serde::*;
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActiveMqEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -13,7 +13,7 @@ pub struct ActiveMqEvent {
     pub messages: Vec<ActiveMqMessage>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActiveMqMessage {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -49,7 +49,7 @@ pub struct ActiveMqMessage {
     pub properties: HashMap<String, String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActiveMqDestination {
     #[serde(deserialize_with = "deserialize_lambda_string")]

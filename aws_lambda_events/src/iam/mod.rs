@@ -1,7 +1,7 @@
 use crate::custom_serde::*;
 
 /// `IamPolicyDocument` represents an IAM policy document.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IamPolicyDocument {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -13,7 +13,7 @@ pub struct IamPolicyDocument {
 }
 
 /// `IamPolicyStatement` represents one statement from IAM policy with action, effect and resource.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IamPolicyStatement {
     #[serde(rename = "Action")]

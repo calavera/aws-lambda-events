@@ -58,7 +58,7 @@ where
 }
 
 /// `ApiGatewayProxyResponse` configures the response to be returned by API Gateway for the request
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayProxyResponse {
     pub status_code: i64,
@@ -76,7 +76,7 @@ pub struct ApiGatewayProxyResponse {
 
 /// `ApiGatewayProxyRequestContext` contains the information to identify the AWS account and resources invoking the
 /// Lambda function. It also includes Cognito identity information for the caller.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayProxyRequestContext<T1 = Value>
 where
@@ -168,7 +168,7 @@ pub struct ApiGatewayV2httpRequest {
 }
 
 /// `ApiGatewayV2httpRequestContext` contains the information to identify the AWS account and resources invoking the Lambda function.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContext<T1 = Value>
 where
@@ -209,7 +209,7 @@ where
 }
 
 /// `ApiGatewayV2httpRequestContextAuthorizerDescription` contains authorizer information for the request context.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthorizerDescription<T1 = Value>
 where
@@ -225,7 +225,7 @@ where
 }
 
 /// `ApiGatewayV2httpRequestContextAuthorizerJwtDescription` contains JWT authorizer information for the request context.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthorizerJwtDescription {
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -235,7 +235,7 @@ pub struct ApiGatewayV2httpRequestContextAuthorizerJwtDescription {
 }
 
 /// `ApiGatewayV2httpRequestContextAuthorizerIamDescription` contains IAM information for the request context.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthorizerIamDescription {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -260,7 +260,7 @@ pub struct ApiGatewayV2httpRequestContextAuthorizerIamDescription {
 }
 
 /// `ApiGatewayV2httpRequestContextAuthorizerCognitoIdentity` contains Cognito identity information for the request context.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthorizerCognitoIdentity {
     pub amr: Vec<String>,
@@ -273,7 +273,7 @@ pub struct ApiGatewayV2httpRequestContextAuthorizerCognitoIdentity {
 }
 
 /// `ApiGatewayV2httpRequestContextHttpDescription` contains HTTP information for the request context.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextHttpDescription {
     #[serde(with = "http_method")]
@@ -293,7 +293,7 @@ pub struct ApiGatewayV2httpRequestContextHttpDescription {
 }
 
 /// `ApiGatewayV2httpResponse` configures the response to be returned by API Gateway V2 for the request
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpResponse {
     pub status_code: i64,
@@ -311,7 +311,7 @@ pub struct ApiGatewayV2httpResponse {
 }
 
 /// `ApiGatewayRequestIdentity` contains identity information for the request caller.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayRequestIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -413,7 +413,7 @@ where
 /// `ApiGatewayWebsocketProxyRequestContext` contains the information to identify
 /// the AWS account and resources invoking the Lambda function. It also includes
 /// Cognito identity information for the caller.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayWebsocketProxyRequestContext<T1 = Value, T2 = Value>
 where
@@ -488,7 +488,7 @@ where
 }
 
 /// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentity` contains identity information for the request caller including certificate information if using mTLS.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -505,7 +505,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
 }
 
 /// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert` contains certificate information for the request caller if using mTLS.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -526,7 +526,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert {
 }
 
 /// `ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity` contains certificate validity information for the request caller if using mTLS.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -538,7 +538,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidit
 }
 
 /// `ApiGatewayV2httpRequestContextAuthentication` contains authentication context information for the request caller including client certificate information if using mTLS.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthentication {
     #[serde(default)]
@@ -546,7 +546,7 @@ pub struct ApiGatewayV2httpRequestContextAuthentication {
 }
 
 /// `ApiGatewayV2httpRequestContextAuthenticationClientCert` contains client certificate information for the request caller if using mTLS.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthenticationClientCert {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -567,7 +567,7 @@ pub struct ApiGatewayV2httpRequestContextAuthenticationClientCert {
 }
 
 /// `ApiGatewayV2httpRequestContextAuthenticationClientCertValidity` contains client certificate validity information for the request caller if using mTLS.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthenticationClientCertValidity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -578,7 +578,7 @@ pub struct ApiGatewayV2httpRequestContextAuthenticationClientCertValidity {
     pub not_before: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2CustomAuthorizerV1RequestTypeRequestContext {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -608,7 +608,7 @@ pub struct ApiGatewayV2CustomAuthorizerV1RequestTypeRequestContext {
     pub apiid: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2CustomAuthorizerV1Request {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -650,7 +650,7 @@ pub struct ApiGatewayV2CustomAuthorizerV1Request {
     pub request_context: ApiGatewayV2CustomAuthorizerV1RequestTypeRequestContext,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2CustomAuthorizerV2Request {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -692,7 +692,7 @@ pub struct ApiGatewayV2CustomAuthorizerV2Request {
 
 /// `ApiGatewayCustomAuthorizerContext` represents the expected format of an API Gateway custom authorizer response.
 /// Deprecated. Code should be updated to use the Authorizer map from APIGatewayRequestIdentity. Ex: Authorizer["principalId"]
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerContext {
     pub principal_id: Option<String>,
@@ -703,7 +703,7 @@ pub struct ApiGatewayCustomAuthorizerContext {
 }
 
 /// `ApiGatewayCustomAuthorizerRequestTypeRequestContext` represents the expected format of an API Gateway custom authorizer response.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -738,7 +738,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
 }
 
 /// `ApiGatewayCustomAuthorizerRequest` contains data coming in to a custom API Gateway authorizer function.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -801,7 +801,7 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
 }
 
 /// `ApiGatewayCustomAuthorizerResponse` represents the expected format of an API Gateway authorization response.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerResponse<T1 = Value>
 where
@@ -818,7 +818,7 @@ where
 }
 
 /// `ApiGatewayV2CustomAuthorizerSimpleResponse` represents the simple format of an API Gateway V2 authorization response.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2CustomAuthorizerSimpleResponse<T1 = Value>
 where
@@ -830,7 +830,7 @@ where
     pub context: T1,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2CustomAuthorizerIamPolicyResponse<T1 = Value>
 where
@@ -846,7 +846,7 @@ where
 }
 
 /// `ApiGatewayCustomAuthorizerPolicy` represents an IAM policy
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerPolicy {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -858,7 +858,7 @@ pub struct ApiGatewayCustomAuthorizerPolicy {
 }
 
 /// `IamPolicyStatement` represents one statement from IAM policy with action, effect and resource
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IamPolicyStatement {
     #[serde(rename = "Action")]

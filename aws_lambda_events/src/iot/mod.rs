@@ -5,7 +5,7 @@ use http::HeaderMap;
 
 /// `IoTCoreCustomAuthorizerRequest` represents the request to an IoT Core custom authorizer.
 /// See https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreCustomAuthorizerRequest {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -17,7 +17,7 @@ pub struct IoTCoreCustomAuthorizerRequest {
     pub connection_metadata: Option<IoTCoreConnectionMetadata>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreProtocolData {
     pub tls: Option<IoTCoreTlsContext>,
@@ -25,7 +25,7 @@ pub struct IoTCoreProtocolData {
     pub mqtt: Option<IoTCoreMqttContext>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreTlsContext {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -33,7 +33,7 @@ pub struct IoTCoreTlsContext {
     pub server_name: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreHttpContext {
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
@@ -44,7 +44,7 @@ pub struct IoTCoreHttpContext {
     pub query_string: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreMqttContext {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -56,7 +56,7 @@ pub struct IoTCoreMqttContext {
     pub username: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreConnectionMetadata {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -66,7 +66,7 @@ pub struct IoTCoreConnectionMetadata {
 
 /// `IoTCoreCustomAuthorizerResponse` represents the response from an IoT Core custom authorizer.
 /// See https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreCustomAuthorizerResponse {
     pub is_authenticated: bool,

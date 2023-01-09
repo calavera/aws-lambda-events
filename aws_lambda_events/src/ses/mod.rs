@@ -2,14 +2,14 @@ use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
 
 /// `SimpleEmailEvent` is the outer structure of an event sent via SES.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailEvent {
     #[serde(rename = "Records")]
     pub records: Vec<SimpleEmailRecord>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -21,14 +21,14 @@ pub struct SimpleEmailRecord {
     pub ses: SimpleEmailService,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailService {
     pub mail: SimpleEmailMessage,
     pub receipt: SimpleEmailReceipt,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailMessage {
     pub common_headers: SimpleEmailCommonHeaders,
@@ -44,7 +44,7 @@ pub struct SimpleEmailMessage {
     pub message_id: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailReceipt {
     pub recipients: Vec<String>,
@@ -61,7 +61,7 @@ pub struct SimpleEmailReceipt {
     pub processing_time_millis: i64,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailHeader {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -72,7 +72,7 @@ pub struct SimpleEmailHeader {
     pub value: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailCommonHeaders {
     pub from: Vec<String>,
@@ -95,7 +95,7 @@ pub struct SimpleEmailCommonHeaders {
 /// Types. For example, the FunctionARN and InvocationType fields are only
 /// present for the Lambda Type, and the BucketName and ObjectKey fields are only
 /// present for the S3 Type.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailReceiptAction {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -113,7 +113,7 @@ pub struct SimpleEmailReceiptAction {
     pub organization_arn: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailVerdict {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -124,7 +124,7 @@ pub struct SimpleEmailVerdict {
 pub type SimpleEmailDispositionValue = String;
 
 /// `SimpleEmailDisposition` disposition return for SES to control rule functions
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailDisposition {
     pub disposition: SimpleEmailDispositionValue,
