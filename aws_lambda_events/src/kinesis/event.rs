@@ -90,7 +90,7 @@ mod test {
     #[test]
     #[cfg(feature = "kinesis")]
     fn example_kinesis_event() {
-        let data = include_bytes!("../generated/fixtures/example-kinesis-event.json");
+        let data = include_bytes!("../fixtures/example-kinesis-event.json");
         let parsed: KinesisEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: KinesisEvent = serde_json::from_slice(output.as_bytes()).unwrap();

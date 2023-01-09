@@ -1,5 +1,5 @@
 use crate::custom_serde::*;
-use crate::event::streams::DynamoDbBatchItemFailure;
+use crate::streams::DynamoDbBatchItemFailure;
 use crate::time_window::*;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -262,7 +262,7 @@ mod test {
     #[test]
     #[cfg(feature = "dynamodb")]
     fn example_dynamodb_event() {
-        let data = include_bytes!("../generated/fixtures/example-dynamodb-event.json");
+        let data = include_bytes!("../fixtures/example-dynamodb-event.json");
         let mut parsed: Event = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: Event = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -276,9 +276,8 @@ mod test {
     #[test]
     #[cfg(feature = "dynamodb")]
     fn example_dynamodb_event_with_optional_fields() {
-        let data = include_bytes!(
-            "../generated/fixtures/example-dynamodb-event-record-with-optional-fields.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-dynamodb-event-record-with-optional-fields.json");
         let parsed: EventRecord = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: EventRecord = serde_json::from_slice(output.as_bytes()).unwrap();
