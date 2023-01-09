@@ -8,7 +8,6 @@ pub struct ConnectEvent {
     #[serde(rename = "Details")]
     pub details: ConnectDetails,
     /// The name of the event.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Name")]
     pub name: Option<String>,
@@ -36,26 +35,21 @@ pub struct ConnectContactData {
     #[serde(default)]
     #[serde(rename = "Attributes")]
     pub attributes: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Channel")]
     pub channel: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "ContactId")]
     pub contact_id: Option<String>,
     #[serde(rename = "CustomerEndpoint")]
     pub customer_endpoint: ConnectEndpoint,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "InitialContactId")]
     pub initial_contact_id: Option<String>,
     /// Either: INBOUND/OUTBOUND/TRANSFER/CALLBACK
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "InitiationMethod")]
     pub initiation_method: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "PreviousContactId")]
     pub previous_contact_id: Option<String>,
@@ -63,7 +57,6 @@ pub struct ConnectContactData {
     pub queue: Option<ConnectQueue>,
     #[serde(rename = "SystemEndpoint")]
     pub system_endpoint: ConnectEndpoint,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "InstanceARN")]
     pub instance_arn: Option<String>,
@@ -73,11 +66,9 @@ pub struct ConnectContactData {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConnectEndpoint {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Address")]
     pub address: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Type")]
     pub type_: Option<String>,
@@ -87,11 +78,9 @@ pub struct ConnectEndpoint {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConnectQueue {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Name")]
     pub name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "ARN")]
     pub arn: Option<String>,

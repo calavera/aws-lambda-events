@@ -162,7 +162,6 @@ pub struct EventRecord {
     pub event_name: String,
     /// The AWS service from which the stream record originated. For DynamoDB Streams,
     /// this is aws:dynamodb.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_source: Option<String>,
     /// The version number of the stream record format. This number is updated whenever
@@ -171,12 +170,10 @@ pub struct EventRecord {
     /// Client applications must not assume that eventVersion will remain at a particular
     /// value, as this number is subject to change at any time. In general, eventVersion
     /// will only increase as the low-level DynamoDB Streams API evolves.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_version: Option<String>,
     /// The event source ARN of DynamoDB
     #[serde(rename = "eventSourceARN")]
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_source_arn: Option<String>,
     /// Items that are deleted by the Time to Live process after expiration have
@@ -194,11 +191,9 @@ pub struct EventRecord {
     /// Describes the record format and relevant mapping information that
     /// should be applied to schematize the records on the stream. For
     /// DynamoDB Streams, this is application/json.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub record_format: Option<String>,
     /// The DynamoDB table that this event was recorded for.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub table_name: Option<String>,
 }
@@ -238,7 +233,6 @@ pub struct StreamRecord {
     #[serde(rename = "OldImage")]
     pub old_image: HashMap<String, AttributeValue>,
     /// The sequence number of the stream record.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "SequenceNumber")]
     pub sequence_number: Option<String>,

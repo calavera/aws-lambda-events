@@ -1,5 +1,3 @@
-use crate::custom_serde::*;
-
 /// `KinesisEventResponse` is the outer structure to report batch item failures for KinesisEvent.
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -11,7 +9,6 @@ pub struct KinesisEventResponse {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisBatchItemFailure {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub item_identifier: Option<String>,
 }
@@ -27,7 +24,6 @@ pub struct DynamoDbEventResponse {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DynamoDbBatchItemFailure {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub item_identifier: Option<String>,
 }
@@ -43,7 +39,6 @@ pub struct SqsEventResponse {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SqsBatchItemFailure {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub item_identifier: Option<String>,
 }

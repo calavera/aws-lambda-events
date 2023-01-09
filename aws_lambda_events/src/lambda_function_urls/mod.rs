@@ -7,13 +7,10 @@ use std::collections::HashMap;
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequest {
     /// Version is expected to be `"2.0"`
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub raw_path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub raw_query_string: Option<String>,
     pub cookies: Option<Vec<String>>,
@@ -32,27 +29,21 @@ pub struct LambdaFunctionUrlRequest {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequestContext {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
     pub authorizer: Option<LambdaFunctionUrlRequestContextAuthorizerDescription>,
     /// APIID is the Lambda URL ID
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
     pub apiid: Option<String>,
     /// DomainName is of the format `"<url-id>.lambda-url.<region>.on.aws"`
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub domain_name: Option<String>,
     /// DomainPrefix is the Lambda URL ID
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub domain_prefix: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub time: Option<String>,
     pub time_epoch: i64,
@@ -70,19 +61,14 @@ pub struct LambdaFunctionUrlRequestContextAuthorizerDescription {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequestContextAuthorizerIamDescription {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub access_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub caller_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_id: Option<String>,
 }
@@ -91,19 +77,14 @@ pub struct LambdaFunctionUrlRequestContextAuthorizerIamDescription {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LambdaFunctionUrlRequestContextHttpDescription {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub method: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub protocol: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source_ip: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_agent: Option<String>,
 }
@@ -116,7 +97,6 @@ pub struct LambdaFunctionUrlResponse {
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
     pub is_base64_encoded: bool,

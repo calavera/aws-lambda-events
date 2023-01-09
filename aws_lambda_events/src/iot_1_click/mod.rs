@@ -20,10 +20,8 @@ pub struct IoTOneClickDeviceEvent {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTOneClickButtonClicked {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub click_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub reported_time: Option<String>,
 }
@@ -34,10 +32,8 @@ pub struct IoTOneClickDeviceInfo {
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub attributes: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub device_id: Option<String>,
     pub remaining_life: f64,
@@ -46,10 +42,8 @@ pub struct IoTOneClickDeviceInfo {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTOneClickPlacementInfo {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub project_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub placement_name: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]

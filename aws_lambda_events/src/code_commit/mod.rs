@@ -1,4 +1,3 @@
-use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
 
 /// `CodeCommitEvent` represents a CodeCommit event
@@ -15,38 +14,29 @@ pub type CodeCommitEventTime = DateTime<Utc>;
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeCommitRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_version: Option<String>,
     pub event_time: CodeCommitEventTime,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_trigger_name: Option<String>,
     pub event_part_number: u64,
     #[serde(rename = "codecommit")]
     pub code_commit: CodeCommitCodeCommit,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_name: Option<String>,
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_trigger_config_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eventSourceARN")]
     pub event_source_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "userIdentityARN")]
     pub user_identity_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_source: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub aws_region: Option<String>,
     pub event_total_parts: u64,
@@ -64,10 +54,8 @@ pub struct CodeCommitCodeCommit {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeCommitReference {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub commit: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub ref_: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -111,26 +111,6 @@ where
     serializer.serialize_str(&encode(value))
 }
 
-/// Deserializes `Option<String>`, mapping JSON `null` or the empty string `""` to `None`.
-#[cfg(not(feature = "string-null-empty"))]
-pub(crate) fn deserialize_lambda_string<'de, D>(deserializer: D) -> Result<Option<String>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    match Option::deserialize(deserializer)? {
-        Some(s) =>
-        {
-            #[allow(clippy::comparison_to_empty)]
-            if s == "" {
-                Ok(None)
-            } else {
-                Ok(Some(s))
-            }
-        }
-        None => Ok(None),
-    }
-}
-
 /// Deserializes `HashMap<_>`, mapping JSON `null` to an empty map.
 pub(crate) fn deserialize_lambda_map<'de, D, K, V>(
     deserializer: D,
@@ -292,52 +272,6 @@ mod test {
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683601.234"}"#));
-    }
-
-    #[cfg(feature = "string-null-empty")]
-    #[test]
-    fn test_deserialize_string() {
-        #[derive(Deserialize)]
-        struct Test {
-            #[serde(deserialize_with = "deserialize_lambda_string")]
-            v: String,
-        }
-        let input = json!({
-          "v": "",
-        });
-        let decoded: Test = serde_json::from_value(input).unwrap();
-        assert_eq!("".to_string(), decoded.v);
-
-        let input = json!({
-          "v": null,
-        });
-        let decoded: Test = serde_json::from_value(input).unwrap();
-        assert_eq!("".to_string(), decoded.v);
-    }
-
-    #[cfg(feature = "string-null-none")]
-    #[test]
-    fn test_deserialize_string() {
-        #[derive(Deserialize)]
-        struct Test {
-            #[serde(deserialize_with = "deserialize_lambda_string")]
-            v: Option<String>,
-        }
-        let input = json!({
-          "v": "",
-        });
-        let decoded: Test = serde_json::from_value(input).unwrap();
-        assert_eq!(None, decoded.v);
-        let input = json!({
-          "v": null,
-        });
-        let decoded: Test = serde_json::from_value(input).unwrap();
-        assert_eq!(None, decoded.v);
-        let input = json!({
-          "v": "foo",
-        });
-        let decoded: Test = serde_json::from_value(input).unwrap();
-        assert_eq!(Some("foo".to_string()), decoded.v);
     }
 
     #[test]

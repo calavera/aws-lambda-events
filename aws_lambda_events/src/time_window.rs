@@ -5,7 +5,7 @@ use std::collections::HashMap;
 /// `Window` is the object that captures the time window for the records in the event when using the tumbling windows feature
 /// Kinesis: https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html#services-kinesis-windows
 /// DDB: https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html#services-ddb-windows
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Window {
     pub start: DateTime<Utc>,
@@ -15,7 +15,7 @@ pub struct Window {
 /// `TimeWindowProperties` is the object that captures properties that relate to the tumbling windows feature
 /// Kinesis: https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html#services-kinesis-windows
 /// DDB: https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html#services-ddb-windows
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimeWindowProperties {
     /// Time window for the records in the event.
@@ -25,11 +25,9 @@ pub struct TimeWindowProperties {
     #[serde(default)]
     pub state: HashMap<String, String>,
     /// Shard id of the records
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub shard_id: Option<String>,
     /// The event source ARN of the service that generated the event (eg. DynamoDB or Kinesis)
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "eventSourceARN")]
     pub event_source_arn: Option<String>,

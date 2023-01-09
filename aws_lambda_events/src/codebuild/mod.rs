@@ -15,33 +15,27 @@ pub type CodeBuildPhaseType = String;
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildEvent {
     /// AccountID is the id of the AWS account from which the event originated.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "account")]
     pub account_id: Option<String>,
     /// Region is the AWS region from which the event originated.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
     /// DetailType informs the schema of the Detail field. For build state-change
     /// events, the value will be CodeBuildStateChangeDetailType. For phase-change
     /// events, it will be CodeBuildPhaseChangeDetailType.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "detail-type")]
     pub detail_type: Option<String>,
     /// Source should be equal to CodeBuildEventSource.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source: Option<String>,
     /// Version is the version of the event's schema.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
     /// Time is the event's timestamp.
     pub time: DateTime<Utc>,
     /// ID is the GUID of this event.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub id: Option<String>,
     /// Resources is a list of ARNs of CodeBuild builds that this event pertains to.
@@ -57,11 +51,9 @@ pub struct CodeBuildEvent {
 pub struct CodeBuildEventDetail {
     #[serde(rename = "build-status")]
     pub build_status: Option<CodeBuildPhaseStatus>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "project-name")]
     pub project_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "build-id")]
     pub build_id: Option<String>,
@@ -69,18 +61,15 @@ pub struct CodeBuildEventDetail {
     pub additional_information: CodeBuildEventAdditionalInformation,
     #[serde(rename = "current-phase")]
     pub current_phase: Option<CodeBuildPhaseType>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "current-phase-context")]
     pub current_phase_context: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
     #[serde(rename = "completed-phase-status")]
     pub completed_phase_status: Option<CodeBuildPhaseStatus>,
     #[serde(rename = "completed-phase")]
     pub completed_phase: Option<CodeBuildPhaseType>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "completed-phase-context")]
     pub completed_phase_context: Option<String>,
@@ -108,14 +97,12 @@ pub struct CodeBuildEventAdditionalInformation {
     pub build_complete: bool,
     #[serde(rename = "build-number")]
     pub build_number: Option<CodeBuildNumber>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub initiator: Option<String>,
     #[serde(rename = "build-start-time")]
     #[serde(with = "codebuild_time::str_time")]
     pub build_start_time: CodeBuildTime,
     pub source: CodeBuildSource,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "source-version")]
     pub source_version: Option<String>,
@@ -127,15 +114,12 @@ pub struct CodeBuildEventAdditionalInformation {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildArtifact {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "md5sum")]
     pub md5_sum: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "sha256sum")]
     pub sha256_sum: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub location: Option<String>,
 }
@@ -144,16 +128,13 @@ pub struct CodeBuildArtifact {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildEnvironment {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub image: Option<String>,
     #[serde(rename = "privileged-mode")]
     pub privileged_mode: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "compute-type")]
     pub compute_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
     #[serde(rename = "environment-variables")]
@@ -165,15 +146,12 @@ pub struct CodeBuildEnvironment {
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildEnvironmentVariable {
     /// Name is the name of the environment variable.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub name: Option<String>,
     /// Type is PLAINTEXT or PARAMETER_STORE.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
     /// Value is the value of the environment variable.
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub value: Option<String>,
 }
@@ -182,10 +160,8 @@ pub struct CodeBuildEnvironmentVariable {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildSource {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub location: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
 }
@@ -194,15 +170,12 @@ pub struct CodeBuildSource {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeBuildLogs {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "group-name")]
     pub group_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "stream-name")]
     pub stream_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "deep-link")]
     pub deep_link: Option<String>,

@@ -49,7 +49,6 @@ pub struct SnsMessage {
     /// The SNS Developer Guide states: *This is an optional parameter. If no Subject was specified, then this name-value pair does not appear in this JSON document.*
     ///
     /// Preliminary tests show this appears in the lambda event JSON as `Subject: null`, marking as Option with need to test additional scenarios
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub subject: Option<String>,
 
@@ -126,7 +125,6 @@ pub struct SnsMessageObj<T: Serialize> {
     /// The SNS Developer Guide states: *This is an optional parameter. If no Subject was specified, then this name-value pair does not appear in this JSON document.*
     ///
     /// Preliminary tests show this appears in the lambda event JSON as `Subject: null`, marking as Option with need to test additional scenarios
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub subject: Option<String>,
 

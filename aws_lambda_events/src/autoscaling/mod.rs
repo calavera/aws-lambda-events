@@ -14,31 +14,25 @@ where
     T1: Serialize,
 {
     /// The version of event data
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
     /// The unique ID of the event
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub id: Option<String>,
     /// Details about event type
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "detail-type")]
     pub detail_type: Option<String>,
     /// Source of the event
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source: Option<String>,
     /// AccountId
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "account")]
     pub account_id: Option<String>,
     /// Event timestamp
     pub time: DateTime<Utc>,
     /// Region of event
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
     /// Information about resources impacted by event
