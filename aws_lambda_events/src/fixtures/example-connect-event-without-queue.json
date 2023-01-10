@@ -20,10 +20,6 @@
             "Type": "TELEPHONE_NUMBER",
             "Address": "+14802021091"
          },
-         "Queue": {
-            "Name": "PrimaryPhoneQueue",
-            "ARN": ""
-         },
          "Attributes": {
             "key1": "value",
             "key2": "value"
