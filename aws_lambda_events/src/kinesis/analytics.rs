@@ -1,7 +1,7 @@
 use super::super::encodings::Base64Data;
 use crate::custom_serde::*;
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisAnalyticsOutputDeliveryEvent {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -13,7 +13,7 @@ pub struct KinesisAnalyticsOutputDeliveryEvent {
     pub records: Vec<KinesisAnalyticsOutputDeliveryEventRecord>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisAnalyticsOutputDeliveryEventRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -22,13 +22,13 @@ pub struct KinesisAnalyticsOutputDeliveryEventRecord {
     pub data: Base64Data,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisAnalyticsOutputDeliveryResponse {
     pub records: Vec<KinesisAnalyticsOutputDeliveryResponseRecord>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisAnalyticsOutputDeliveryResponseRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]

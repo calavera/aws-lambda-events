@@ -1,7 +1,7 @@
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct JobRunStateChange {
     pub job_name: String,
@@ -11,7 +11,7 @@ pub struct JobRunStateChange {
     pub message: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlerStarted {
     pub account_id: String,
@@ -21,7 +21,7 @@ pub struct CrawlerStarted {
     pub message: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlerSucceeded {
     pub tables_created: String,
@@ -41,7 +41,7 @@ pub struct CrawlerSucceeded {
     pub cloud_watch_log_link: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlerFailed {
     pub crawler_name: String,
@@ -71,7 +71,7 @@ pub struct NotificationCondition {
     pub notify_delay_after: f64,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DataCatalogTableStateChange {
     pub database_name: String,
@@ -80,7 +80,7 @@ pub struct DataCatalogTableStateChange {
     pub table_name: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DataCatalogDatabaseStateChange {
     pub database_name: String,

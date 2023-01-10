@@ -1,4 +1,3 @@
-#[macro_use]
 extern crate quicli;
 
 use quicli::prelude::*;
@@ -47,39 +46,59 @@ struct Cli {
 }
 
 fn get_ignorelist() -> HashSet<String> {
+    const features: [&str; 37] = [
+        "activemq",
+        "alb",
+        "apigw",
+        "appsync",
+        "autoscaling",
+        "chime_bot",
+        "clientvpn",
+        "cloudwatch_events",
+        "cloudwatch_logs",
+        "code_commit",
+        "codebuild",
+        "codedeploy",
+        "codepipeline_cloudwatch",
+        "codepipeline_job",
+        "cognito",
+        "config",
+        "connect",
+        "dynamodb",
+        "ecr_scan",
+        "firehose",
+        "iam",
+        "iot",
+        "iot_1_click",
+        "iot_button",
+        "iot_deprecated",
+        "kafka",
+        "kinesis",
+        "kinesis_analytics",
+        "lambda_function_urls",
+        "lex",
+        "rabbitmq",
+        "s3",
+        "s3_batch_job",
+        "ses",
+        "sns",
+        "sqs",
+        "streams",
+    ];
+
     let mut ignore = HashSet::new();
-    // ApiGW events are fully implemented statically
-    ignore.insert("apigw".to_string());
-    // ALB events are fully implemented statically
-    ignore.insert("alb".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/attributevalue.go
     ignore.insert("attributevalue".to_string());
-    // codepipeline is just an alias for codepipeline_job
-    ignore.insert("codepipeline".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/duration.go
     ignore.insert("duration".to_string());
-    // https://github.com/aws/aws-lambda-go/blob/master/events/dynamodb.go
-    // DynamoDB events are fully implemented statically
-    ignore.insert("dynamodb".to_string());
-    // Statically implements SNS
-    ignore.insert("sns".to_string());
     // https://github.com/aws/aws-lambda-go/blob/master/events/epoch_time.go
     ignore.insert("epoch_time".to_string());
-    // Cloudwatch Events are fully implemented statically
-    ignore.insert("cloudwatch_events".to_string());
-    // S3 Events are fully implemented statically
-    ignore.insert("s3".to_string());
-    ignore.insert("s3_batch_job".to_string());
-    // SQS Events are fully implemented statically
-    ignore.insert("sqs".to_string());
-    // Cognito Events are fully implemented statically
-    ignore.insert("cognito".to_string());
 
     ignore.insert("time_window".to_string());
 
-    // Kinesis Events are fully implemented statically
-    ignore.insert("kinesis".to_string());
-    ignore.insert("kinesis_analytics".to_string());
+    for feat in features {
+        ignore.insert(feat.to_string());
+    }
 
     ignore
 }
@@ -594,7 +613,8 @@ fn main() -> CliResult {
     let fuzzy_example_events = get_fuzzy_file_listing(&example_event_path)?;
 
     // Loop over matched files.
-    for path in glob(&pattern)? {
+    for path in glob::glob(&pattern)? {
+        let path = path?;
         let x = path.clone();
         let file_name = x.file_stem().expect("file stem").to_string_lossy();
 

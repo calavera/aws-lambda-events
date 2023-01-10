@@ -1,7 +1,7 @@
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MatchmakingSearching {
     pub tickets: Vec<Ticket>,
@@ -10,7 +10,7 @@ pub struct MatchmakingSearching {
     pub game_session_info: GameSessionInfo,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Ticket {
     pub ticket_id: String,
@@ -18,7 +18,7 @@ pub struct Ticket {
     pub players: Vec<Player>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Player {
     pub player_id: String,
@@ -27,13 +27,13 @@ pub struct Player {
     pub player_session_id: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GameSessionInfo {
     pub players: Vec<Player>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PotentialMatchCreated {
     pub tickets: Vec<Ticket>,
@@ -45,7 +45,7 @@ pub struct PotentialMatchCreated {
     pub match_id: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RuleEvaluationMetric {
     pub rule_name: String,
@@ -53,7 +53,7 @@ pub struct RuleEvaluationMetric {
     pub failed_count: i64,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AcceptMatch {
     pub tickets: Vec<Ticket>,
@@ -62,7 +62,7 @@ pub struct AcceptMatch {
     pub match_id: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AcceptMatchCompleted {
     pub tickets: Vec<Ticket>,
@@ -72,7 +72,7 @@ pub struct AcceptMatchCompleted {
     pub match_id: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MatchmakingSucceeded {
     pub tickets: Vec<Ticket>,
@@ -81,7 +81,7 @@ pub struct MatchmakingSucceeded {
     pub match_id: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MatchmakingTimedOut {
     pub reason: String,
@@ -92,7 +92,7 @@ pub struct MatchmakingTimedOut {
     pub game_session_info: GameSessionInfo,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MatchmakingCancelled {
     pub reason: String,
@@ -103,7 +103,7 @@ pub struct MatchmakingCancelled {
     pub game_session_info: GameSessionInfo,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MatchmakingFailed {
     pub tickets: Vec<Ticket>,

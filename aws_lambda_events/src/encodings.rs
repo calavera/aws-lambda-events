@@ -11,7 +11,7 @@ use serde::ser::{Error as SerError, Serialize, Serializer};
 pub type Error = Box<dyn std::error::Error + Send + Sync>;
 
 /// Binary data encoded in base64.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Base64Data(
     #[serde(deserialize_with = "deserialize_base64")]
     #[serde(serialize_with = "serialize_base64")]
@@ -33,7 +33,7 @@ impl DerefMut for Base64Data {
 }
 
 /// Timestamp with millisecond precision.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MillisecondTimestamp(
     #[serde(deserialize_with = "deserialize_milliseconds")]
     #[serde(serialize_with = "serialize_milliseconds")]
@@ -55,7 +55,7 @@ impl DerefMut for MillisecondTimestamp {
 }
 
 /// Timestamp with second precision.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct SecondTimestamp(
     #[serde(deserialize_with = "deserialize_seconds")]
     #[serde(serialize_with = "serialize_seconds")]
@@ -77,7 +77,7 @@ impl DerefMut for SecondTimestamp {
 }
 
 /// Duration with second precision.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct SecondDuration(
     #[serde(deserialize_with = "deserialize_duration_seconds")]
     #[serde(serialize_with = "serialize_duration_seconds")]
@@ -99,7 +99,7 @@ impl DerefMut for SecondDuration {
 }
 
 /// Duration with minute precision.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MinuteDuration(
     #[serde(deserialize_with = "deserialize_duration_minutes")]
     #[serde(serialize_with = "serialize_duration_minutes")]
@@ -173,7 +173,7 @@ impl DerefMut for MinuteDuration {
 ///
 /// For more information about API Gateway's body types,
 /// refer to [this documentation](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-payload-encodings.html).
-#[derive(Debug, Default, PartialEq)]
+#[derive(Debug, Default, Eq, PartialEq)]
 pub enum Body {
     /// An empty body
     #[default]
@@ -280,7 +280,7 @@ impl Clone for Body {
     }
 }
 
-impl<'a> Serialize for Body {
+impl Serialize for Body {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,

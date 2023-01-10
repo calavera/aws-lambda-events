@@ -1,5 +1,5 @@
 use crate::custom_serde::*;
-use crate::event::streams::DynamoDbBatchItemFailure;
+use crate::streams::DynamoDbBatchItemFailure;
 use crate::time_window::*;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -8,7 +8,7 @@ use std::{collections::HashMap, fmt};
 pub mod attributes;
 use self::attributes::AttributeValue;
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum StreamViewType {
     NewImage,
@@ -29,7 +29,7 @@ impl fmt::Display for StreamViewType {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum StreamStatus {
     Enabling,
@@ -50,7 +50,7 @@ impl fmt::Display for StreamStatus {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SharedIteratorType {
     TrimHorizon,
@@ -71,7 +71,7 @@ impl fmt::Display for SharedIteratorType {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OperationType {
     Insert,
@@ -90,7 +90,7 @@ impl fmt::Display for OperationType {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum KeyType {
     Hash,
@@ -129,7 +129,7 @@ pub struct TimeWindowEvent {
 }
 
 /// `TimeWindowEventResponse` is the outer structure to report batch item failures for DynamoDBTimeWindowEvent.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimeWindowEventResponse {
     #[serde(rename = "TimeWindowEventResponseProperties")]
@@ -203,7 +203,7 @@ pub struct EventRecord {
     pub table_name: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserIdentity {
     #[serde(default)]
@@ -262,7 +262,7 @@ mod test {
     #[test]
     #[cfg(feature = "dynamodb")]
     fn example_dynamodb_event() {
-        let data = include_bytes!("../generated/fixtures/example-dynamodb-event.json");
+        let data = include_bytes!("../fixtures/example-dynamodb-event.json");
         let mut parsed: Event = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: Event = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -276,9 +276,8 @@ mod test {
     #[test]
     #[cfg(feature = "dynamodb")]
     fn example_dynamodb_event_with_optional_fields() {
-        let data = include_bytes!(
-            "../generated/fixtures/example-dynamodb-event-record-with-optional-fields.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-dynamodb-event-record-with-optional-fields.json");
         let parsed: EventRecord = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: EventRecord = serde_json::from_slice(output.as_bytes()).unwrap();

@@ -28,14 +28,14 @@ pub struct AlbTargetGroupRequest {
 }
 
 /// `AlbTargetGroupRequestContext` contains the information to identify the load balancer invoking the lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AlbTargetGroupRequestContext {
     pub elb: ElbContext,
 }
 
 /// `ElbContext` contains the information to identify the ARN invoking the lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ElbContext {
     /// nolint: stylecheck
@@ -45,7 +45,7 @@ pub struct ElbContext {
 }
 
 /// `AlbTargetGroupResponse` configures the response to be returned by the ALB Lambda target group for the request
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AlbTargetGroupResponse {
     pub status_code: i64,
@@ -72,9 +72,8 @@ mod test {
     #[test]
     #[cfg(feature = "alb")]
     fn example_alb_lambda_target_request_headers_only() {
-        let data = include_bytes!(
-            "../generated/fixtures/example-alb-lambda-target-request-headers-only.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-alb-lambda-target-request-headers-only.json");
         let parsed: AlbTargetGroupRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AlbTargetGroupRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -84,9 +83,8 @@ mod test {
     #[test]
     #[cfg(feature = "alb")]
     fn example_alb_lambda_target_request_multivalue_headers() {
-        let data = include_bytes!(
-            "../generated/fixtures/example-alb-lambda-target-request-multivalue-headers.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-alb-lambda-target-request-multivalue-headers.json");
         let parsed: AlbTargetGroupRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AlbTargetGroupRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -96,7 +94,7 @@ mod test {
     #[test]
     #[cfg(feature = "alb")]
     fn example_alb_lambda_target_response() {
-        let data = include_bytes!("../generated/fixtures/example-alb-lambda-target-response.json");
+        let data = include_bytes!("../fixtures/example-alb-lambda-target-response.json");
         let parsed: AlbTargetGroupResponse = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AlbTargetGroupResponse = serde_json::from_slice(output.as_bytes()).unwrap();

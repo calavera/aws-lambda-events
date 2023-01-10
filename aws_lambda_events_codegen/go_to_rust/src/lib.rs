@@ -1033,7 +1033,7 @@ fn is_http_headers(def: Option<&StructureFieldDef>) -> bool {
             // Structs that should not have http headers.
             "RabbitMqBasicProperties" => false,
             // Use heuristics for any structs not on the deny list.
-            _ => (s.member_name == "headers" || is_http_multivalue_headers(def)),
+            _ => s.member_name == "headers" || is_http_multivalue_headers(def),
         },
         _ => false,
     }

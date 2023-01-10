@@ -3,7 +3,7 @@ use chrono::{DateTime, Utc};
 use std::collections::HashMap;
 
 /// `S3Event` which wrap an array of `S3Event`Record
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3Event {
     #[serde(rename = "Records")]
@@ -11,7 +11,7 @@ pub struct S3Event {
 }
 
 /// `S3EventRecord` which wrap record data
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3EventRecord {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -36,7 +36,7 @@ pub struct S3EventRecord {
     pub s3: S3Entity,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3UserIdentity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -44,7 +44,7 @@ pub struct S3UserIdentity {
     pub principal_id: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3RequestParameters {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -53,7 +53,7 @@ pub struct S3RequestParameters {
     pub source_ip_address: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3Entity {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -67,7 +67,7 @@ pub struct S3Entity {
     pub object: S3Object,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3Bucket {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -80,7 +80,7 @@ pub struct S3Bucket {
     pub arn: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3Object {
     #[serde(deserialize_with = "deserialize_lambda_string")]
@@ -110,7 +110,7 @@ mod test {
     #[test]
     #[cfg(feature = "s3")]
     fn example_s3_event() {
-        let data = include_bytes!("../generated/fixtures/example-s3-event.json");
+        let data = include_bytes!("../fixtures/example-s3-event.json");
         let parsed: S3Event = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3Event = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -120,7 +120,7 @@ mod test {
     #[test]
     #[cfg(feature = "s3")]
     fn example_s3_event_with_decoded() {
-        let data = include_bytes!("../generated/fixtures/example-s3-event-with-decoded.json");
+        let data = include_bytes!("../fixtures/example-s3-event-with-decoded.json");
         let parsed: S3Event = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3Event = serde_json::from_slice(output.as_bytes()).unwrap();

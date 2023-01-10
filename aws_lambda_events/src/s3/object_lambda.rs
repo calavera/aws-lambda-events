@@ -7,7 +7,7 @@ use std::collections::HashMap;
 
 /// `S3ObjectLambdaEvent` contains data coming from S3 object lambdas
 /// See: https://docs.aws.amazon.com/AmazonS3/latest/userguide/olap-writing-lambda.html
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct S3ObjectLambdaEvent<P = Value>
 where
@@ -28,7 +28,7 @@ where
 
 /// `GetObjectContext` contains the input and output details
 /// for connections to Amazon S3 and S3 Object Lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetObjectContext {
     pub input_s3_url: String,
@@ -38,7 +38,7 @@ pub struct GetObjectContext {
 
 /// `HeadObjectContext`
 /// for connections to Amazon S3 and S3 Object Lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct HeadObjectContext {
     pub input_s3_url: String,
@@ -46,7 +46,7 @@ pub struct HeadObjectContext {
 
 /// `ListObjectsContext`
 /// for connections to Amazon S3 and S3 Object Lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ListObjectsContext {
     pub input_s3_url: String,
@@ -54,14 +54,14 @@ pub struct ListObjectsContext {
 
 /// `ListObjectsV2Context`
 /// for connections to Amazon S3 and S3 Object Lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ListObjectsV2Context {
     pub input_s3_url: String,
 }
 
 /// `Configuration` contains information about the Object Lambda access point
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Configuration<P = Value>
 where
@@ -75,7 +75,7 @@ where
 }
 
 /// `UserRequest` contains information about the original call to S3 Object Lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserRequest {
     pub url: String,
@@ -85,7 +85,7 @@ pub struct UserRequest {
 }
 
 /// `UserIdentity` contains details about the identity that made the call to S3 Object Lambda
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 
 pub struct UserIdentity {
@@ -97,13 +97,13 @@ pub struct UserIdentity {
     pub session_context: Option<SessionContext>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionContext {
     pub attributes: HashMap<String, String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionIssuer {
     pub r#type: String,
@@ -123,7 +123,7 @@ mod test {
     #[cfg(feature = "s3")]
     fn example_object_lambda_event_get_object_assumed_role() {
         let data = include_bytes!(
-            "../generated/fixtures/example-s3-object-lambda-event-get-object-assumed-role.json"
+            "../fixtures/example-s3-object-lambda-event-get-object-assumed-role.json"
         );
         let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
@@ -134,9 +134,7 @@ mod test {
     #[test]
     #[cfg(feature = "s3")]
     fn example_object_lambda_event_get_object_iam() {
-        let data = include_bytes!(
-            "../generated/fixtures/example-s3-object-lambda-event-get-object-iam.json"
-        );
+        let data = include_bytes!("../fixtures/example-s3-object-lambda-event-get-object-iam.json");
         let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -146,9 +144,8 @@ mod test {
     #[test]
     #[cfg(feature = "s3")]
     fn example_object_lambda_event_head_object_iam() {
-        let data = include_bytes!(
-            "../generated/fixtures/example-s3-object-lambda-event-head-object-iam.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-s3-object-lambda-event-head-object-iam.json");
         let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -158,9 +155,8 @@ mod test {
     #[test]
     #[cfg(feature = "s3")]
     fn example_object_lambda_event_list_objects_iam() {
-        let data = include_bytes!(
-            "../generated/fixtures/example-s3-object-lambda-event-list-objects-iam.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-s3-object-lambda-event-list-objects-iam.json");
         let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -170,9 +166,8 @@ mod test {
     #[test]
     #[cfg(feature = "s3")]
     fn example_object_lambda_event_list_objects_v2_iam() {
-        let data = include_bytes!(
-            "../generated/fixtures/example-s3-object-lambda-event-list-objects-v2-iam.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-s3-object-lambda-event-list-objects-v2-iam.json");
         let parsed: S3ObjectLambdaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: S3ObjectLambdaEvent = serde_json::from_slice(output.as_bytes()).unwrap();

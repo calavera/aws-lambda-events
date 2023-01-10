@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Alert<T> {
     #[serde(rename = "notification-type")]
@@ -26,7 +26,7 @@ pub type BucketScanAlert = Alert<BucketScanSummary>;
 pub type BucketWritableAlert = Alert<BucketWritableSummary>;
 pub type BucketContainsHighRiskObjectAlert = Alert<BucketContainsHighRiskObjectSummary>;
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Trigger {
     #[serde(rename = "rule-arn")]
@@ -39,7 +39,7 @@ pub struct Trigger {
     pub risk: i64,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BucketScanSummary {
     #[serde(rename = "Description")]
@@ -61,7 +61,7 @@ pub struct BucketScanSummary {
     pub recipient_account_id: HashMap<String, i64>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Ip {
     #[serde(rename = "34.199.185.34")]
@@ -72,7 +72,7 @@ pub struct Ip {
     pub n72_21_196_70: i64,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimeRange {
     pub count: i64,
@@ -80,14 +80,14 @@ pub struct TimeRange {
     pub end: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Location {
     #[serde(rename = "us-east-1")]
     pub us_east_1: i64,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActionInfo {
     pub count: i64,
@@ -96,7 +96,7 @@ pub struct ActionInfo {
     pub error_code: Option<HashMap<String, i64>>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BucketWritableSummary {
     #[serde(rename = "Description")]
@@ -113,21 +113,21 @@ pub struct BucketWritableSummary {
     pub timestamps: HashMap<String, i64>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Bucket {
     #[serde(rename = "secret-bucket-name")]
     pub secret_bucket_name: i64,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Acl {
     #[serde(rename = "secret-bucket-name")]
     pub secret_bucket_name: Vec<SecretBucketName>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SecretBucketName {
     #[serde(rename = "Owner")]
@@ -136,7 +136,7 @@ pub struct SecretBucketName {
     pub grants: Vec<Grant>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Owner {
     #[serde(rename = "DisplayName")]
@@ -145,7 +145,7 @@ pub struct Owner {
     pub id: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Grant {
     #[serde(rename = "Grantee")]
@@ -154,7 +154,7 @@ pub struct Grant {
     pub permission: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Grantee {
     pub r#type: String,
@@ -162,7 +162,7 @@ pub struct Grantee {
     pub uri: String,
 }
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BucketContainsHighRiskObjectSummary {
     #[serde(rename = "Description")]
