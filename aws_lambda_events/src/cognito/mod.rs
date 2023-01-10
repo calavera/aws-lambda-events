@@ -513,9 +513,7 @@ mod test {
     #[test]
     #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_custommessage() {
-        let data = include_bytes!(
-            "../fixtures/example-cognito-event-userpools-custommessage.json"
-        );
+        let data = include_bytes!("../fixtures/example-cognito-event-userpools-custommessage.json");
         let parsed: CognitoEventUserPoolsCustomMessage = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEventUserPoolsCustomMessage =
@@ -557,9 +555,7 @@ mod test {
     #[test]
     #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_migrateuser() {
-        let data = include_bytes!(
-            "../fixtures/example-cognito-event-userpools-migrateuser.json"
-        );
+        let data = include_bytes!("../fixtures/example-cognito-event-userpools-migrateuser.json");
         let parsed: CognitoEventUserPoolsMigrateUser = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEventUserPoolsMigrateUser =
@@ -570,9 +566,8 @@ mod test {
     #[test]
     #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_postauthentication() {
-        let data = include_bytes!(
-            "../fixtures/example-cognito-event-userpools-postauthentication.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-cognito-event-userpools-postauthentication.json");
         let parsed: CognitoEventUserPoolsPostAuthentication = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEventUserPoolsPostAuthentication =
@@ -583,9 +578,8 @@ mod test {
     #[test]
     #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_postconfirmation() {
-        let data = include_bytes!(
-            "../fixtures/example-cognito-event-userpools-postconfirmation.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-cognito-event-userpools-postconfirmation.json");
         let parsed: CognitoEventUserPoolsPostConfirmation = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEventUserPoolsPostConfirmation =
@@ -596,9 +590,8 @@ mod test {
     #[test]
     #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_preauthentication() {
-        let data = include_bytes!(
-            "../fixtures/example-cognito-event-userpools-preauthentication.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-cognito-event-userpools-preauthentication.json");
         let parsed: CognitoEventUserPoolsPreAuthentication = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEventUserPoolsPreAuthentication =
@@ -609,8 +602,7 @@ mod test {
     #[test]
     #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_presignup() {
-        let data =
-            include_bytes!("../fixtures/example-cognito-event-userpools-presignup.json");
+        let data = include_bytes!("../fixtures/example-cognito-event-userpools-presignup.json");
         let parsed: CognitoEventUserPoolsPreSignup = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEventUserPoolsPreSignup =
@@ -621,9 +613,8 @@ mod test {
     #[test]
     #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_pretokengen_incoming() {
-        let data = include_bytes!(
-            "../fixtures/example-cognito-event-userpools-pretokengen-incoming.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-cognito-event-userpools-pretokengen-incoming.json");
         let parsed: CognitoEventUserPoolsPreTokenGen = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEventUserPoolsPreTokenGen =
@@ -634,9 +625,7 @@ mod test {
     #[test]
     #[cfg(feature = "cognito")]
     fn example_cognito_event_userpools_pretokengen() {
-        let data = include_bytes!(
-            "../fixtures/example-cognito-event-userpools-pretokengen.json"
-        );
+        let data = include_bytes!("../fixtures/example-cognito-event-userpools-pretokengen.json");
         let parsed: CognitoEventUserPoolsPreTokenGen = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CognitoEventUserPoolsPreTokenGen =

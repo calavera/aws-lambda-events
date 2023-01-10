@@ -192,9 +192,8 @@ mod test {
     #[test]
     #[cfg(feature = "sns")]
     fn my_example_sns_event_cloudwatch_single_metric() {
-        let data = include_bytes!(
-            "../fixtures/example-cloudwatch-alarm-sns-payload-single-metric.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-cloudwatch-alarm-sns-payload-single-metric.json");
         let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
         assert_eq!(1, parsed.records.len());
 

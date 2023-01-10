@@ -880,9 +880,8 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_custom_auth_request_type_request() {
-        let data = include_bytes!(
-            "../fixtures/example-apigw-custom-auth-request-type-request.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-apigw-custom-auth-request-type-request.json");
         let parsed: ApiGatewayCustomAuthorizerRequestTypeRequest =
             serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
@@ -894,9 +893,8 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_custom_auth_request_type_request_websocket() {
-        let data = include_bytes!(
-            "../fixtures/example-apigw-v2-custom-authorizer-websocket-request.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-apigw-v2-custom-authorizer-websocket-request.json");
         let parsed: ApiGatewayCustomAuthorizerRequestTypeRequest =
             serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
@@ -950,8 +948,7 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_restapi_openapi_request() {
-        let data =
-            include_bytes!("../fixtures/example-apigw-restapi-openapi-request.json");
+        let data = include_bytes!("../fixtures/example-apigw-restapi-openapi-request.json");
         let parsed: ApiGatewayProxyRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayProxyRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -971,8 +968,7 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_v2_request_jwt_authorizer() {
-        let data =
-            include_bytes!("../fixtures/example-apigw-v2-request-jwt-authorizer.json");
+        let data = include_bytes!("../fixtures/example-apigw-v2-request-jwt-authorizer.json");
         let parsed: ApiGatewayV2httpRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayV2httpRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -982,8 +978,7 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_v2_request_lambda_authorizer() {
-        let data =
-            include_bytes!("../fixtures/example-apigw-v2-request-lambda-authorizer.json");
+        let data = include_bytes!("../fixtures/example-apigw-v2-request-lambda-authorizer.json");
         let parsed: ApiGatewayV2httpRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayV2httpRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -993,8 +988,7 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_v2_request_no_authorizer() {
-        let data =
-            include_bytes!("../fixtures/example-apigw-v2-request-no-authorizer.json");
+        let data = include_bytes!("../fixtures/example-apigw-v2-request-no-authorizer.json");
         let parsed: ApiGatewayV2httpRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayV2httpRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -1025,9 +1019,8 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_websocket_request_without_method() {
-        let data = include_bytes!(
-            "../fixtures/example-apigw-websocket-request-without-method.json"
-        );
+        let data =
+            include_bytes!("../fixtures/example-apigw-websocket-request-without-method.json");
         let parsed: ApiGatewayWebsocketProxyRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayWebsocketProxyRequest =
@@ -1038,9 +1031,7 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_v2_custom_authorizer_v1_request() {
-        let data = include_bytes!(
-            "../fixtures/example-apigw-v2-custom-authorizer-v1-request.json"
-        );
+        let data = include_bytes!("../fixtures/example-apigw-v2-custom-authorizer-v1-request.json");
         let parsed: ApiGatewayV2httpRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayV2httpRequest = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -1050,9 +1041,7 @@ mod test {
     #[test]
     #[cfg(feature = "apigw")]
     fn example_apigw_v2_custom_authorizer_v2_request() {
-        let data = include_bytes!(
-            "../fixtures/example-apigw-v2-custom-authorizer-v2-request.json"
-        );
+        let data = include_bytes!("../fixtures/example-apigw-v2-custom-authorizer-v2-request.json");
         let parsed: ApiGatewayV2CustomAuthorizerV2Request = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ApiGatewayV2CustomAuthorizerV2Request =
