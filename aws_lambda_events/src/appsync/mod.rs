@@ -12,7 +12,6 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
     pub operation: AppSyncOperation,
@@ -24,26 +23,19 @@ where
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSyncIamIdentity {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub cognito_identity_auth_provider: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub cognito_identity_auth_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub cognito_identity_pool_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub cognito_identity_id: Option<String>,
     pub source_ip: Vec<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub username: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_arn: Option<String>,
 }
@@ -56,13 +48,10 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub sub: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub issuer: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub username: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -70,7 +59,6 @@ where
     #[serde(bound = "")]
     pub claims: HashMap<String, T1>,
     pub source_ip: Vec<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub default_auth_strategy: Option<String>,
 }
@@ -81,7 +69,6 @@ pub type AppSyncOperation = String;
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSyncLambdaAuthorizerRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub authorization_token: Option<String>,
     pub request_context: AppSyncLambdaAuthorizerRequestContext,
@@ -96,20 +83,15 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
     pub apiid: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub query_string: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub operation_name: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]

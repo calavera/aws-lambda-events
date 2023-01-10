@@ -1,4 +1,3 @@
-use crate::custom_serde::*;
 use crate::iot::*;
 
 /// `IoTCustomAuthorizerRequest` contains data coming in to a custom IoT device gateway authorizer function.
@@ -9,11 +8,9 @@ pub struct IoTCustomAuthorizerRequest {
     pub http_context: Option<IoTHttpContext>,
     pub mqtt_context: Option<IoTMqttContext>,
     pub tls_context: Option<IoTTlsContext>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "token")]
     pub authorization_token: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub token_signature: Option<String>,
 }
@@ -30,7 +27,6 @@ pub type IoTTlsContext = IoTCoreTlsContext;
 #[serde(rename_all = "camelCase")]
 pub struct IoTCustomAuthorizerResponse {
     pub is_authenticated: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub principal_id: Option<String>,
     pub disconnect_after_in_seconds: i32,

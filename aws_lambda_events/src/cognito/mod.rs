@@ -8,22 +8,17 @@ use std::collections::HashMap;
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub dataset_name: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub dataset_records: HashMap<String, CognitoDatasetRecord>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub identity_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub identity_pool_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
     pub version: i64,
@@ -33,13 +28,10 @@ pub struct CognitoEvent {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoDatasetRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub new_value: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub old_value: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub op: Option<String>,
 }
@@ -122,11 +114,9 @@ pub struct CognitoEventUserPoolsMigrateUser {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsCallerContext {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "awsSdkVersion")]
     pub awssdk_version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub client_id: Option<String>,
 }
@@ -135,20 +125,15 @@ pub struct CognitoEventUserPoolsCallerContext {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsHeader {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub trigger_source: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_pool_id: Option<String>,
     pub caller_context: CognitoEventUserPoolsCallerContext,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_name: Option<String>,
 }
@@ -247,7 +232,6 @@ pub struct CognitoEventUserPoolsPostAuthenticationResponse {}
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsMigrateUserRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub password: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -265,10 +249,8 @@ pub struct CognitoEventUserPoolsMigrateUserResponse {
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub user_attributes: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub final_user_status: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub message_action: Option<String>,
     pub desired_delivery_mediums: Vec<String>,
@@ -300,11 +282,9 @@ pub struct GroupConfiguration {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsChallengeResult {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub challenge_name: Option<String>,
     pub challenge_result: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub challenge_metadata: Option<String>,
 }
@@ -327,7 +307,6 @@ pub struct CognitoEventUserPoolsDefineAuthChallengeRequest {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsDefineAuthChallengeResponse {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub challenge_name: Option<String>,
     #[serde(default)]
@@ -354,7 +333,6 @@ pub struct CognitoEventUserPoolsCreateAuthChallengeRequest {
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub user_attributes: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub challenge_name: Option<String>,
     pub session: Vec<Option<CognitoEventUserPoolsChallengeResult>>,
@@ -373,7 +351,6 @@ pub struct CognitoEventUserPoolsCreateAuthChallengeResponse {
     #[serde(deserialize_with = "deserialize_lambda_map")]
     #[serde(default)]
     pub private_challenge_parameters: HashMap<String, String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub challenge_metadata: Option<String>,
 }
@@ -454,10 +431,8 @@ where
     #[serde(default)]
     #[serde(bound = "")]
     pub user_attributes: HashMap<String, T1>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub code_parameter: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub username_parameter: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -469,13 +444,10 @@ where
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CognitoEventUserPoolsCustomMessageResponse {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub sms_message: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub email_message: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub email_subject: Option<String>,
 }

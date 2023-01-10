@@ -1,29 +1,20 @@
-use crate::custom_serde::*;
-
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EcrScanEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "detail-type")]
     pub detail_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub time: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
     pub resources: Vec<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account: Option<String>,
     pub detail: EcrScanEventDetailType,
@@ -32,17 +23,14 @@ pub struct EcrScanEvent {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EcrScanEventDetailType {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "scan-status")]
     pub scan_status: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "repository-name")]
     pub repository_name: Option<String>,
     #[serde(rename = "finding-severity-counts")]
     pub finding_severity_counts: EcrScanEventFindingSeverityCounts,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "image-digest")]
     pub image_digest: Option<String>,

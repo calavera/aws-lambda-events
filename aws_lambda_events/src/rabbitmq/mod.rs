@@ -7,10 +7,8 @@ use std::collections::HashMap;
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RabbitMqEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_source: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_source_arn: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -23,7 +21,6 @@ pub struct RabbitMqEvent {
 #[serde(rename_all = "camelCase")]
 pub struct RabbitMqMessage {
     pub basic_properties: RabbitMqBasicProperties,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub data: Option<String>,
     pub redelivered: bool,
@@ -36,7 +33,6 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub content_type: Option<String>,
     pub content_encoding: Option<String>,
@@ -49,15 +45,12 @@ where
     pub priority: u8,
     pub correlation_id: Option<String>,
     pub reply_to: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub expiration: Option<String>,
     pub message_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub timestamp: Option<String>,
     pub type_: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_id: Option<String>,
     pub app_id: Option<String>,

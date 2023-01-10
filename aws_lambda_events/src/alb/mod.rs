@@ -9,7 +9,6 @@ use query_map::QueryMap;
 pub struct AlbTargetGroupRequest {
     #[serde(with = "http_method")]
     pub http_method: Method,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
     #[serde(default)]
@@ -39,7 +38,6 @@ pub struct AlbTargetGroupRequestContext {
 #[serde(rename_all = "camelCase")]
 pub struct ElbContext {
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub target_group_arn: Option<String>,
 }
@@ -49,7 +47,6 @@ pub struct ElbContext {
 #[serde(rename_all = "camelCase")]
 pub struct AlbTargetGroupResponse {
     pub status_code: i64,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub status_description: Option<String>,
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]

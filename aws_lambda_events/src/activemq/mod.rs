@@ -4,10 +4,8 @@ use std::collections::HashMap;
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActiveMqEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_source: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_source_arn: Option<String>,
     pub messages: Vec<ActiveMqMessage>,
@@ -16,30 +14,24 @@ pub struct ActiveMqEvent {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActiveMqMessage {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "messageID")]
     pub message_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub message_type: Option<String>,
     pub timestamp: i64,
     pub delivery_mode: i64,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "correlationID")]
     pub correlation_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub reply_to: Option<String>,
     pub destination: ActiveMqDestination,
     pub redelivered: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
     pub expiration: i64,
     pub priority: i64,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub data: Option<String>,
     pub broker_in_time: i64,
@@ -52,7 +44,6 @@ pub struct ActiveMqMessage {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ActiveMqDestination {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub physical_name: Option<String>,
 }

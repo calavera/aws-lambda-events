@@ -1,5 +1,5 @@
-use super::encodings::Body;
 use crate::custom_serde::*;
+use crate::encodings::Body;
 use http::{HeaderMap, Method};
 use query_map::QueryMap;
 use serde::de::DeserializeOwned;
@@ -16,11 +16,9 @@ where
     T1: Serialize,
 {
     /// The resource path defined in API Gateway
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource: Option<String>,
     /// The url path for the caller
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
     #[serde(with = "http_method")]
@@ -50,7 +48,6 @@ where
     #[serde(default)]
     #[serde(bound = "")]
     pub request_context: ApiGatewayProxyRequestContext<T1>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
@@ -83,34 +80,25 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_id: Option<String>,
     pub operation_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub stage: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub domain_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub domain_prefix: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub protocol: Option<String>,
     #[serde(default)]
     pub identity: ApiGatewayRequestIdentity,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
     #[serde(deserialize_with = "deserialize_lambda_map")]
@@ -119,12 +107,10 @@ where
     pub authorizer: HashMap<String, T1>,
     #[serde(with = "http_method")]
     pub http_method: Method,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_time: Option<String>,
     pub request_time_epoch: i64,
     /// The API Gateway rest API Id
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
     pub apiid: Option<String>,
@@ -134,16 +120,12 @@ where
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub route_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub raw_path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub raw_query_string: Option<String>,
     pub cookies: Option<Vec<String>>,
@@ -175,32 +157,24 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub route_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub stage: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
     #[serde(bound = "", default)]
     pub authorizer: Option<ApiGatewayV2httpRequestContextAuthorizerDescription<T1>>,
     /// The API Gateway HTTP API Id
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
     pub apiid: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub domain_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub domain_prefix: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub time: Option<String>,
     pub time_epoch: i64,
@@ -238,23 +212,17 @@ pub struct ApiGatewayV2httpRequestContextAuthorizerJwtDescription {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthorizerIamDescription {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub access_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub caller_id: Option<String>,
     pub cognito_identity: Option<ApiGatewayV2httpRequestContextAuthorizerCognitoIdentity>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub principal_org_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_id: Option<String>,
 }
@@ -264,10 +232,8 @@ pub struct ApiGatewayV2httpRequestContextAuthorizerIamDescription {
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthorizerCognitoIdentity {
     pub amr: Vec<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub identity_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub identity_pool_id: Option<String>,
 }
@@ -278,16 +244,12 @@ pub struct ApiGatewayV2httpRequestContextAuthorizerCognitoIdentity {
 pub struct ApiGatewayV2httpRequestContextHttpDescription {
     #[serde(with = "http_method")]
     pub method: Method,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub protocol: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source_ip: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_agent: Option<String>,
 }
@@ -314,44 +276,31 @@ pub struct ApiGatewayV2httpResponse {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayRequestIdentity {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub cognito_identity_pool_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub cognito_identity_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub caller: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub api_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub api_key_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub access_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source_ip: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub cognito_authentication_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub cognito_authentication_provider: Option<String>,
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user_agent: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub user: Option<String>,
 }
@@ -367,11 +316,9 @@ where
     T2: Serialize,
 {
     /// The resource path defined in API Gateway
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource: Option<String>,
     /// The url path for the caller
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
     #[serde(deserialize_with = "http_method::deserialize_optional")]
@@ -403,7 +350,6 @@ where
     pub stage_variables: HashMap<String, String>,
     #[serde(bound = "", default)]
     pub request_context: ApiGatewayWebsocketProxyRequestContext<T1, T2>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub body: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
@@ -422,21 +368,16 @@ where
     T2: DeserializeOwned,
     T2: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub stage: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
     #[serde(default)]
     pub identity: ApiGatewayRequestIdentity,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_path: Option<String>,
     #[serde(bound = "")]
@@ -447,42 +388,31 @@ where
     #[serde(default)]
     pub http_method: Option<Method>,
     /// The API Gateway rest API Id
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
     pub apiid: Option<String>,
     pub connected_at: i64,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub connection_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub domain_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub error: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_type: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub extended_request_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub integration_latency: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub message_direction: Option<String>,
     #[serde(bound = "")]
     pub message_id: Option<T2>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_time: Option<String>,
     pub request_time_epoch: i64,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub route_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub status: Option<String>,
 }
@@ -491,13 +421,10 @@ where
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub api_key_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub api_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source_ip: Option<String>,
     #[serde(default)]
@@ -508,17 +435,13 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentity {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub client_cert_pem: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "issuerDN")]
     pub issuer_dn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub serial_number: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "subjectDN")]
     pub subject_dn: Option<String>,
@@ -529,10 +452,8 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub not_after: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub not_before: Option<String>,
 }
@@ -549,17 +470,13 @@ pub struct ApiGatewayV2httpRequestContextAuthentication {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthenticationClientCert {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub client_cert_pem: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "issuerDN")]
     pub issuer_dn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub serial_number: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "subjectDN")]
     pub subject_dn: Option<String>,
@@ -570,10 +487,8 @@ pub struct ApiGatewayV2httpRequestContextAuthenticationClientCert {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2httpRequestContextAuthenticationClientCertValidity {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub not_after: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub not_before: Option<String>,
 }
@@ -581,28 +496,21 @@ pub struct ApiGatewayV2httpRequestContextAuthenticationClientCertValidity {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2CustomAuthorizerV1RequestTypeRequestContext {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub stage: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
     pub identity: ApiGatewayCustomAuthorizerRequestTypeRequestIdentity,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_path: Option<String>,
     #[serde(with = "http_method")]
     pub http_method: Method,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
     pub apiid: Option<String>,
@@ -611,26 +519,19 @@ pub struct ApiGatewayV2CustomAuthorizerV1RequestTypeRequestContext {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2CustomAuthorizerV1Request {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub method_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub identity_source: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub authorization_token: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
     #[serde(with = "http_method")]
@@ -653,24 +554,18 @@ pub struct ApiGatewayV2CustomAuthorizerV1Request {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayV2CustomAuthorizerV2Request {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub route_arn: Option<String>,
     pub identity_source: Vec<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub route_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub raw_path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub raw_query_string: Option<String>,
     #[serde(default)]
@@ -706,24 +601,18 @@ pub struct ApiGatewayCustomAuthorizerContext {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub stage: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub request_id: Option<String>,
     #[serde(default)]
     pub identity: Option<ApiGatewayCustomAuthorizerRequestTypeRequestIdentity>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource_path: Option<String>,
     #[serde(deserialize_with = "http_method::deserialize_optional")]
@@ -731,7 +620,6 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
     pub http_method: Option<Method>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "apiId")]
     pub apiid: Option<String>,
@@ -741,14 +629,11 @@ pub struct ApiGatewayCustomAuthorizerRequestTypeRequestContext {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub authorization_token: Option<String>,
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub method_arn: Option<String>,
 }
@@ -757,17 +642,13 @@ pub struct ApiGatewayCustomAuthorizerRequest {
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerRequestTypeRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub method_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub resource: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub path: Option<String>,
     #[serde(deserialize_with = "http_method::deserialize_optional")]
@@ -808,7 +689,6 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub principal_id: Option<String>,
     pub policy_document: ApiGatewayCustomAuthorizerPolicy,
@@ -837,7 +717,6 @@ where
     T1: DeserializeOwned,
     T1: Serialize,
 {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub principal_id: Option<String>,
     pub policy_document: ApiGatewayCustomAuthorizerPolicy,
@@ -849,7 +728,6 @@ where
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiGatewayCustomAuthorizerPolicy {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Version")]
     pub version: Option<String>,
@@ -863,7 +741,6 @@ pub struct ApiGatewayCustomAuthorizerPolicy {
 pub struct IamPolicyStatement {
     #[serde(rename = "Action")]
     pub action: Vec<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "Effect")]
     pub effect: Option<String>,

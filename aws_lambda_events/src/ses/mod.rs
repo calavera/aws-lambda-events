@@ -1,4 +1,3 @@
-use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
 
 /// `SimpleEmailEvent` is the outer structure of an event sent via SES.
@@ -12,10 +11,8 @@ pub struct SimpleEmailEvent {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_version: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub event_source: Option<String>,
     pub ses: SimpleEmailService,
@@ -32,14 +29,12 @@ pub struct SimpleEmailService {
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailMessage {
     pub common_headers: SimpleEmailCommonHeaders,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source: Option<String>,
     pub timestamp: DateTime<Utc>,
     pub destination: Vec<String>,
     pub headers: Vec<SimpleEmailHeader>,
     pub headers_truncated: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub message_id: Option<String>,
 }
@@ -52,7 +47,6 @@ pub struct SimpleEmailReceipt {
     pub spam_verdict: SimpleEmailVerdict,
     pub dkim_verdict: SimpleEmailVerdict,
     pub dmarc_verdict: SimpleEmailVerdict,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub dmarc_policy: Option<String>,
     pub spf_verdict: SimpleEmailVerdict,
@@ -64,10 +58,8 @@ pub struct SimpleEmailReceipt {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailHeader {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub value: Option<String>,
 }
@@ -77,16 +69,12 @@ pub struct SimpleEmailHeader {
 pub struct SimpleEmailCommonHeaders {
     pub from: Vec<String>,
     pub to: Vec<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub return_path: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub message_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub date: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub subject: Option<String>,
 }
@@ -98,7 +86,6 @@ pub struct SimpleEmailCommonHeaders {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailReceiptAction {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub type_: Option<String>,
     pub topic_arn: Option<String>,
@@ -116,7 +103,6 @@ pub struct SimpleEmailReceiptAction {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleEmailVerdict {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub status: Option<String>,
 }

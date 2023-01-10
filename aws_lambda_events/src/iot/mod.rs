@@ -8,7 +8,6 @@ use http::HeaderMap;
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreCustomAuthorizerRequest {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub token: Option<String>,
     pub signature_verified: bool,
@@ -28,7 +27,6 @@ pub struct IoTCoreProtocolData {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreTlsContext {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub server_name: Option<String>,
 }
@@ -39,7 +37,6 @@ pub struct IoTCoreHttpContext {
     #[serde(deserialize_with = "http_serde::header_map::deserialize", default)]
     #[serde(serialize_with = "serialize_headers")]
     pub headers: HeaderMap,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub query_string: Option<String>,
 }
@@ -47,11 +44,9 @@ pub struct IoTCoreHttpContext {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreMqttContext {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub client_id: Option<String>,
     pub password: Base64Data,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub username: Option<String>,
 }
@@ -59,7 +54,6 @@ pub struct IoTCoreMqttContext {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreConnectionMetadata {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub id: Option<String>,
 }
@@ -70,7 +64,6 @@ pub struct IoTCoreConnectionMetadata {
 #[serde(rename_all = "camelCase")]
 pub struct IoTCoreCustomAuthorizerResponse {
     pub is_authenticated: bool,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub principal_id: Option<String>,
     pub disconnect_after_in_seconds: u32,

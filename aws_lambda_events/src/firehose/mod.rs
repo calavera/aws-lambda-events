@@ -6,18 +6,14 @@ use std::collections::HashMap;
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseEvent {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub invocation_id: Option<String>,
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub delivery_stream_arn: Option<String>,
     /// nolint: stylecheck
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub source_kinesis_stream_arn: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub region: Option<String>,
     pub records: Vec<KinesisFirehoseEventRecord>,
@@ -26,7 +22,6 @@ pub struct KinesisFirehoseEvent {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseEventRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub record_id: Option<String>,
     pub approximate_arrival_timestamp: MillisecondTimestamp,
@@ -44,11 +39,9 @@ pub struct KinesisFirehoseResponse {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseResponseRecord {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub record_id: Option<String>,
     /// The status of the transformation. May be TransformedStateOk, TransformedStateDropped or TransformedStateProcessingFailed
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub result: Option<String>,
     pub data: Base64Data,
@@ -66,13 +59,10 @@ pub struct KinesisFirehoseResponseRecordMetadata {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KinesisFirehoseRecordMetadata {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub shard_id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub partition_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub sequence_number: Option<String>,
     pub subsequence_number: i64,

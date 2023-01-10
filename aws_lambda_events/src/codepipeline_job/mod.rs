@@ -1,5 +1,3 @@
-use crate::custom_serde::*;
-
 /// `CodePipelineJobEvent` contains data from an event sent from AWS CodePipeline
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -12,10 +10,8 @@ pub struct CodePipelineJobEvent {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodePipelineJob {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub id: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub account_id: Option<String>,
     pub data: CodePipelineData,
@@ -30,7 +26,6 @@ pub struct CodePipelineData {
     #[serde(rename = "outputArtifacts")]
     pub out_put_artifacts: Vec<CodePipelineOutputArtifact>,
     pub artifact_credentials: CodePipelineArtifactCredentials,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub continuation_token: Option<String>,
 }
@@ -46,11 +41,9 @@ pub struct CodePipelineActionConfiguration {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodePipelineConfiguration {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "FunctionName")]
     pub function_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "UserParameters")]
     pub user_parameters: Option<String>,
@@ -62,7 +55,6 @@ pub struct CodePipelineConfiguration {
 pub struct CodePipelineInputArtifact {
     pub location: CodePipelineInputLocation,
     pub revision: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub name: Option<String>,
 }
@@ -72,7 +64,6 @@ pub struct CodePipelineInputArtifact {
 #[serde(rename_all = "camelCase")]
 pub struct CodePipelineInputLocation {
     pub s3_location: CodePipelineS3Location,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "type")]
     pub location_type: Option<String>,
@@ -82,10 +73,8 @@ pub struct CodePipelineInputLocation {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodePipelineS3Location {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub bucket_name: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub object_key: Option<String>,
 }
@@ -96,7 +85,6 @@ pub struct CodePipelineS3Location {
 pub struct CodePipelineOutputArtifact {
     pub location: CodePipelineInputLocation,
     pub revision: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub name: Option<String>,
 }
@@ -106,7 +94,6 @@ pub struct CodePipelineOutputArtifact {
 #[serde(rename_all = "camelCase")]
 pub struct CodePipelineOutputLocation {
     pub s3_location: CodePipelineS3Location,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     #[serde(rename = "type")]
     pub location_type: Option<String>,
@@ -116,13 +103,10 @@ pub struct CodePipelineOutputLocation {
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodePipelineArtifactCredentials {
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub secret_access_key: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub session_token: Option<String>,
-    #[serde(deserialize_with = "deserialize_lambda_string")]
     #[serde(default)]
     pub access_key_id: Option<String>,
 }
