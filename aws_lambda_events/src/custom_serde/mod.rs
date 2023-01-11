@@ -74,7 +74,9 @@ where
     let seconds: f64 = (whole as f64 / 1000.0) as f64;
     let milliseconds: u32 = (seconds.fract() * 1000f64) as u32;
     let nanos = milliseconds * 1_000_000;
-    Ok(Utc.timestamp(seconds as i64, nanos as u32))
+    Utc.timestamp_opt(seconds as i64, nanos as u32)
+        .latest()
+        .ok_or_else(|| D::Error::custom("invalid timestamp"))
 }
 
 pub(crate) fn serialize_seconds<S>(date: &DateTime<Utc>, serializer: S) -> Result<S::Ok, S::Error>
@@ -101,7 +103,9 @@ where
     let (whole, frac) = normalize_timestamp(deserializer)?;
     let seconds = whole;
     let nanos = frac * 1_000_000;
-    Ok(Utc.timestamp(seconds as i64, nanos as u32))
+    Utc.timestamp_opt(seconds as i64, nanos as u32)
+        .latest()
+        .ok_or_else(|| D::Error::custom("invalid timestamp"))
 }
 
 pub(crate) fn deserialize_base64<'de, D>(deserializer: D) -> Result<Vec<u8>, D::Error>
