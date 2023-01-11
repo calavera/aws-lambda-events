@@ -1,3 +1,4 @@
+#[allow(unused)]
 use base64::{decode, encode};
 use chrono::{DateTime, Duration, TimeZone, Utc};
 use serde;
@@ -5,13 +6,20 @@ use serde::de::{Deserialize, Deserializer, Error as DeError};
 use serde::ser::Serializer;
 use std::collections::HashMap;
 
+#[cfg(feature = "codebuild")]
 pub(crate) mod codebuild_time;
+#[cfg(feature = "codebuild")]
 pub type CodeBuildNumber = f32;
 
+#[cfg(any(feature = "alb", feature = "apigw"))]
 mod headers;
+#[cfg(any(feature = "alb", feature = "apigw"))]
 pub(crate) use self::headers::*;
 
+#[cfg(feature = "dynamodb")]
 pub(crate) mod float_unix_epoch;
+
+#[cfg(any(feature = "alb", feature = "apigw"))]
 pub(crate) mod http_method;
 
 fn normalize_timestamp<'de, D>(deserializer: D) -> Result<(u64, u64), D::Error>

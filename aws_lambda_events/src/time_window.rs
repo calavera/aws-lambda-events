@@ -1,15 +1,25 @@
-use crate::custom_serde::*;
 use chrono::{DateTime, Utc};
 use std::collections::HashMap;
+
+use crate::custom_serde::deserialize_lambda_map;
 
 /// `Window` is the object that captures the time window for the records in the event when using the tumbling windows feature
 /// Kinesis: https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html#services-kinesis-windows
 /// DDB: https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html#services-ddb-windows
-#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Window {
     pub start: DateTime<Utc>,
     pub end: DateTime<Utc>,
+}
+
+impl Default for Window {
+    fn default() -> Self {
+        Window {
+            start: Utc::now(),
+            end: Utc::now(),
+        }
+    }
 }
 
 /// `TimeWindowProperties` is the object that captures properties that relate to the tumbling windows feature
