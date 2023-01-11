@@ -218,7 +218,7 @@ mod test {
     #[test]
     #[cfg(feature = "codebuild")]
     fn example_codebuild_phase_change() {
-        let data = include_bytes!("../fixtures/example-codebuild-phase-change.json");
+        let data = include_bytes!("../generated/fixtures/example-codebuild-phase-change.json");
         let parsed: CodeBuildEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CodeBuildEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -228,7 +228,7 @@ mod test {
     #[test]
     #[cfg(feature = "codebuild")]
     fn example_codebuild_state_change() {
-        let data = include_bytes!("../fixtures/example-codebuild-state-change.json");
+        let data = include_bytes!("../generated/fixtures/example-codebuild-state-change.json");
         let parsed: CodeBuildEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CodeBuildEvent = serde_json::from_slice(output.as_bytes()).unwrap();

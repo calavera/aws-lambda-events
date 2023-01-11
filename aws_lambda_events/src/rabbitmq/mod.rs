@@ -67,7 +67,7 @@ mod test {
     #[test]
     #[cfg(feature = "rabbitmq")]
     fn example_rabbitmq_event() {
-        let data = include_bytes!("../fixtures/example-rabbitmq-event.json");
+        let data = include_bytes!("../generated/fixtures/example-rabbitmq-event.json");
         let parsed: RabbitMqEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: RabbitMqEvent = serde_json::from_slice(output.as_bytes()).unwrap();

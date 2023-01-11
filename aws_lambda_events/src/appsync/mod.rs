@@ -126,7 +126,7 @@ mod test {
     #[test]
     #[cfg(feature = "appsync")]
     fn example_appsync_identity_cognito() {
-        let data = include_bytes!("../fixtures/example-appsync-identity-cognito.json");
+        let data = include_bytes!("../generated/fixtures/example-appsync-identity-cognito.json");
         let parsed: AppSyncCognitoIdentity = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AppSyncCognitoIdentity = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -136,7 +136,7 @@ mod test {
     #[test]
     #[cfg(feature = "appsync")]
     fn example_appsync_identity_iam() {
-        let data = include_bytes!("../fixtures/example-appsync-identity-iam.json");
+        let data = include_bytes!("../generated/fixtures/example-appsync-identity-iam.json");
         let parsed: AppSyncIamIdentity = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AppSyncIamIdentity = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -146,7 +146,7 @@ mod test {
     #[test]
     #[cfg(feature = "appsync")]
     fn example_appsync_lambda_auth_request() {
-        let data = include_bytes!("../fixtures/example-appsync-lambda-auth-request.json");
+        let data = include_bytes!("../generated/fixtures/example-appsync-lambda-auth-request.json");
         let parsed: AppSyncLambdaAuthorizerRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AppSyncLambdaAuthorizerRequest =
@@ -157,7 +157,7 @@ mod test {
     #[test]
     #[cfg(feature = "appsync")]
     fn example_appsync_lambda_auth_response() {
-        let data = include_bytes!("../fixtures/example-appsync-lambda-auth-response.json");
+        let data = include_bytes!("../generated/fixtures/example-appsync-lambda-auth-response.json");
         let parsed: AppSyncLambdaAuthorizerResponse = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AppSyncLambdaAuthorizerResponse =

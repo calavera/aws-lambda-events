@@ -18,7 +18,7 @@ mod test {
     #[test]
     #[cfg(feature = "iot_button")]
     fn example_iot_button_event() {
-        let data = include_bytes!("../fixtures/example-iot_button-event.json");
+        let data = include_bytes!("../generated/fixtures/example-iot_button-event.json");
         let parsed: IoTButtonEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: IoTButtonEvent = serde_json::from_slice(output.as_bytes()).unwrap();

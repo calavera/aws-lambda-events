@@ -120,7 +120,7 @@ mod test {
     #[test]
     #[cfg(feature = "codepipeline_job")]
     fn example_codepipeline_job_event() {
-        let data = include_bytes!("../fixtures/example-codepipeline_job-event.json");
+        let data = include_bytes!("../generated/fixtures/example-codepipeline_job-event.json");
         let parsed: CodePipelineJobEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CodePipelineJobEvent = serde_json::from_slice(output.as_bytes()).unwrap();

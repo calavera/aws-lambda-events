@@ -80,7 +80,7 @@ mod test {
     #[test]
     #[cfg(feature = "iot")]
     fn example_iot_custom_auth_request() {
-        let data = include_bytes!("../fixtures/example-iot-custom-auth-request.json");
+        let data = include_bytes!("../generated/fixtures/example-iot-custom-auth-request.json");
         let parsed: IoTCoreCustomAuthorizerRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: IoTCoreCustomAuthorizerRequest =
@@ -91,7 +91,7 @@ mod test {
     #[test]
     #[cfg(feature = "iot")]
     fn example_iot_custom_auth_response() {
-        let data = include_bytes!("../fixtures/example-iot-custom-auth-response.json");
+        let data = include_bytes!("../generated/fixtures/example-iot-custom-auth-response.json");
         let parsed: IoTCoreCustomAuthorizerResponse = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: IoTCoreCustomAuthorizerResponse =

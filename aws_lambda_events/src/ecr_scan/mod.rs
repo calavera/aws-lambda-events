@@ -64,7 +64,7 @@ mod test {
     #[test]
     #[cfg(feature = "ecr_scan")]
     fn example_ecr_image_scan_event() {
-        let data = include_bytes!("../fixtures/example-ecr-image-scan-event.json");
+        let data = include_bytes!("../generated/fixtures/example-ecr-image-scan-event.json");
         let parsed: EcrScanEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: EcrScanEvent = serde_json::from_slice(output.as_bytes()).unwrap();

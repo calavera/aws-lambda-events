@@ -118,7 +118,7 @@ mod test {
     #[test]
     #[cfg(feature = "sqs")]
     fn example_sqs_event() {
-        let data = include_bytes!("../fixtures/example-sqs-event.json");
+        let data = include_bytes!("../generated/fixtures/example-sqs-event.json");
         let parsed: SqsEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: SqsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -134,7 +134,7 @@ mod test {
             b: u32,
         }
 
-        let data = include_bytes!("../fixtures/example-sqs-event-obj.json");
+        let data = include_bytes!("../generated/fixtures/example-sqs-event-obj.json");
         let parsed: SqsEventObj<CustStruct> = serde_json::from_slice(data).unwrap();
 
         assert_eq!(parsed.records[0].body.a, "Test");
@@ -150,7 +150,7 @@ mod test {
     fn example_sqs_batch_response() {
         // Example sqs batch response fetched 2022-05-13, from:
         // https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html#services-sqs-batchfailurereporting
-        let data = include_bytes!("../fixtures/example-sqs-batch-response.json");
+        let data = include_bytes!("../generated/fixtures/example-sqs-batch-response.json");
         let parsed: SqsBatchResponse = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: SqsBatchResponse = serde_json::from_slice(output.as_bytes()).unwrap();

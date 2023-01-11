@@ -180,7 +180,7 @@ mod test {
     #[test]
     #[cfg(feature = "sns")]
     fn my_example_sns_event() {
-        let data = include_bytes!("../fixtures/example-sns-event.json");
+        let data = include_bytes!("../generated/fixtures/example-sns-event.json");
         let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -191,7 +191,7 @@ mod test {
     #[cfg(feature = "sns")]
     fn my_example_sns_event_cloudwatch_single_metric() {
         let data =
-            include_bytes!("../fixtures/example-cloudwatch-alarm-sns-payload-single-metric.json");
+            include_bytes!("../generated/fixtures/example-cloudwatch-alarm-sns-payload-single-metric.json");
         let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
         assert_eq!(1, parsed.records.len());
 
@@ -204,7 +204,7 @@ mod test {
     #[cfg(feature = "sns")]
     fn my_example_sns_event_cloudwatch_multiple_metrics() {
         let data = include_bytes!(
-            "../fixtures/example-cloudwatch-alarm-sns-payload-multiple-metrics.json"
+            "../generated/fixtures/example-cloudwatch-alarm-sns-payload-multiple-metrics.json"
         );
         let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
         assert_eq!(2, parsed.records.len());
@@ -217,7 +217,7 @@ mod test {
     #[test]
     #[cfg(feature = "sns")]
     fn my_example_sns_obj_event() {
-        let data = include_bytes!("../fixtures/example-sns-event-obj.json");
+        let data = include_bytes!("../generated/fixtures/example-sns-event-obj.json");
 
         #[derive(Debug, Serialize, Deserialize, Eq, PartialEq)]
         struct CustStruct {
@@ -239,7 +239,7 @@ mod test {
     #[test]
     #[cfg(feature = "sns")]
     fn my_example_sns_obj_unsigned_event() {
-        let data = include_bytes!("../fixtures/example-sns-event-obj-unsigned.json");
+        let data = include_bytes!("../generated/fixtures/example-sns-event-obj-unsigned.json");
 
         #[derive(Debug, Serialize, Deserialize, Eq, PartialEq)]
         struct CustStruct {

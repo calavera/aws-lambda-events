@@ -155,7 +155,7 @@ mod test {
     #[test]
     #[cfg(feature = "cloudwatch_logs")]
     fn example_cloudwatch_logs_event() {
-        let data = include_bytes!("../fixtures/example-cloudwatch_logs-event.json");
+        let data = include_bytes!("../generated/fixtures/example-cloudwatch_logs-event.json");
         let parsed: LogsEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: LogsEvent = serde_json::from_slice(output.as_bytes()).unwrap();

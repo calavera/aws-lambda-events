@@ -73,7 +73,7 @@ mod test {
     #[test]
     #[cfg(feature = "codedeploy")]
     fn example_codedeploy_deployment_event() {
-        let data = include_bytes!("../fixtures/example-codedeploy-deployment-event.json");
+        let data = include_bytes!("../generated/fixtures/example-codedeploy-deployment-event.json");
         let parsed: CodeDeployEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CodeDeployEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -83,7 +83,7 @@ mod test {
     #[test]
     #[cfg(feature = "codedeploy")]
     fn example_codedeploy_instance_event() {
-        let data = include_bytes!("../fixtures/example-codedeploy-instance-event.json");
+        let data = include_bytes!("../generated/fixtures/example-codedeploy-instance-event.json");
         let parsed: CodeDeployEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CodeDeployEvent = serde_json::from_slice(output.as_bytes()).unwrap();

@@ -57,7 +57,7 @@ mod test {
     #[test]
     #[cfg(feature = "activemq")]
     fn example_activemq_event() {
-        let data = include_bytes!("../fixtures/example-activemq-event.json");
+        let data = include_bytes!("../generated/fixtures/example-activemq-event.json");
         let parsed: ActiveMqEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ActiveMqEvent = serde_json::from_slice(output.as_bytes()).unwrap();

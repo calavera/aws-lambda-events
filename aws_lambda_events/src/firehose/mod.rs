@@ -78,7 +78,7 @@ mod test {
     #[test]
     #[cfg(feature = "firehose")]
     fn example_firehose_event() {
-        let data = include_bytes!("../fixtures/example-firehose-event.json");
+        let data = include_bytes!("../generated/fixtures/example-firehose-event.json");
         let parsed: KinesisFirehoseEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: KinesisFirehoseEvent = serde_json::from_slice(output.as_bytes()).unwrap();

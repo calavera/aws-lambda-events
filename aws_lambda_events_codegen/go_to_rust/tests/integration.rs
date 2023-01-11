@@ -38,7 +38,7 @@ fn tests(src_dir: &Path) -> Vec<TestDescAndFn> {
     let entries = glob(&format!(
         "{}/{}",
         src_dir.to_string_lossy(),
-        "tests/fixtures/*"
+        "tes../generated/fixtures/*"
     ))
     .expect("some fixtures");
 

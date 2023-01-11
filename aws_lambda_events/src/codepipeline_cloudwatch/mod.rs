@@ -86,7 +86,7 @@ mod test {
     #[cfg(feature = "codepipeline_cloudwatch")]
     fn example_codepipeline_action_execution_stage_change_event() {
         let data = include_bytes!(
-            "../fixtures/example-codepipeline-action-execution-stage-change-event.json"
+            "../generated/fixtures/example-codepipeline-action-execution-stage-change-event.json"
         );
         let parsed: CodePipelineCloudWatchEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
@@ -99,7 +99,7 @@ mod test {
     #[cfg(feature = "codepipeline_cloudwatch")]
     fn example_codepipeline_execution_stage_change_event() {
         let data =
-            include_bytes!("../fixtures/example-codepipeline-execution-stage-change-event.json");
+            include_bytes!("../generated/fixtures/example-codepipeline-execution-stage-change-event.json");
         let parsed: CodePipelineCloudWatchEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CodePipelineCloudWatchEvent =
@@ -111,7 +111,7 @@ mod test {
     #[cfg(feature = "codepipeline_cloudwatch")]
     fn example_codepipeline_execution_state_change_event() {
         let data =
-            include_bytes!("../fixtures/example-codepipeline-execution-state-change-event.json");
+            include_bytes!("../generated/fixtures/example-codepipeline-execution-state-change-event.json");
         let parsed: CodePipelineCloudWatchEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: CodePipelineCloudWatchEvent =
