@@ -52,7 +52,9 @@ mod test {
     #[test]
     #[cfg(feature = "autoscaling")]
     fn example_autoscaling_event_launch_successful() {
-        let data = include_bytes!("../generated/fixtures/example-autoscaling-event-launch-successful.json");
+        let data = include_bytes!(
+            "../generated/fixtures/example-autoscaling-event-launch-successful.json"
+        );
         let parsed: AutoScalingEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AutoScalingEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -62,7 +64,9 @@ mod test {
     #[test]
     #[cfg(feature = "autoscaling")]
     fn example_autoscaling_event_launch_unsuccessful() {
-        let data = include_bytes!("../generated/fixtures/example-autoscaling-event-launch-unsuccessful.json");
+        let data = include_bytes!(
+            "../generated/fixtures/example-autoscaling-event-launch-unsuccessful.json"
+        );
         let parsed: AutoScalingEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AutoScalingEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -72,7 +76,8 @@ mod test {
     #[test]
     #[cfg(feature = "autoscaling")]
     fn example_autoscaling_event_lifecycle_action() {
-        let data = include_bytes!("../generated/fixtures/example-autoscaling-event-lifecycle-action.json");
+        let data =
+            include_bytes!("../generated/fixtures/example-autoscaling-event-lifecycle-action.json");
         let parsed: AutoScalingEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AutoScalingEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -82,7 +87,8 @@ mod test {
     #[test]
     #[cfg(feature = "autoscaling")]
     fn example_autoscaling_event_terminate_action() {
-        let data = include_bytes!("../generated/fixtures/example-autoscaling-event-terminate-action.json");
+        let data =
+            include_bytes!("../generated/fixtures/example-autoscaling-event-terminate-action.json");
         let parsed: AutoScalingEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AutoScalingEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -92,8 +98,9 @@ mod test {
     #[test]
     #[cfg(feature = "autoscaling")]
     fn example_autoscaling_event_terminate_successful() {
-        let data =
-            include_bytes!("../generated/fixtures/example-autoscaling-event-terminate-successful.json");
+        let data = include_bytes!(
+            "../generated/fixtures/example-autoscaling-event-terminate-successful.json"
+        );
         let parsed: AutoScalingEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AutoScalingEvent = serde_json::from_slice(output.as_bytes()).unwrap();
@@ -103,8 +110,9 @@ mod test {
     #[test]
     #[cfg(feature = "autoscaling")]
     fn example_autoscaling_event_terminate_unsuccessful() {
-        let data =
-            include_bytes!("../generated/fixtures/example-autoscaling-event-terminate-unsuccessful.json");
+        let data = include_bytes!(
+            "../generated/fixtures/example-autoscaling-event-terminate-unsuccessful.json"
+        );
         let parsed: AutoScalingEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AutoScalingEvent = serde_json::from_slice(output.as_bytes()).unwrap();

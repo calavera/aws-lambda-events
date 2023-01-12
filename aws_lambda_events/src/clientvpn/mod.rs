@@ -52,7 +52,9 @@ mod test {
     #[test]
     #[cfg(feature = "clientvpn")]
     fn example_clientvpn_connectionhandler_request() {
-        let data = include_bytes!("../generated/fixtures/example-clientvpn-connectionhandler-request.json");
+        let data = include_bytes!(
+            "../generated/fixtures/example-clientvpn-connectionhandler-request.json"
+        );
         let parsed: ClientVpnConnectionHandlerRequest = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: ClientVpnConnectionHandlerRequest =

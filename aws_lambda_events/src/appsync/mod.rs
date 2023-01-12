@@ -157,7 +157,8 @@ mod test {
     #[test]
     #[cfg(feature = "appsync")]
     fn example_appsync_lambda_auth_response() {
-        let data = include_bytes!("../generated/fixtures/example-appsync-lambda-auth-response.json");
+        let data =
+            include_bytes!("../generated/fixtures/example-appsync-lambda-auth-response.json");
         let parsed: AppSyncLambdaAuthorizerResponse = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: AppSyncLambdaAuthorizerResponse =
