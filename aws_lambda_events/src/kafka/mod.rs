@@ -1,5 +1,5 @@
 use crate::custom_serde::*;
-use crate::encodings::{Base64Data, MillisecondTimestamp};
+use crate::encodings::MillisecondTimestamp;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
@@ -28,7 +28,7 @@ pub struct KafkaRecord {
     pub timestamp_type: Option<String>,
     pub key: Option<String>,
     pub value: Option<String>,
-    pub headers: Vec<HashMap<String, Base64Data>>,
+    pub headers: Vec<HashMap<String, Vec<u8>>>,
 }
 
 #[cfg(test)]
@@ -40,6 +40,7 @@ mod test {
     #[test]
     #[cfg(feature = "kafka")]
     fn example_kafka_event() {
+        println!("{:?}", "headerValue".as_bytes());
         let data = include_bytes!("../fixtures/example-kafka-event.json");
         let parsed: KafkaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
