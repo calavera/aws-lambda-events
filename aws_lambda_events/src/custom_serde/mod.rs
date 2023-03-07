@@ -139,6 +139,19 @@ where
     Ok(opt.unwrap_or_default())
 }
 
+#[cfg(feature = "dynamodb")]
+/// Deserializes `Item`, mapping JSON `null` to an empty item.
+pub(crate) fn deserialize_lambda_dynamodb_item<'de, D>(
+    deserializer: D,
+) -> Result<serde_dynamo::Item, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    // https://github.com/serde-rs/serde/issues/1098
+    let opt = Option::deserialize(deserializer)?;
+    Ok(opt.unwrap_or_default())
+}
+
 pub(crate) fn serialize_duration_seconds<S>(
     duration: &Duration,
     serializer: S,
@@ -304,6 +317,27 @@ mod test {
         });
         let decoded: Test = serde_json::from_value(input).unwrap();
         assert_eq!(HashMap::new(), decoded.v);
+    }
+
+    #[cfg(feature = "dynamodb")]
+    #[test]
+    fn test_deserialize_lambda_dynamodb_item() {
+        #[derive(Deserialize)]
+        struct Test {
+            #[serde(deserialize_with = "deserialize_lambda_dynamodb_item")]
+            v: serde_dynamo::Item,
+        }
+        let input = json!({
+          "v": {},
+        });
+        let decoded: Test = serde_json::from_value(input).unwrap();
+        assert_eq!(serde_dynamo::Item::from(HashMap::new()), decoded.v);
+
+        let input = json!({
+          "v": null,
+        });
+        let decoded: Test = serde_json::from_value(input).unwrap();
+        assert_eq!(serde_dynamo::Item::from(HashMap::new()), decoded.v);
     }
 
     #[test]
