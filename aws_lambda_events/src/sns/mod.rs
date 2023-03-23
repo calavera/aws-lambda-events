@@ -62,9 +62,11 @@ pub struct SnsMessage {
     pub signature: String,
 
     /// The URL to the certificate that was used to sign the message.
+    #[serde(rename = "SigningCertURL")]
     pub signing_cert_url: String,
 
     /// A URL that you can use to unsubscribe the endpoint from this topic. If you visit this URL, Amazon SNS unsubscribes the endpoint and stops sending notifications to this endpoint.
+    #[serde(rename = "UnsubscribeURL")]
     pub unsubscribe_url: String,
 
     /// The Message value specified when the notification was published to the topic.
@@ -138,6 +140,7 @@ pub struct SnsMessageObj<T: Serialize> {
     pub signature: Option<String>,
 
     /// The URL to the certificate that was used to sign the message.
+    #[serde(rename = "SigningCertURL")]
     pub signing_cert_url: Option<String>,
 
     /// A URL that you can use to unsubscribe the endpoint from this topic. If you visit this URL, Amazon SNS unsubscribes the endpoint and stops sending notifications to this endpoint.
