@@ -1,5 +1,5 @@
 use crate::custom_serde::*;
-use crate::encodings::{Base64Data, MillisecondTimestamp};
+use crate::encodings::MillisecondTimestamp;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
@@ -28,7 +28,7 @@ pub struct KafkaRecord {
     pub timestamp_type: Option<String>,
     pub key: Option<String>,
     pub value: Option<String>,
-    pub headers: Vec<HashMap<String, Base64Data>>,
+    pub headers: Vec<HashMap<String, Vec<u8>>>,
 }
 
 #[cfg(test)]
