@@ -40,7 +40,6 @@ mod test {
     #[test]
     #[cfg(feature = "kafka")]
     fn example_kafka_event() {
-        println!("{:?}", "headerValue".as_bytes());
         let data = include_bytes!("../fixtures/example-kafka-event.json");
         let parsed: KafkaEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
