@@ -27,7 +27,7 @@ pub struct KinesisFirehoseEventRecord {
     pub approximate_arrival_timestamp: MillisecondTimestamp,
     pub data: Base64Data,
     #[serde(rename = "kinesisRecordMetadata")]
-    pub kinesis_firehose_record_metadata: KinesisFirehoseRecordMetadata,
+    pub kinesis_firehose_record_metadata: Option<KinesisFirehoseRecordMetadata>,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
