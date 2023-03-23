@@ -13,8 +13,8 @@
                 "Timestamp": "2015-06-03T17:43:27.123Z",
                 "SignatureVersion": "1",
                 "Signature": "EXAMPLE",
-                "SigningCertUrl": "EXAMPLE",
-                "UnsubscribeUrl": "EXAMPLE",
+                "SigningCertURL": "EXAMPLE",
+                "UnsubscribeURL": "EXAMPLE",
                 "MessageAttributes": {}
             }
         }
