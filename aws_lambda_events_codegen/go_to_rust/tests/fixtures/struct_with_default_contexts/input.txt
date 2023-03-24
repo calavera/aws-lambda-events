@@ -1,9 +1,0 @@
-type ApiGatewayRequestIdentity struct { }
-
-type ApiGatewayProxyRequestContext struct {
-	Identity ApiGatewayRequestIdentity `json:"identity"`
-}
-
-type HttpMessage struct {
-	RequestContext ApiGatewayProxyRequestContext `json:"requestContext"`
-}
