@@ -7,12 +7,7 @@ This crate provides strongly-typed [AWS Lambda event structs](https://docs.aws.a
 
 ## Installation
 
-Include the crate in your `Cargo.toml`:
-
-```toml
-[dependencies]
-aws_lambda_events = "^0.8"
-```
+Add the dependency with Cargo: `cargo add aws_lambda_events`.
 
 ## Usage
 
@@ -28,9 +23,8 @@ For a list of supported AWS Lambda events and services, see [the crate reference
 
 This crate divides all Lambda Events into features named after the service that the events are generated from. By default all events are enabled when you include this crate as a dependency to your project. If you only want to import specific events from this crate, you can disable the default features, and enable only the events that you need. This will make your project to compile a little bit faster, since rustc doesn't need to compile events that you're not going to use. Here's an example on how to do that:
 
-```toml
-[dependencies]
-aws_lambda_events = { version = "^0.8", default-features = false, features = ["apigw", "alb"] }
+```
+cargo add aws_lambda_events --features apigw,alb
 ```
 
 [//]: # 'badges'
