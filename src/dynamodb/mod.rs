@@ -3,10 +3,10 @@ use crate::streams::DynamoDbBatchItemFailure;
 use crate::time_window::*;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, fmt};
+use std::fmt;
 
-pub mod attributes;
-use self::attributes::AttributeValue;
+#[cfg(test)]
+mod attributes;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -218,20 +218,20 @@ pub struct StreamRecord {
     #[serde(with = "float_unix_epoch")]
     pub approximate_creation_date_time: DateTime<Utc>,
     /// The primary key attribute(s) for the DynamoDB item that was modified.
-    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(deserialize_with = "deserialize_lambda_dynamodb_item")]
     #[serde(default)]
     #[serde(rename = "Keys")]
-    pub keys: HashMap<String, AttributeValue>,
+    pub keys: serde_dynamo::Item,
     /// The item in the DynamoDB table as it appeared after it was modified.
-    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(deserialize_with = "deserialize_lambda_dynamodb_item")]
     #[serde(default)]
     #[serde(rename = "NewImage")]
-    pub new_image: HashMap<String, AttributeValue>,
+    pub new_image: serde_dynamo::Item,
     /// The item in the DynamoDB table as it appeared before it was modified.
-    #[serde(deserialize_with = "deserialize_lambda_map")]
+    #[serde(deserialize_with = "deserialize_lambda_dynamodb_item")]
     #[serde(default)]
     #[serde(rename = "OldImage")]
-    pub old_image: HashMap<String, AttributeValue>,
+    pub old_image: serde_dynamo::Item,
     /// The sequence number of the stream record.
     #[serde(default)]
     #[serde(rename = "SequenceNumber")]
