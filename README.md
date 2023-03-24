@@ -1,6 +1,7 @@
 # [aws_lambda_events](https://github.com/calavera/aws-lambda-events)
 
-[![Documentation](https://docs.rs/aws_lambda_events/badge.svg)](https://docs.rs/aws_lambda_events)
+[![crates.io][crate-image]][crate-link]
+[![Documentation][docs-image]][docs-link]
 
 This crate provides strongly-typed [AWS Lambda event structs](https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html) in Rust.
 
@@ -10,7 +11,7 @@ Include the crate in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-aws_lambda_events = "^0.7"
+aws_lambda_events = "^0.8"
 ```
 
 ## Usage
@@ -29,5 +30,11 @@ This crate divides all Lambda Events into features named after the service that 
 
 ```toml
 [dependencies]
-aws_lambda_events = { version = "^0.7", default-features = false, features = ["apigw", "alb"] }
+aws_lambda_events = { version = "^0.8", default-features = false, features = ["apigw", "alb"] }
 ```
+
+[//]: # 'badges'
+[crate-image]: https://img.shields.io/crates/v/aws_lambda_events.svg
+[crate-link]: https://crates.io/crates/aws_lambda_events
+[docs-image]: https://docs.rs/aws_lambda_events/badge.svg
+[docs-link]: https://docs.rs/aws_lambda_events
