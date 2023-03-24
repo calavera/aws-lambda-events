@@ -1,3 +1,0 @@
-type InterfaceMessage struct {
-	Optional interface{} `json:"optional"`
-}
