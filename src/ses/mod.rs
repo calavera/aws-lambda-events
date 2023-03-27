@@ -23,6 +23,7 @@ pub struct SimpleEmailRecord {
 pub struct SimpleEmailService {
     pub mail: SimpleEmailMessage,
     pub receipt: SimpleEmailReceipt,
+    pub content: Option<String>,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Deserialize, Serialize)]
