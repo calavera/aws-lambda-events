@@ -62,11 +62,11 @@ pub struct SnsMessage {
     pub signature: String,
 
     /// The URL to the certificate that was used to sign the message.
-    #[serde(rename = "SigningCertURL")]
+    #[serde(alias = "SigningCertURL")]
     pub signing_cert_url: String,
 
     /// A URL that you can use to unsubscribe the endpoint from this topic. If you visit this URL, Amazon SNS unsubscribes the endpoint and stops sending notifications to this endpoint.
-    #[serde(rename = "UnsubscribeURL")]
+    #[serde(alias = "UnsubscribeURL")]
     pub unsubscribe_url: String,
 
     /// The Message value specified when the notification was published to the topic.
@@ -140,11 +140,11 @@ pub struct SnsMessageObj<T: Serialize> {
     pub signature: String,
 
     /// The URL to the certificate that was used to sign the message.
-    #[serde(rename = "SigningCertURL")]
+    #[serde(alias = "SigningCertURL")]
     pub signing_cert_url: String,
 
     /// A URL that you can use to unsubscribe the endpoint from this topic. If you visit this URL, Amazon SNS unsubscribes the endpoint and stops sending notifications to this endpoint.
-    #[serde(rename = "UnsubscribeURL")]
+    #[serde(alias = "UnsubscribeURL")]
     pub unsubscribe_url: String,
 
     /// Deserialized into a `T` from nested JSON inside the SNS message string. `T` must implement the `Deserialize` or `DeserializeOwned` trait.
@@ -184,6 +184,16 @@ mod test {
     #[cfg(feature = "sns")]
     fn my_example_sns_event() {
         let data = include_bytes!("../fixtures/example-sns-event.json");
+        let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
+        let output: String = serde_json::to_string(&parsed).unwrap();
+        let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
+        assert_eq!(parsed, reparsed);
+    }
+
+    #[test]
+    #[cfg(feature = "sns")]
+    fn my_example_sns_event_pascal_case() {
+        let data = include_bytes!("../fixtures/example-sns-event-pascal-case.json");
         let parsed: SnsEvent = serde_json::from_slice(data).unwrap();
         let output: String = serde_json::to_string(&parsed).unwrap();
         let reparsed: SnsEvent = serde_json::from_slice(output.as_bytes()).unwrap();
