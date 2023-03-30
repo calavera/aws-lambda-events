@@ -1,6 +1,6 @@
 [package]
 name = "aws_lambda_events"
-version = "0.8.2"
+version = "0.8.3"
 description = "AWS Lambda event definitions"
 authors = [
   "Christian Legnitto <christian@legnitto.com>",
@@ -99,10 +99,10 @@ dynamodb = ["streams", "serde_dynamo"]
 ecr_scan = []
 firehose = []
 iam = []
-iot = []
+iot = ["iam"]
 iot_1_click = []
 iot_button = []
-iot_deprecated = []
+iot_deprecated = ["iot"]
 kafka = []
 kinesis = []
 kinesis_analytics = ["kinesis"]

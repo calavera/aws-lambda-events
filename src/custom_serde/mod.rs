@@ -11,9 +11,21 @@ pub(crate) mod codebuild_time;
 #[cfg(feature = "codebuild")]
 pub type CodeBuildNumber = f32;
 
-#[cfg(any(feature = "alb", feature = "apigw"))]
+#[cfg(any(
+    feature = "alb",
+    feature = "apigw",
+    feature = "s3",
+    feature = "iot",
+    feature = "lambda_function_urls"
+))]
 mod headers;
-#[cfg(any(feature = "alb", feature = "apigw"))]
+#[cfg(any(
+    feature = "alb",
+    feature = "apigw",
+    feature = "s3",
+    feature = "iot",
+    feature = "lambda_function_urls"
+))]
 pub(crate) use self::headers::*;
 
 #[cfg(feature = "dynamodb")]
