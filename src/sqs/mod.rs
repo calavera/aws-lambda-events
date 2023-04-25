@@ -91,7 +91,9 @@ pub struct SqsMessageObj<T: Serialize> {
 pub struct SqsMessageAttribute {
     pub string_value: Option<String>,
     pub binary_value: Option<Base64Data>,
+    #[serde(default)]
     pub string_list_values: Vec<String>,
+    #[serde(default)]
     pub binary_list_values: Vec<Base64Data>,
     #[serde(default)]
     pub data_type: Option<String>,
