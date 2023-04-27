@@ -205,9 +205,7 @@ where
 }
 
 /// Deserializes `HashMap<_>`, mapping JSON `null` to an empty map.
-pub(crate) fn deserialize_nullish_boolean<'de, D>(
-    deserializer: D,
-) -> Result<bool, D::Error>
+pub(crate) fn deserialize_nullish_boolean<'de, D>(deserializer: D) -> Result<bool, D::Error>
 where
     D: Deserializer<'de>,
 {
