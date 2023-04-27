@@ -310,9 +310,9 @@ pub struct CognitoEventUserPoolsDefineAuthChallengeRequest {
 pub struct CognitoEventUserPoolsDefineAuthChallengeResponse {
     #[serde(default)]
     pub challenge_name: Option<String>,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "deserialize_nullish_boolean")]
     pub issue_tokens: bool,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "deserialize_nullish_boolean")]
     pub fail_authentication: bool,
 }
 
