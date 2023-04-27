@@ -204,6 +204,16 @@ where
     Ok(Duration::minutes(minutes as i64))
 }
 
+/// Deserializes `HashMap<_>`, mapping JSON `null` to an empty map.
+pub(crate) fn deserialize_nullish_boolean<'de, D>(deserializer: D) -> Result<bool, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    // https://github.com/serde-rs/serde/issues/1098
+    let opt = Option::deserialize(deserializer)?;
+    Ok(opt.unwrap_or_default())
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -424,5 +434,30 @@ mod test {
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":36}"#));
+    }
+
+    #[test]
+    fn test_deserialize_nullish_boolean() {
+        #[derive(Deserialize)]
+        struct Test {
+            #[serde(default, deserialize_with = "deserialize_nullish_boolean")]
+            v: bool,
+        }
+
+        let test = r#"{"v": null}"#;
+        let decoded: Test = serde_json::from_str(test).unwrap();
+        assert_eq!(false, decoded.v);
+
+        let test = r#"{}"#;
+        let decoded: Test = serde_json::from_str(test).unwrap();
+        assert_eq!(false, decoded.v);
+
+        let test = r#"{"v": true}"#;
+        let decoded: Test = serde_json::from_str(test).unwrap();
+        assert_eq!(true, decoded.v);
+
+        let test = r#"{"v": false}"#;
+        let decoded: Test = serde_json::from_str(test).unwrap();
+        assert_eq!(false, decoded.v);
     }
 }
