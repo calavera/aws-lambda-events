@@ -64,8 +64,8 @@ pub struct S3Entity {
 pub struct S3Bucket {
     #[serde(default)]
     pub name: Option<String>,
-    pub owner_identity: S3UserIdentity,
-    /// nolint: stylecheck
+    #[serde(default)]
+    pub owner_identity: Option<S3UserIdentity>,
     #[serde(default)]
     pub arn: Option<String>,
 }
