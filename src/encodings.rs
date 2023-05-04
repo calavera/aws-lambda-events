@@ -18,6 +18,12 @@ pub struct Base64Data(
     pub Vec<u8>,
 );
 
+impl Default for Base64Data {
+    fn default() -> Self {
+        Base64Data::Vec<u8>
+    }
+}
+
 impl Deref for Base64Data {
     type Target = Vec<u8>;
 
@@ -176,12 +182,17 @@ impl DerefMut for MinuteDuration {
 #[derive(Debug, Eq, PartialEq)]
 pub enum Body {
     /// An empty body
-    #[default]
     Empty,
     /// A body containing string data
     Text(String),
     /// A body containing binary data
     Binary(Vec<u8>),
+}
+
+impl Default for Body {
+    fn default() -> Self {
+        Body::Empty
+    }
 }
 
 impl Body {
