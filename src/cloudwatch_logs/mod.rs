@@ -54,6 +54,8 @@ impl<'de> Deserialize<'de> for AwsLogs {
     where
         D: Deserializer<'de>,
     {
+        use base64::Engine;
+
         struct AwsLogsVisitor;
 
         impl<'de> Visitor<'de> for AwsLogsVisitor {
@@ -72,7 +74,9 @@ impl<'de> Deserialize<'de> for AwsLogs {
                     match key {
                         "data" => {
                             let bytes = map.next_value::<String>().and_then(|string| {
-                                base64::decode(&string).map_err(Error::custom)
+                                base64::engine::general_purpose::STANDARD
+                                    .decode(&string)
+                                    .map_err(Error::custom)
                             })?;
 
                             let bytes = flate2::read::GzDecoder::new(&bytes[..]);
@@ -99,7 +103,10 @@ impl Serialize for AwsLogs {
     where
         S: Serializer,
     {
-        let base = base64::write::EncoderWriter::new(Vec::new(), base64::STANDARD_NO_PAD);
+        let base = base64::write::EncoderWriter::new(
+            Vec::new(),
+            &base64::engine::general_purpose::STANDARD_NO_PAD,
+        );
         let mut gzip = flate2::write::GzEncoder::new(base, flate2::Compression::default());
 
         serde_json::to_writer(&mut gzip, &self.data).map_err(SeError::custom)?;
