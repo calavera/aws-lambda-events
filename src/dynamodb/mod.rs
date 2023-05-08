@@ -263,7 +263,7 @@ mod test {
         assert_eq!(parsed, reparsed);
 
         let event = parsed.records.pop().unwrap();
-        let date = Utc.ymd(2016, 12, 2).and_hms(1, 27, 0);
+        let date = Utc.with_ymd_and_hms(2016, 12, 2, 1, 27, 0).unwrap();
         assert_eq!(date, event.change.approximate_creation_date_time);
     }
 

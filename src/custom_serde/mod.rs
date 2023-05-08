@@ -217,7 +217,7 @@ where
 #[cfg(test)]
 mod test {
     use super::*;
-    use chrono::TimeZone;
+    use chrono::{TimeZone, Timelike};
     use serde_json;
 
     #[test]
@@ -258,7 +258,11 @@ mod test {
             #[serde(deserialize_with = "deserialize_milliseconds")]
             v: DateTime<Utc>,
         }
-        let expected = Utc.ymd(2017, 10, 05).and_hms_nano(15, 33, 44, 302_000_000);
+        let expected = Utc
+            .with_ymd_and_hms(2017, 10, 05, 15, 33, 44)
+            .unwrap()
+            .with_nanosecond(302_000_000)
+            .unwrap();
 
         // Test parsing strings.
         let data = json!({
@@ -285,7 +289,11 @@ mod test {
             v: DateTime<Utc>,
         }
         let instance = Test {
-            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 99_888_777),
+            v: Utc
+                .with_ymd_and_hms(1983, 7, 22, 1, 0, 0)
+                .unwrap()
+                .with_nanosecond(99_888_777)
+                .unwrap(),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683600099"}"#));
@@ -301,21 +309,33 @@ mod test {
 
         // Make sure nanoseconds are chopped off.
         let instance = Test {
-            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 99),
+            v: Utc
+                .with_ymd_and_hms(1983, 7, 22, 1, 0, 0)
+                .unwrap()
+                .with_nanosecond(99)
+                .unwrap(),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683600"}"#));
 
         // Make sure milliseconds are included.
         let instance = Test {
-            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 2_000_000),
+            v: Utc
+                .with_ymd_and_hms(1983, 7, 22, 1, 0, 0)
+                .unwrap()
+                .with_nanosecond(2_000_000)
+                .unwrap(),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683600.002"}"#));
 
         // Make sure milliseconds are included.
         let instance = Test {
-            v: Utc.ymd(1983, 7, 22).and_hms_nano(1, 0, 0, 1_234_000_000),
+            v: Utc
+                .with_ymd_and_hms(1983, 7, 22, 1, 0, 0)
+                .unwrap()
+                .with_nanosecond(1_234_000_000)
+                .unwrap(),
         };
         let encoded = serde_json::to_string(&instance).unwrap();
         assert_eq!(encoded, String::from(r#"{"v":"427683601.234"}"#));
